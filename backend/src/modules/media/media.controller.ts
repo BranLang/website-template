@@ -1,0 +1,28 @@
+import { Controller, Post, Get, Delete, Param, UseGuards, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { MediaService } from './media.service';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+
+@Controller('media')
+export class MediaController {
+  constructor(private readonly mediaService: MediaService) {}
+
+  @UseGuards(JwtAuthGuard)
+  @Post('upload')
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadFile(@UploadedFile() file: Express.Multer.File) {
+    return this.mediaService.uploadFile(file);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get()
+  async getAllFiles() {
+    return this.mediaService.getAllFiles();
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete(':filename')
+  async deleteFile(@Param('filename') filename: string) {
+    return this.mediaService.deleteFile(filename);
+  }
+}

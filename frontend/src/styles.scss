@@ -1,0 +1,175 @@
+/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+// Custom theme colors
+$primary-palette: mat.define-palette(mat.$indigo-palette);
+$accent-palette: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+$warn-palette: mat.define-palette(mat.$red-palette);
+
+// Global styles
+.mat-mdc-card {
+  margin: 16px;
+}
+
+.mat-mdc-form-field {
+  width: 100%;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.mb-16 {
+  margin-bottom: 16px;
+}
+
+.mt-16 {
+  margin-top: 16px;
+}
+
+.p-16 {
+  padding: 16px;
+}
+
+// Admin layout styles
+.admin-layout {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.admin-sidenav {
+  width: 250px;
+}
+
+.admin-content {
+  margin-top: 64px;
+  padding: 20px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+// Public layout styles
+.public-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.public-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.public-content {
+  flex: 1;
+  padding: 20px;
+}
+
+// Product grid styles
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.product-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card-image {
+  height: 200px;
+  object-fit: cover;
+}
+
+.product-card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card-actions {
+  margin-top: auto;
+}
+
+// Form styles
+.form-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+// Table styles
+.table-container {
+  margin: 20px;
+  overflow-x: auto;
+}
+
+// Image upload styles
+.image-upload-container {
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+.image-upload-container:hover {
+  border-color: mat.get-color-from-palette($primary-palette, 500);
+}
+
+.image-preview {
+  max-width: 200px;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin: 10px;
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .admin-sidenav {
+    width: 200px;
+  }
+  
+  .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 16px;
+    padding: 16px;
+  }
+  
+  .form-container {
+    padding: 16px;
+  }
+  
+  .admin-content {
+    padding: 16px;
+  }
+}
