@@ -1,0 +1,129 @@
+{
+  "COMMON": {
+    "HOME": "Úvod",
+    "ABOUT": "O nás",
+    "PRODUCTS": "Produkty",
+    "CONTACT": "Kontakt",
+    "FAQ": "Časté otázky",
+    "LANGUAGE": "Jazyk",
+    "SLOVAK": "Slovenčina",
+    "ENGLISH": "Angličtina",
+    "SEARCH": "Hľadať",
+    "LOADING": "Načítavam...",
+    "ERROR": "Chyba",
+    "SUCCESS": "Úspech",
+    "CANCEL": "Zrušiť",
+    "SAVE": "Uložiť",
+    "EDIT": "Upraviť",
+    "DELETE": "Vymazať",
+    "BACK": "Späť",
+    "NEXT": "Ďalej",
+    "PREVIOUS": "Predchádzajúce",
+    "VIEW_MORE": "Zobraziť viac",
+    "CLOSE": "Zavrieť"
+  },
+  "NAVIGATION": {
+    "WINDOWS": "Okná",
+    "DOORS": "Dvere",
+    "ACCESSORIES": "Doplnky",
+    "REALIZATIONS": "Realizácie",
+    "PRICE_REQUEST": "Cenový dopyt",
+    "ARTICLES": "Články"
+  },
+  "HOME": {
+    "HERO_TITLE": "Okná a dvere na celý život",
+    "HERO_SUBTITLE": "Kvalitné okná a dvere pre váš domov",
+    "FEATURED_PRODUCTS": "Odporúčané produkty",
+    "ABOUT_US_SHORT": "Už takmer 30 rokov vyrábame okná a dvere...",
+    "ABOUT_FEATURES": [
+      "ktoré dobre tepelne izolujú",
+      "dizajnovo súvisia s architektúrou budovy",
+      "ktoré sa dobre obsluhujú",
+      "a plnia vysoké estetické a energetické nároky"
+    ],
+    "VIEW_ALL_PRODUCTS": "Zobraziť všetky produkty",
+    "CONTACT_US": "Kontaktujte nás"
+  },
+  "PRODUCTS": {
+    "CATEGORIES": {
+      "WOODEN_WINDOWS": "Drevené okná",
+      "WOOD_ALUMINUM_WINDOWS": "Drevohliníkové okná",
+      "ALUMINUM_WINDOWS": "Hliníkové okná",
+      "HISTORICAL_WINDOWS": "Historické okná",
+      "WOODEN_DOORS": "Drevené dvere",
+      "HISTORICAL_DOORS": "Historické dvere",
+      "ALUMINUM_DOORS": "Hliníkové dvere",
+      "SLIDING_DOORS": "Posuvné dvere"
+    },
+    "SPECIFICATIONS": "Špecifikácie",
+    "PRICE": "Cena",
+    "MATERIAL": "Materiál",
+    "GLAZING": "Zasklenie",
+    "THERMAL_INSULATION": "Tepelná izolácia",
+    "SECURITY": "Bezpečnosť",
+    "VIEW_DETAILS": "Zobraziť detaily",
+    "ADD_TO_CART": "Pridať do košíka",
+    "REQUEST_QUOTE": "Požiadať o cenovú ponuku"
+  },
+  "ABOUT": {
+    "TITLE": "O spoločnosti JUST SK",
+    "DESCRIPTION": "Spoločnosť JUST SK je slovenská výrobná spoločnosť zameraná na výrobu drevených, drevohliníkových a hliníkových okien a dverí ako výplň stavebných otvorov pre rodinné domy a ostatné spoločenské budovy.",
+    "VALUES": {
+      "TITLE": "Naše hodnoty",
+      "QUALITY": "Kvalita a spoľahlivosť",
+      "INNOVATION": "Inovatívne riešenia",
+      "CUSTOMER_SATISFACTION": "Zákaznícka spokojnosť",
+      "RESPONSIVE": "Responzívny prístup"
+    },
+    "CONTACT_INFO": {
+      "TITLE": "Kontaktné údaje",
+      "COMPANY": "JUST SK, s.r.o.",
+      "ADDRESS": "Viničná 609",
+      "CITY": "951 71 Sľažany",
+      "COUNTRY": "Slovensko",
+      "VAT_ID": "IČO: 36736449",
+      "TAX_ID": "DIČ: SK2022323160",
+      "DIRECTOR": "Pavol Just, konateľ: 0905 431 240"
+    }
+  },
+  "CONTACT": {
+    "TITLE": "Kontakt",
+    "GET_IN_TOUCH": "Spojte sa s nami",
+    "ADDRESS": "Adresa",
+    "PHONE": "Telefón",
+    "EMAIL": "Email",
+    "SEND_MESSAGE": "Odoslať správu",
+    "NAME": "Meno",
+    "MESSAGE": "Správa",
+    "SUBJECT": "Predmet",
+    "REQUIRED_FIELD": "Toto pole je povinné"
+  },
+  "FAQ": {
+    "TITLE": "Často kladené otázky",
+    "QUESTIONS": {
+      "CHOOSE_WINDOWS": {
+        "QUESTION": "Ako vybrať správne okná?",
+        "ANSWER": "Pri výbere okien je dôležité zvážiť materiál, tepelnú izoláciu, zasklenie a dizajn. Naši odborníci vám poradia s výberom."
+      },
+      "LIFESPAN": {
+        "QUESTION": "Aká je životnosť okien?",
+        "ANSWER": "Životnosť okien závisí od materiálu a údržby. Drevené okná môžu slúžiť 20-30 rokov, hliníkové až 50 rokov."
+      },
+      "INSTALLATION_TIME": {
+        "QUESTION": "Ako dlho trvá montáž?",
+        "ANSWER": "Montáž okien trvá zvyčajne 1-3 dni v závislosti od počtu a typu okien."
+      },
+      "WARRANTY": {
+        "QUESTION": "Poskytujete záruku?",
+        "ANSWER": "Áno, poskytujeme záruku 5 rokov na výrobky a 2 roky na montáž."
+      }
+    }
+  },
+  "FOOTER": {
+    "COMPANY_INFO": "JUST SK, s.r.o. je slovenská výrobná spoločnosť zameraná na výrobu drevených, drevohliníkových a hliníkových okien a dverí.",
+    "FOLLOW_US": "Sledujte nás",
+    "ALL_RIGHTS_RESERVED": "Všetky práva vyhradené",
+    "PRIVACY_POLICY": "Ochrana súkromia",
+    "TERMS_OF_SERVICE": "Podmienky používania"
+  }
+}

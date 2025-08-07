@@ -1,8 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-
-import { Category, CategoryType } from '../../entities/category.entity';
+import { Category, CategoryType, Language } from '../../entities/category.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 
@@ -13,68 +12,63 @@ export class CategoriesService {
     private categoryRepository: Repository<Category>,
   ) {}
 
-  async create(createCategoryDto: CreateCategoryDto): Promise<Category> {
+  create(createCategoryDto: CreateCategoryDto) {
     const category = this.categoryRepository.create(createCategoryDto);
     return this.categoryRepository.save(category);
   }
 
-  async findAll(): Promise<Category[]> {
+  findAll(language: Language = Language.SK, siteId: string = 'just-eurookna') {
     return this.categoryRepository.find({
-      relations: ['products'],
-      order: { sortOrder: 'ASC', name: 'ASC' },
-    });
-  }
-
-  async findActive(): Promise<Category[]> {
-    return this.categoryRepository.find({
-      where: { isActive: true },
-      relations: ['products'],
-      order: { sortOrder: 'ASC', name: 'ASC' },
-    });
-  }
-
-  async findByType(type: CategoryType): Promise<Category[]> {
-    return this.categoryRepository.find({
-      where: { type, isActive: true },
+      where: { language, siteId },
       relations: ['products'],
       order: { sortOrder: 'ASC' },
     });
   }
 
-  async findOne(id: number): Promise<Category> {
-    const category = await this.categoryRepository.findOne({
-      where: { id },
+  findActive(language: Language = Language.SK, siteId: string = 'just-eurookna') {
+    return this.categoryRepository.find({
+      where: { isActive: true, language, siteId },
       relations: ['products'],
+      order: { sortOrder: 'ASC' },
     });
-
-    if (!category) {
-      throw new NotFoundException('Category not found');
-    }
-
-    return category;
   }
 
-  async findBySlug(slug: string): Promise<Category> {
-    const category = await this.categoryRepository.findOne({
-      where: { slug },
+  findOne(id: number, language: Language = Language.SK, siteId: string = 'just-eurookna') {
+    return this.categoryRepository.findOne({
+      where: { id, language, siteId },
       relations: ['products'],
     });
-
-    if (!category) {
-      throw new NotFoundException('Category not found');
-    }
-
-    return category;
   }
 
-  async update(id: number, updateCategoryDto: UpdateCategoryDto): Promise<Category> {
+  findBySlug(slug: string, language: Language = Language.SK, siteId: string = 'just-eurookna') {
+    return this.categoryRepository.findOne({
+      where: { slug, language, siteId },
+      relations: ['products'],
+    });
+  }
+
+  findByType(type: CategoryType, language: Language = Language.SK, siteId: string = 'just-eurookna') {
+    return this.categoryRepository.find({
+      where: { type, isActive: true, language, siteId },
+      relations: ['products'],
+      order: { sortOrder: 'ASC' },
+    });
+  }
+
+  async update(id: number, updateCategoryDto: UpdateCategoryDto) {
     const category = await this.findOne(id);
+    if (!category) {
+      throw new NotFoundException(`Category with ID ${id} not found`);
+    }
     Object.assign(category, updateCategoryDto);
     return this.categoryRepository.save(category);
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: number) {
     const category = await this.findOne(id);
-    await this.categoryRepository.remove(category);
+    if (!category) {
+      throw new NotFoundException(`Category with ID ${id} not found`);
+    }
+    return this.categoryRepository.remove(category);
   }
 }

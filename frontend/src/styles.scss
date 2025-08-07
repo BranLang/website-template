@@ -1,13 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
-@use '@angular/material' as mat;
+/* Using prebuilt Angular Material theme for simplicity */
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-// Custom theme colors
-$primary-palette: mat.define-palette(mat.$indigo-palette);
-$accent-palette: mat.define-palette(mat.$pink-palette, A200, A100, A400);
-$warn-palette: mat.define-palette(mat.$red-palette);
+/* Removed custom Sass theme functions to avoid build errors */
 
 // Global styles
 .mat-mdc-card {
@@ -142,7 +140,7 @@ $warn-palette: mat.define-palette(mat.$red-palette);
 }
 
 .image-upload-container:hover {
-  border-color: mat.get-color-from-palette($primary-palette, 500);
+  border-color: #3f51b5;
 }
 
 .image-preview {

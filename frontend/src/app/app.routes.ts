@@ -1,69 +1,74 @@
 import { Routes } from '@angular/router';
-import { AuthGuard } from './guards/auth.guard';
-import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
-import { PublicLayoutComponent } from './layouts/public-layout/public-layout.component';
-import { LoginComponent } from './components/auth/login/login.component';
-import { DashboardComponent } from './components/admin/dashboard/dashboard.component';
-import { ProductsComponent } from './components/admin/products/products.component';
-import { CategoriesComponent } from './components/admin/categories/categories.component';
-import { PagesComponent } from './components/admin/pages/pages.component';
-import { OrdersComponent } from './components/admin/orders/orders.component';
-import { UsersComponent } from './components/admin/users/users.component';
-import { MediaComponent } from './components/admin/media/media.component';
-import { ProductFormComponent } from './components/admin/products/product-form/product-form.component';
-import { CategoryFormComponent } from './components/admin/categories/category-form/category-form.component';
-import { PageFormComponent } from './components/admin/pages/page-form/page-form.component';
-import { UserFormComponent } from './components/admin/users/user-form/user-form.component';
-import { HomeComponent } from './components/public/home/home.component';
-import { ProductListComponent } from './components/public/products/product-list/product-list.component';
-import { ProductDetailComponent } from './components/public/products/product-detail/product-detail.component';
-import { ContactComponent } from './components/public/contact/contact.component';
-import { AboutComponent } from './components/public/about/about.component';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
-  // Public routes
   {
     path: '',
-    component: PublicLayoutComponent,
+    loadComponent: () => import('./layouts/public-layout/public-layout.component').then(m => m.PublicLayoutComponent),
     children: [
-      { path: '', component: HomeComponent },
-      { path: 'products', component: ProductListComponent },
-      { path: 'products/:id', component: ProductDetailComponent },
-      { path: 'products/category/:categoryId', component: ProductListComponent },
-      { path: 'about', component: AboutComponent },
-      { path: 'contact', component: ContactComponent },
-      { path: 'pages/:slug', component: AboutComponent }, // Reuse AboutComponent for dynamic pages
+      {
+        path: '',
+        loadComponent: () => import('./components/home/home.component').then(m => m.HomeComponent)
+      },
+      {
+        path: 'about',
+        loadComponent: () => import('./components/about/about.component').then(m => m.AboutComponent)
+      },
+      {
+        path: 'products',
+        loadComponent: () => import('./components/products/products.component').then(m => m.ProductsComponent)
+      },
+      {
+        path: 'products/:slug',
+        loadComponent: () => import('./components/product-detail/product-detail.component').then(m => m.ProductDetailComponent)
+      },
+      {
+        path: 'categories/:type',
+        loadComponent: () => import('./components/categories/categories.component').then(m => m.CategoriesComponent)
+      },
+      {
+        path: 'contact',
+        loadComponent: () => import('./components/contact/contact.component').then(m => m.ContactComponent)
+      },
+      {
+        path: 'faq',
+        loadComponent: () => import('./components/faq/faq.component').then(m => m.FaqComponent)
+      }
     ]
   },
-  
-  // Auth routes
-  { path: 'login', component: LoginComponent },
-  
-  // Admin routes
   {
     path: 'admin',
-    component: AdminLayoutComponent,
-    canActivate: [AuthGuard],
+    loadComponent: () => import('./layouts/admin-layout/admin-layout.component').then(m => m.AdminLayoutComponent),
+    canActivate: [authGuard],
     children: [
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      { path: 'dashboard', component: DashboardComponent },
-      { path: 'products', component: ProductsComponent },
-      { path: 'products/new', component: ProductFormComponent },
-      { path: 'products/edit/:id', component: ProductFormComponent },
-      { path: 'categories', component: CategoriesComponent },
-      { path: 'categories/new', component: CategoryFormComponent },
-      { path: 'categories/edit/:id', component: CategoryFormComponent },
-      { path: 'pages', component: PagesComponent },
-      { path: 'pages/new', component: PageFormComponent },
-      { path: 'pages/edit/:id', component: PageFormComponent },
-      { path: 'orders', component: OrdersComponent },
-      { path: 'users', component: UsersComponent },
-      { path: 'users/new', component: UserFormComponent },
-      { path: 'users/edit/:id', component: UserFormComponent },
-      { path: 'media', component: MediaComponent },
+      {
+        path: '',
+        loadComponent: () => import('./components/dashboard/dashboard.component').then(m => m.DashboardComponent)
+      },
+      {
+        path: 'products',
+        loadComponent: () => import('./components/admin/products/products.component').then(m => m.ProductsComponent)
+      },
+      {
+        path: 'categories',
+        loadComponent: () => import('./components/admin/categories/categories.component').then(m => m.CategoriesComponent)
+      },
+      {
+        path: 'pages',
+        loadComponent: () => import('./components/admin/pages/pages.component').then(m => m.PagesComponent)
+      },
+      {
+        path: 'orders',
+        loadComponent: () => import('./components/admin/orders/orders.component').then(m => m.OrdersComponent)
+      },
+      {
+        path: 'users',
+        loadComponent: () => import('./components/admin/users/users.component').then(m => m.UsersComponent)
+      }
     ]
   },
-  
-  // Catch all route
-  { path: '**', redirectTo: '' }
+  {
+    path: 'login',
+    loadComponent: () => import('./components/login/login.component').then(m => m.LoginComponent)
+  }
 ];

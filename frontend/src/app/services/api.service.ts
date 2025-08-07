@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { Language } from './language.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,100 +10,126 @@ import { environment } from '../../environments/environment';
 export class ApiService {
   private apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  // Products
-  getProducts(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/products`);
+  // Auth endpoints
+  login(credentials: { email: string; password: string }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/auth/login`, credentials);
   }
 
-  getProduct(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/products/${id}`);
+  register(userData: { email: string; password: string; name: string }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/auth/register`, userData);
   }
 
-  getProductBySlug(slug: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/products/slug/${slug}`);
+  getProfile(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/auth/profile`);
   }
 
-  getFeaturedProducts(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/products/featured`);
+  // Products endpoints
+  getProducts(language: Language = 'sk'): Observable<any[]> {
+    const params = new HttpParams().set('language', language);
+    return this.http.get<any[]>(`${this.apiUrl}/products`, { params });
   }
 
-  getProductsByCategory(categoryId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/products/category/${categoryId}`);
+  getFeaturedProducts(language: Language = 'sk'): Observable<any[]> {
+    const params = new HttpParams().set('language', language);
+    return this.http.get<any[]>(`${this.apiUrl}/products/featured`, { params });
   }
 
-  createProduct(product: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/products`, product);
+  getProduct(id: number, language: Language = 'sk'): Observable<any> {
+    const params = new HttpParams().set('language', language);
+    return this.http.get<any>(`${this.apiUrl}/products/${id}`, { params });
   }
 
-  updateProduct(id: number, product: any): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/products/${id}`, product);
+  getProductBySlug(slug: string, language: Language = 'sk'): Observable<any> {
+    const params = new HttpParams().set('language', language);
+    return this.http.get<any>(`${this.apiUrl}/products/slug/${slug}`, { params });
+  }
+
+  getProductsByCategory(categoryId: number, language: Language = 'sk'): Observable<any[]> {
+    const params = new HttpParams().set('language', language);
+    return this.http.get<any[]>(`${this.apiUrl}/products/category/${categoryId}`, { params });
+  }
+
+  createProduct(productData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/products`, productData);
+  }
+
+  updateProduct(id: number, productData: any): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/products/${id}`, productData);
   }
 
   deleteProduct(id: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/products/${id}`);
+    return this.http.delete(`${this.apiUrl}/products/${id}`);
   }
 
-  // Categories
-  getCategories(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/categories`);
+  // Categories endpoints
+  getCategories(language: Language = 'sk'): Observable<any[]> {
+    const params = new HttpParams().set('language', language);
+    return this.http.get<any[]>(`${this.apiUrl}/categories`, { params });
   }
 
-  getCategory(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/categories/${id}`);
+  getCategory(id: number, language: Language = 'sk'): Observable<any> {
+    const params = new HttpParams().set('language', language);
+    return this.http.get<any>(`${this.apiUrl}/categories/${id}`, { params });
   }
 
-  getCategoryBySlug(slug: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/categories/slug/${slug}`);
+  getCategoryBySlug(slug: string, language: Language = 'sk'): Observable<any> {
+    const params = new HttpParams().set('language', language);
+    return this.http.get<any>(`${this.apiUrl}/categories/slug/${slug}`, { params });
   }
 
-  getCategoriesByType(type: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/categories/type/${type}`);
+  getCategoriesByType(type: string, language: Language = 'sk'): Observable<any[]> {
+    const params = new HttpParams().set('language', language);
+    return this.http.get<any[]>(`${this.apiUrl}/categories/type/${type}`, { params });
   }
 
-  createCategory(category: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/categories`, category);
+  createCategory(categoryData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/categories`, categoryData);
   }
 
-  updateCategory(id: number, category: any): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/categories/${id}`, category);
+  updateCategory(id: number, categoryData: any): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/categories/${id}`, categoryData);
   }
 
   deleteCategory(id: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/categories/${id}`);
+    return this.http.delete(`${this.apiUrl}/categories/${id}`);
   }
 
-  // Pages
-  getPages(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/pages`);
+  // Pages endpoints
+  getPages(language: Language = 'sk'): Observable<any[]> {
+    const params = new HttpParams().set('language', language);
+    return this.http.get<any[]>(`${this.apiUrl}/pages`, { params });
   }
 
-  getPage(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/pages/${id}`);
+  getPage(id: number, language: Language = 'sk'): Observable<any> {
+    const params = new HttpParams().set('language', language);
+    return this.http.get<any>(`${this.apiUrl}/pages/${id}`, { params });
   }
 
-  getPageBySlug(slug: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/pages/slug/${slug}`);
+  getPageBySlug(slug: string, language: Language = 'sk'): Observable<any> {
+    const params = new HttpParams().set('language', language);
+    return this.http.get<any>(`${this.apiUrl}/pages/slug/${slug}`, { params });
   }
 
-  getPagesByType(type: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/pages/type/${type}`);
+  getPagesByType(type: string, language: Language = 'sk'): Observable<any[]> {
+    const params = new HttpParams().set('language', language);
+    return this.http.get<any[]>(`${this.apiUrl}/pages/type/${type}`, { params });
   }
 
-  createPage(page: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/pages`, page);
+  createPage(pageData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/pages`, pageData);
   }
 
-  updatePage(id: number, page: any): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/pages/${id}`, page);
+  updatePage(id: number, pageData: any): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/pages/${id}`, pageData);
   }
 
   deletePage(id: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/pages/${id}`);
+    return this.http.delete(`${this.apiUrl}/pages/${id}`);
   }
 
-  // Orders
+  // Orders endpoints
   getOrders(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/orders`);
   }
@@ -111,23 +138,38 @@ export class ApiService {
     return this.http.get<any>(`${this.apiUrl}/orders/${id}`);
   }
 
-  createOrder(order: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/orders`, order);
+  createOrder(orderData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/orders`, orderData);
   }
 
-  updateOrder(id: number, order: any): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/orders/${id}`, order);
+  updateOrder(id: number, orderData: any): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/orders/${id}`, orderData);
   }
 
   updateOrderStatus(id: number, status: string): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/orders/${id}/status`, { status });
+    return this.http.patch(`${this.apiUrl}/orders/${id}/status`, { status });
   }
 
   deleteOrder(id: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/orders/${id}`);
+    return this.http.delete(`${this.apiUrl}/orders/${id}`);
   }
 
-  // Users
+  // Media endpoints
+  uploadFile(file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post(`${this.apiUrl}/media/upload`, formData);
+  }
+
+  getAllFiles(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/media`);
+  }
+
+  deleteFile(filename: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/media/${filename}`);
+  }
+
+  // Users endpoints (admin only)
   getUsers(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/users`);
   }
@@ -136,30 +178,20 @@ export class ApiService {
     return this.http.get<any>(`${this.apiUrl}/users/${id}`);
   }
 
-  createUser(user: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/users`, user);
+  createUser(userData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/users`, userData);
   }
 
-  updateUser(id: number, user: any): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/users/${id}`, user);
+  updateUser(id: number, userData: any): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/users/${id}`, userData);
   }
 
   deleteUser(id: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/users/${id}`);
+    return this.http.delete(`${this.apiUrl}/users/${id}`);
   }
 
-  // Media
-  uploadFile(file: File): Observable<any> {
-    const formData = new FormData();
-    formData.append('file', file);
-    return this.http.post<any>(`${this.apiUrl}/media/upload`, formData);
-  }
-
-  getFiles(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/media`);
-  }
-
-  deleteFile(filename: string): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/media/${filename}`);
+  // Seeder endpoint
+  seedDatabase(): Observable<any> {
+    return this.http.post(`${this.apiUrl}/seeder/seed`, {});
   }
 }

@@ -34,7 +34,6 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 
 // Third-party modules
-import { QuillModule } from 'ngx-quill';
 import { ToastrModule } from 'ngx-toastr';
 
 // Components
@@ -65,34 +64,13 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { ApiService } from './services/api.service';
 
 // Guards
-import { AuthGuard } from './guards/auth.guard';
+// removed: use standalone route guard
 
 // Routes
 import { routes } from './app.routes';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    AdminLayoutComponent,
-    PublicLayoutComponent,
-    LoginComponent,
-    DashboardComponent,
-    ProductsComponent,
-    CategoriesComponent,
-    PagesComponent,
-    OrdersComponent,
-    UsersComponent,
-    MediaComponent,
-    ProductFormComponent,
-    CategoryFormComponent,
-    PageFormComponent,
-    UserFormComponent,
-    HomeComponent,
-    ProductListComponent,
-    ProductDetailComponent,
-    ContactComponent,
-    AboutComponent
-  ],
+  declarations: [],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -130,7 +108,6 @@ import { routes } from './app.routes';
     MatNativeDateModule,
     
     // Third-party
-    QuillModule.forRoot(),
     ToastrModule.forRoot({
       timeOut: 3000,
       positionClass: 'toast-top-right',
@@ -140,13 +117,12 @@ import { routes } from './app.routes';
   providers: [
     AuthService,
     ApiService,
-    AuthGuard,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
     }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: []
 })
-export class AppModule { }
+export class AppModule {}

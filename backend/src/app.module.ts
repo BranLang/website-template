@@ -7,21 +7,27 @@ import { join } from 'path';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { ProductsModule } from './modules/products/products.module';
+import { CategoriesModule } from './modules/categories/categories.module';
 import { PagesModule } from './modules/pages/pages.module';
 import { OrdersModule } from './modules/orders/orders.module';
 import { MediaModule } from './modules/media/media.module';
-import { CategoriesModule } from './modules/categories/categories.module';
+import { SeederModule } from './modules/seeder/seeder.module';
+
+import { User } from './entities/user.entity';
+import { Category } from './entities/category.entity';
+import { Product } from './entities/product.entity';
+import { ProductImage } from './entities/product-image.entity';
+import { Page } from './entities/page.entity';
+import { Order } from './entities/order.entity';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-    }),
+    ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: 'database/cms.db',
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: true, // Set to false in production
+      entities: [User, Category, Product, ProductImage, Page, Order],
+      synchronize: true,
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'uploads'),
@@ -30,10 +36,11 @@ import { CategoriesModule } from './modules/categories/categories.module';
     AuthModule,
     UsersModule,
     ProductsModule,
+    CategoriesModule,
     PagesModule,
     OrdersModule,
     MediaModule,
-    CategoriesModule,
+    SeederModule,
   ],
 })
 export class AppModule {}

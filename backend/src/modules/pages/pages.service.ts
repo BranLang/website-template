@@ -1,8 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-
-import { Page, PageType } from '../../entities/page.entity';
+import { Page, PageType, Language } from '../../entities/page.entity';
 import { CreatePageDto } from './dto/create-page.dto';
 import { UpdatePageDto } from './dto/update-page.dto';
 
@@ -13,59 +12,58 @@ export class PagesService {
     private pageRepository: Repository<Page>,
   ) {}
 
-  async create(createPageDto: CreatePageDto): Promise<Page> {
+  create(createPageDto: CreatePageDto) {
     const page = this.pageRepository.create(createPageDto);
     return this.pageRepository.save(page);
   }
 
-  async findAll(): Promise<Page[]> {
+  findAll(language: Language = Language.SK, siteId: string = 'just-eurookna') {
     return this.pageRepository.find({
-      order: { sortOrder: 'ASC', createdAt: 'DESC' },
+      where: { language, siteId },
+      order: { sortOrder: 'ASC' },
     });
   }
 
-  async findPublished(): Promise<Page[]> {
+  findPublished(language: Language = Language.SK, siteId: string = 'just-eurookna') {
     return this.pageRepository.find({
-      where: { isPublished: true },
-      order: { sortOrder: 'ASC', createdAt: 'DESC' },
+      where: { isPublished: true, language, siteId },
+      order: { sortOrder: 'ASC' },
     });
   }
 
-  async findByType(type: PageType): Promise<Page[]> {
-    return this.pageRepository.find({
-      where: { type, isPublished: true },
-      order: { sortOrder: 'ASC', createdAt: 'DESC' },
+  findOne(id: number, language: Language = Language.SK, siteId: string = 'just-eurookna') {
+    return this.pageRepository.findOne({
+      where: { id, language, siteId },
     });
   }
 
-  async findOne(id: number): Promise<Page> {
-    const page = await this.pageRepository.findOne({ where: { id } });
-
-    if (!page) {
-      throw new NotFoundException('Page not found');
-    }
-
-    return page;
+  findBySlug(slug: string, language: Language = Language.SK, siteId: string = 'just-eurookna') {
+    return this.pageRepository.findOne({
+      where: { slug, isPublished: true, language, siteId },
+    });
   }
 
-  async findBySlug(slug: string): Promise<Page> {
-    const page = await this.pageRepository.findOne({ where: { slug } });
-
-    if (!page) {
-      throw new NotFoundException('Page not found');
-    }
-
-    return page;
+  findByType(type: PageType, language: Language = Language.SK, siteId: string = 'just-eurookna') {
+    return this.pageRepository.find({
+      where: { type, isPublished: true, language, siteId },
+      order: { sortOrder: 'ASC' },
+    });
   }
 
-  async update(id: number, updatePageDto: UpdatePageDto): Promise<Page> {
+  async update(id: number, updatePageDto: UpdatePageDto) {
     const page = await this.findOne(id);
+    if (!page) {
+      throw new NotFoundException(`Page with ID ${id} not found`);
+    }
     Object.assign(page, updatePageDto);
     return this.pageRepository.save(page);
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: number) {
     const page = await this.findOne(id);
-    await this.pageRepository.remove(page);
+    if (!page) {
+      throw new NotFoundException(`Page with ID ${id} not found`);
+    }
+    return this.pageRepository.remove(page);
   }
 }

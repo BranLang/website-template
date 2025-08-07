@@ -7,6 +7,11 @@ export enum CategoryType {
   ACCESSORY = 'accessory',
 }
 
+export enum Language {
+  SK = 'sk',
+  EN = 'en',
+}
+
 @Entity('categories')
 export class Category {
   @PrimaryGeneratedColumn()
@@ -35,6 +40,16 @@ export class Category {
 
   @Column({ default: true })
   isActive: boolean;
+
+  @Column({ default: 'just-eurookna' })
+  siteId: string;
+
+  @Column({
+    type: 'varchar',
+    enum: Language,
+    default: Language.SK,
+  })
+  language: Language;
 
   @OneToMany(() => Product, product => product.category)
   products: Product[];

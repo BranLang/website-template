@@ -9,6 +9,11 @@ export enum ProductMaterial {
   HISTORICAL = 'historical',
 }
 
+export enum Language {
+  SK = 'sk',
+  EN = 'en',
+}
+
 @Entity('products')
 export class Product {
   @PrimaryGeneratedColumn()
@@ -46,6 +51,16 @@ export class Product {
 
   @Column({ nullable: true })
   mainImageUrl: string;
+
+  @Column({ default: 'just-eurookna' })
+  siteId: string;
+
+  @Column({
+    type: 'varchar',
+    enum: Language,
+    default: Language.SK,
+  })
+  language: Language;
 
   @ManyToOne(() => Category, category => category.products)
   category: Category;

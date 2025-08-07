@@ -6,6 +6,11 @@ export enum PageType {
   FAQ = 'faq',
 }
 
+export enum Language {
+  SK = 'sk',
+  EN = 'en',
+}
+
 @Entity('pages')
 export class Page {
   @PrimaryGeneratedColumn()
@@ -44,6 +49,16 @@ export class Page {
 
   @Column({ type: 'text', nullable: true })
   metaKeywords: string;
+
+  @Column({ default: 'just-eurookna' })
+  siteId: string;
+
+  @Column({
+    type: 'varchar',
+    enum: Language,
+    default: Language.SK,
+  })
+  language: Language;
 
   @CreateDateColumn()
   createdAt: Date;

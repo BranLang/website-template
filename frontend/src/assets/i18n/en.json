@@ -1,0 +1,129 @@
+{
+  "COMMON": {
+    "HOME": "Home",
+    "ABOUT": "About",
+    "PRODUCTS": "Products",
+    "CONTACT": "Contact",
+    "FAQ": "FAQ",
+    "LANGUAGE": "Language",
+    "SLOVAK": "Slovak",
+    "ENGLISH": "English",
+    "SEARCH": "Search",
+    "LOADING": "Loading...",
+    "ERROR": "Error",
+    "SUCCESS": "Success",
+    "CANCEL": "Cancel",
+    "SAVE": "Save",
+    "EDIT": "Edit",
+    "DELETE": "Delete",
+    "BACK": "Back",
+    "NEXT": "Next",
+    "PREVIOUS": "Previous",
+    "VIEW_MORE": "View More",
+    "CLOSE": "Close"
+  },
+  "NAVIGATION": {
+    "WINDOWS": "Windows",
+    "DOORS": "Doors",
+    "ACCESSORIES": "Accessories",
+    "REALIZATIONS": "Realizations",
+    "PRICE_REQUEST": "Price Request",
+    "ARTICLES": "Articles"
+  },
+  "HOME": {
+    "HERO_TITLE": "Windows and Doors for a Lifetime",
+    "HERO_SUBTITLE": "Quality windows and doors for your home",
+    "FEATURED_PRODUCTS": "Featured Products",
+    "ABOUT_US_SHORT": "For almost 30 years we have been manufacturing windows and doors...",
+    "ABOUT_FEATURES": [
+      "that provide excellent thermal insulation",
+      "design-wise relate to the building architecture",
+      "that are easy to operate",
+      "and meet high aesthetic and energy requirements"
+    ],
+    "VIEW_ALL_PRODUCTS": "View All Products",
+    "CONTACT_US": "Contact Us"
+  },
+  "PRODUCTS": {
+    "CATEGORIES": {
+      "WOODEN_WINDOWS": "Wooden Windows",
+      "WOOD_ALUMINUM_WINDOWS": "Wood-Aluminum Windows",
+      "ALUMINUM_WINDOWS": "Aluminum Windows",
+      "HISTORICAL_WINDOWS": "Historical Windows",
+      "WOODEN_DOORS": "Wooden Doors",
+      "HISTORICAL_DOORS": "Historical Doors",
+      "ALUMINUM_DOORS": "Aluminum Doors",
+      "SLIDING_DOORS": "Sliding Doors"
+    },
+    "SPECIFICATIONS": "Specifications",
+    "PRICE": "Price",
+    "MATERIAL": "Material",
+    "GLAZING": "Glazing",
+    "THERMAL_INSULATION": "Thermal Insulation",
+    "SECURITY": "Security",
+    "VIEW_DETAILS": "View Details",
+    "ADD_TO_CART": "Add to Cart",
+    "REQUEST_QUOTE": "Request Quote"
+  },
+  "ABOUT": {
+    "TITLE": "About JUST SK Company",
+    "DESCRIPTION": "JUST SK is a Slovak manufacturing company focused on the production of wooden, wood-aluminum and aluminum windows and doors as building openings for family houses and other public buildings.",
+    "VALUES": {
+      "TITLE": "Our Values",
+      "QUALITY": "Quality and reliability",
+      "INNOVATION": "Innovative solutions",
+      "CUSTOMER_SATISFACTION": "Customer satisfaction",
+      "RESPONSIVE": "Responsive approach"
+    },
+    "CONTACT_INFO": {
+      "TITLE": "Contact Information",
+      "COMPANY": "JUST SK, s.r.o.",
+      "ADDRESS": "Viničná 609",
+      "CITY": "951 71 Sľažany",
+      "COUNTRY": "Slovakia",
+      "VAT_ID": "VAT ID: 36736449",
+      "TAX_ID": "Tax ID: SK2022323160",
+      "DIRECTOR": "Pavol Just, director: 0905 431 240"
+    }
+  },
+  "CONTACT": {
+    "TITLE": "Contact",
+    "GET_IN_TOUCH": "Get in Touch",
+    "ADDRESS": "Address",
+    "PHONE": "Phone",
+    "EMAIL": "Email",
+    "SEND_MESSAGE": "Send Message",
+    "NAME": "Name",
+    "MESSAGE": "Message",
+    "SUBJECT": "Subject",
+    "REQUIRED_FIELD": "This field is required"
+  },
+  "FAQ": {
+    "TITLE": "Frequently Asked Questions",
+    "QUESTIONS": {
+      "CHOOSE_WINDOWS": {
+        "QUESTION": "How to choose the right windows?",
+        "ANSWER": "When choosing windows, it's important to consider material, thermal insulation, glazing and design. Our experts will advise you on the selection."
+      },
+      "LIFESPAN": {
+        "QUESTION": "What is the lifespan of windows?",
+        "ANSWER": "The lifespan of windows depends on the material and maintenance. Wooden windows can last 20-30 years, aluminum up to 50 years."
+      },
+      "INSTALLATION_TIME": {
+        "QUESTION": "How long does installation take?",
+        "ANSWER": "Window installation usually takes 1-3 days depending on the number and type of windows."
+      },
+      "WARRANTY": {
+        "QUESTION": "Do you provide warranty?",
+        "ANSWER": "Yes, we provide 5-year warranty on products and 2-year warranty on installation."
+      }
+    }
+  },
+  "FOOTER": {
+    "COMPANY_INFO": "JUST SK, s.r.o. is a Slovak manufacturing company focused on the production of wooden, wood-aluminum and aluminum windows and doors.",
+    "FOLLOW_US": "Follow Us",
+    "ALL_RIGHTS_RESERVED": "All rights reserved",
+    "PRIVACY_POLICY": "Privacy Policy",
+    "TERMS_OF_SERVICE": "Terms of Service"
+  }
+}
