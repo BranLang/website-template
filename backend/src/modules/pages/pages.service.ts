@@ -17,33 +17,33 @@ export class PagesService {
     return this.pageRepository.save(page);
   }
 
-  findAll(language: Language = Language.SK, siteId: string = 'just-eurookna') {
+  findAll(language: Language = Language.SK, siteId: number = 1) {
     return this.pageRepository.find({
       where: { language, siteId },
       order: { sortOrder: 'ASC' },
     });
   }
 
-  findPublished(language: Language = Language.SK, siteId: string = 'just-eurookna') {
+  findPublished(language: Language = Language.SK, siteId: number = 1) {
     return this.pageRepository.find({
       where: { isPublished: true, language, siteId },
       order: { sortOrder: 'ASC' },
     });
   }
 
-  findOne(id: number, language: Language = Language.SK, siteId: string = 'just-eurookna') {
+  findOne(id: number, language: Language = Language.SK, siteId: number = 1) {
     return this.pageRepository.findOne({
       where: { id, language, siteId },
     });
   }
 
-  findBySlug(slug: string, language: Language = Language.SK, siteId: string = 'just-eurookna') {
+  findBySlug(slug: string, language: Language = Language.SK, siteId: number = 1) {
     return this.pageRepository.findOne({
       where: { slug, isPublished: true, language, siteId },
     });
   }
 
-  findByType(type: PageType, language: Language = Language.SK, siteId: string = 'just-eurookna') {
+  findByType(type: PageType, language: Language = Language.SK, siteId: number = 1) {
     return this.pageRepository.find({
       where: { type, isPublished: true, language, siteId },
       order: { sortOrder: 'ASC' },

@@ -17,7 +17,7 @@ export class CategoriesService {
     return this.categoryRepository.save(category);
   }
 
-  findAll(language: Language = Language.SK, siteId: string = 'just-eurookna') {
+  findAll(language: Language = Language.SK, siteId: number = 1) {
     return this.categoryRepository.find({
       where: { language, siteId },
       relations: ['products'],
@@ -25,7 +25,7 @@ export class CategoriesService {
     });
   }
 
-  findActive(language: Language = Language.SK, siteId: string = 'just-eurookna') {
+  findActive(language: Language = Language.SK, siteId: number = 1) {
     return this.categoryRepository.find({
       where: { isActive: true, language, siteId },
       relations: ['products'],
@@ -33,21 +33,21 @@ export class CategoriesService {
     });
   }
 
-  findOne(id: number, language: Language = Language.SK, siteId: string = 'just-eurookna') {
+  findOne(id: number, language: Language = Language.SK, siteId: number = 1) {
     return this.categoryRepository.findOne({
       where: { id, language, siteId },
       relations: ['products'],
     });
   }
 
-  findBySlug(slug: string, language: Language = Language.SK, siteId: string = 'just-eurookna') {
+  findBySlug(slug: string, language: Language = Language.SK, siteId: number = 1) {
     return this.categoryRepository.findOne({
       where: { slug, language, siteId },
       relations: ['products'],
     });
   }
 
-  findByType(type: CategoryType, language: Language = Language.SK, siteId: string = 'just-eurookna') {
+  findByType(type: CategoryType, language: Language = Language.SK, siteId: number = 1) {
     return this.categoryRepository.find({
       where: { type, isActive: true, language, siteId },
       relations: ['products'],

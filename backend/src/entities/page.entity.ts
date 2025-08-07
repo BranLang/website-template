@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Site } from './site.entity';
 
 export enum PageType {
   STATIC = 'static',
@@ -50,8 +51,12 @@ export class Page {
   @Column({ type: 'text', nullable: true })
   metaKeywords: string;
 
-  @Column({ default: 'just-eurookna' })
-  siteId: string;
+  @ManyToOne(() => Site, site => site.pages)
+  @JoinColumn({ name: 'siteId' })
+  site: Site;
+
+  @Column()
+  siteId: number;
 
   @Column({
     type: 'varchar',

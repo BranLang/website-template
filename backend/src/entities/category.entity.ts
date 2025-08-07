@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
 import { Product } from './product.entity';
+import { Site } from './site.entity';
 
 export enum CategoryType {
   WINDOW = 'window',
@@ -41,8 +42,12 @@ export class Category {
   @Column({ default: true })
   isActive: boolean;
 
-  @Column({ default: 'just-eurookna' })
-  siteId: string;
+  @ManyToOne(() => Site, site => site.categories)
+  @JoinColumn({ name: 'siteId' })
+  site: Site;
+
+  @Column()
+  siteId: number;
 
   @Column({
     type: 'varchar',

@@ -1,29 +1,69 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Site } from '../../entities/site.entity';
 import { Category, CategoryType, Language } from '../../entities/category.entity';
 import { Product, ProductMaterial, Language as ProductLanguage } from '../../entities/product.entity';
 import { Page, PageType, Language as PageLanguage } from '../../entities/page.entity';
+import { ProductImage } from '../../entities/product-image.entity';
+import { ImageDownloaderService } from './image-downloader.service';
 
 @Injectable()
 export class SeederService {
   constructor(
+    @InjectRepository(Site)
+    private siteRepository: Repository<Site>,
     @InjectRepository(Category)
     private categoryRepository: Repository<Category>,
     @InjectRepository(Product)
     private productRepository: Repository<Product>,
     @InjectRepository(Page)
     private pageRepository: Repository<Page>,
+    @InjectRepository(ProductImage)
+    private productImageRepository: Repository<ProductImage>,
+    private imageDownloaderService: ImageDownloaderService,
   ) {}
 
   async seed() {
-    await this.seedCategories();
-    await this.seedProducts();
-    await this.seedPages();
+    console.log('Starting database seeding...');
+    const site = await this.seedSite();
+    await this.seedCategories(site.id);
+    await this.seedProducts(site.id);
+    await this.seedPages(site.id);
+    await this.downloadAndSeedImages();
     console.log('Database seeded successfully!');
   }
 
-  private async seedCategories() {
+  private async seedSite(): Promise<Site> {
+    const siteData = {
+      slug: 'just-eurookna',
+      name: 'Just Eurookná',
+      description: 'Slovenská výrobná spoločnosť zameraná na výrobu drevených, drevohliníkových a hliníkových okien a dverí',
+      domain: 'www.just-eurookna.sk',
+      contactEmail: 'info@just-eurookna.sk',
+      contactPhone: '0905 431 240',
+      contactAddress: 'Viničná 609, 951 71 Sľažany, Slovensko',
+      metaDescription: 'Just Eurookná - kvalitné okná a dvere',
+      metaKeywords: 'okná, dvere, drevené, hliníkové, výroba',
+      isActive: true,
+    };
+
+    let site = await this.siteRepository.findOne({
+      where: { slug: siteData.slug }
+    });
+    
+    if (!site) {
+      site = this.siteRepository.create(siteData);
+      site = await this.siteRepository.save(site);
+      console.log('Site created successfully');
+    } else {
+      console.log('Site already exists');
+    }
+
+    return site;
+  }
+
+  private async seedCategories(siteId: number) {
     const categories = [
       // Slovak categories
       {
@@ -33,7 +73,7 @@ export class SeederService {
         type: CategoryType.WINDOW,
         sortOrder: 1,
         language: Language.SK,
-        siteId: 'just-eurookna',
+        siteId: siteId,
       },
       {
         name: 'Drevohliníkové okná',
@@ -42,7 +82,7 @@ export class SeederService {
         type: CategoryType.WINDOW,
         sortOrder: 2,
         language: Language.SK,
-        siteId: 'just-eurookna',
+        siteId: siteId,
       },
       {
         name: 'Hliníkové okná',
@@ -51,7 +91,7 @@ export class SeederService {
         type: CategoryType.WINDOW,
         sortOrder: 3,
         language: Language.SK,
-        siteId: 'just-eurookna',
+        siteId: siteId,
       },
       {
         name: 'Historické okná',
@@ -60,7 +100,7 @@ export class SeederService {
         type: CategoryType.WINDOW,
         sortOrder: 4,
         language: Language.SK,
-        siteId: 'just-eurookna',
+        siteId: siteId,
       },
       {
         name: 'Drevené dvere',
@@ -69,7 +109,7 @@ export class SeederService {
         type: CategoryType.DOOR,
         sortOrder: 5,
         language: Language.SK,
-        siteId: 'just-eurookna',
+        siteId: siteId,
       },
       {
         name: 'Historické dvere',
@@ -78,7 +118,7 @@ export class SeederService {
         type: CategoryType.DOOR,
         sortOrder: 6,
         language: Language.SK,
-        siteId: 'just-eurookna',
+        siteId: siteId,
       },
       {
         name: 'Hliníkové dvere',
@@ -87,7 +127,7 @@ export class SeederService {
         type: CategoryType.DOOR,
         sortOrder: 7,
         language: Language.SK,
-        siteId: 'just-eurookna',
+        siteId: siteId,
       },
       {
         name: 'Posuvné dvere',
@@ -96,7 +136,7 @@ export class SeederService {
         type: CategoryType.DOOR,
         sortOrder: 8,
         language: Language.SK,
-        siteId: 'just-eurookna',
+        siteId: siteId,
       },
       // English categories
       {
@@ -106,7 +146,7 @@ export class SeederService {
         type: CategoryType.WINDOW,
         sortOrder: 1,
         language: Language.EN,
-        siteId: 'just-eurookna',
+        siteId: siteId,
       },
       {
         name: 'Wood-Aluminum Windows',
@@ -115,7 +155,7 @@ export class SeederService {
         type: CategoryType.WINDOW,
         sortOrder: 2,
         language: Language.EN,
-        siteId: 'just-eurookna',
+        siteId: siteId,
       },
       {
         name: 'Aluminum Windows',
@@ -124,7 +164,7 @@ export class SeederService {
         type: CategoryType.WINDOW,
         sortOrder: 3,
         language: Language.EN,
-        siteId: 'just-eurookna',
+        siteId: siteId,
       },
       {
         name: 'Historical Windows',
@@ -133,7 +173,7 @@ export class SeederService {
         type: CategoryType.WINDOW,
         sortOrder: 4,
         language: Language.EN,
-        siteId: 'just-eurookna',
+        siteId: siteId,
       },
       {
         name: 'Wooden Doors',
@@ -142,7 +182,7 @@ export class SeederService {
         type: CategoryType.DOOR,
         sortOrder: 5,
         language: Language.EN,
-        siteId: 'just-eurookna',
+        siteId: siteId,
       },
       {
         name: 'Historical Doors',
@@ -151,7 +191,7 @@ export class SeederService {
         type: CategoryType.DOOR,
         sortOrder: 6,
         language: Language.EN,
-        siteId: 'just-eurookna',
+        siteId: siteId,
       },
       {
         name: 'Aluminum Doors',
@@ -160,7 +200,7 @@ export class SeederService {
         type: CategoryType.DOOR,
         sortOrder: 7,
         language: Language.EN,
-        siteId: 'just-eurookna',
+        siteId: siteId,
       },
       {
         name: 'Sliding Doors',
@@ -169,7 +209,7 @@ export class SeederService {
         type: CategoryType.DOOR,
         sortOrder: 8,
         language: Language.EN,
-        siteId: 'just-eurookna',
+        siteId: siteId,
       },
     ];
 
@@ -185,7 +225,7 @@ export class SeederService {
     }
   }
 
-  private async seedProducts() {
+  private async seedProducts(siteId: number) {
     const categories = await this.categoryRepository.find();
     
     const products = [
@@ -199,8 +239,9 @@ export class SeederService {
         price: 450.00,
         sortOrder: 1,
         isFeatured: true,
+        mainImageUrl: '/uploads/products/wooden-window-1.jpg',
         language: ProductLanguage.SK,
-        siteId: 'just-eurookna',
+        siteId: siteId,
         categoryId: categories.find(c => c.slug === 'drevene-okna' && c.language === Language.SK)?.id,
       },
       {
@@ -212,8 +253,9 @@ export class SeederService {
         price: 650.00,
         sortOrder: 2,
         isFeatured: true,
+        mainImageUrl: '/uploads/products/wood-aluminum-window-1.jpg',
         language: ProductLanguage.SK,
-        siteId: 'just-eurookna',
+        siteId: siteId,
         categoryId: categories.find(c => c.slug === 'drevohlinikove-okna' && c.language === Language.SK)?.id,
       },
       {
@@ -225,8 +267,9 @@ export class SeederService {
         price: 380.00,
         sortOrder: 3,
         isFeatured: false,
+        mainImageUrl: '/uploads/products/aluminum-window-1.jpg',
         language: ProductLanguage.SK,
-        siteId: 'just-eurookna',
+        siteId: siteId,
         categoryId: categories.find(c => c.slug === 'hlinikove-okna' && c.language === Language.SK)?.id,
       },
       {
@@ -238,8 +281,9 @@ export class SeederService {
         price: 280.00,
         sortOrder: 4,
         isFeatured: false,
+        mainImageUrl: '/uploads/products/historical-window-1.jpg',
         language: ProductLanguage.SK,
-        siteId: 'just-eurookna',
+        siteId: siteId,
         categoryId: categories.find(c => c.slug === 'historicke-okna' && c.language === Language.SK)?.id,
       },
       {
@@ -251,8 +295,9 @@ export class SeederService {
         price: 1200.00,
         sortOrder: 5,
         isFeatured: true,
+        mainImageUrl: '/uploads/products/wooden-door-1.jpg',
         language: ProductLanguage.SK,
-        siteId: 'just-eurookna',
+        siteId: siteId,
         categoryId: categories.find(c => c.slug === 'drevene-dvere' && c.language === Language.SK)?.id,
       },
       // English products
@@ -265,8 +310,9 @@ export class SeederService {
         price: 450.00,
         sortOrder: 1,
         isFeatured: true,
+        mainImageUrl: '/uploads/products/wooden-window-1.jpg',
         language: ProductLanguage.EN,
-        siteId: 'just-eurookna',
+        siteId: siteId,
         categoryId: categories.find(c => c.slug === 'wooden-windows' && c.language === Language.EN)?.id,
       },
       {
@@ -278,8 +324,9 @@ export class SeederService {
         price: 650.00,
         sortOrder: 2,
         isFeatured: true,
+        mainImageUrl: '/uploads/products/wood-aluminum-window-1.jpg',
         language: ProductLanguage.EN,
-        siteId: 'just-eurookna',
+        siteId: siteId,
         categoryId: categories.find(c => c.slug === 'wood-aluminum-windows' && c.language === Language.EN)?.id,
       },
       {
@@ -291,8 +338,9 @@ export class SeederService {
         price: 380.00,
         sortOrder: 3,
         isFeatured: false,
+        mainImageUrl: '/uploads/products/aluminum-window-1.jpg',
         language: ProductLanguage.EN,
-        siteId: 'just-eurookna',
+        siteId: siteId,
         categoryId: categories.find(c => c.slug === 'aluminum-windows' && c.language === Language.EN)?.id,
       },
       {
@@ -304,8 +352,9 @@ export class SeederService {
         price: 280.00,
         sortOrder: 4,
         isFeatured: false,
+        mainImageUrl: '/uploads/products/historical-window-1.jpg',
         language: ProductLanguage.EN,
-        siteId: 'just-eurookna',
+        siteId: siteId,
         categoryId: categories.find(c => c.slug === 'historical-windows' && c.language === Language.EN)?.id,
       },
       {
@@ -317,8 +366,9 @@ export class SeederService {
         price: 1200.00,
         sortOrder: 5,
         isFeatured: true,
+        mainImageUrl: '/uploads/products/wooden-door-1.jpg',
         language: ProductLanguage.EN,
-        siteId: 'just-eurookna',
+        siteId: siteId,
         categoryId: categories.find(c => c.slug === 'wooden-doors' && c.language === Language.EN)?.id,
       },
     ];
@@ -337,7 +387,7 @@ export class SeederService {
     }
   }
 
-  private async seedPages() {
+  private async seedPages(siteId: number) {
     const pages = [
       // Slovak pages
       {
@@ -369,7 +419,7 @@ export class SeederService {
         type: PageType.STATIC,
         sortOrder: 1,
         language: PageLanguage.SK,
-        siteId: 'just-eurookna',
+        siteId: siteId,
         metaDescription: 'O spoločnosti JUST SK - výroba okien a dverí',
         metaKeywords: 'okná, dvere, výroba, drevené, hliníkové',
       },
@@ -395,7 +445,7 @@ export class SeederService {
         type: PageType.FAQ,
         sortOrder: 2,
         language: PageLanguage.SK,
-        siteId: 'just-eurookna',
+        siteId: siteId,
         metaDescription: 'Často kladené otázky o oknách a dverách',
         metaKeywords: 'otázky, okná, dvere, záruka, montáž',
       },
@@ -429,7 +479,7 @@ export class SeederService {
         type: PageType.STATIC,
         sortOrder: 1,
         language: PageLanguage.EN,
-        siteId: 'just-eurookna',
+        siteId: siteId,
         metaDescription: 'About JUST SK company - window and door manufacturing',
         metaKeywords: 'windows, doors, manufacturing, wooden, aluminum',
       },
@@ -455,7 +505,7 @@ export class SeederService {
         type: PageType.FAQ,
         sortOrder: 2,
         language: PageLanguage.EN,
-        siteId: 'just-eurookna',
+        siteId: siteId,
         metaDescription: 'Frequently asked questions about windows and doors',
         metaKeywords: 'questions, windows, doors, warranty, installation',
       },
@@ -469,6 +519,64 @@ export class SeederService {
       if (!existing) {
         const page = this.pageRepository.create(pageData);
         await this.pageRepository.save(page);
+      }
+    }
+  }
+
+  private async downloadAndSeedImages() {
+    console.log('Downloading images from Just Eurookná website...');
+    
+    try {
+      const downloadedImages = await this.imageDownloaderService.downloadJustEurooknaImages();
+      console.log(`Downloaded ${downloadedImages.length} images`);
+      
+      await this.seedProductImages(downloadedImages);
+    } catch (error) {
+      console.error('Error downloading images:', error);
+      // Fallback to placeholder images
+      await this.seedProductImages([]);
+    }
+  }
+
+  private async seedProductImages(downloadedImages: string[] = []) {
+    const products = await this.productRepository.find();
+    
+    // Use downloaded images or fallback to placeholder paths
+    const imageUrls = downloadedImages.length > 0 ? downloadedImages : [
+      '/uploads/products/wooden-window-1.jpg',
+      '/uploads/products/wooden-window-2.jpg',
+      '/uploads/products/wood-aluminum-window-1.jpg',
+      '/uploads/products/wood-aluminum-window-2.jpg',
+      '/uploads/products/aluminum-window-1.jpg',
+      '/uploads/products/aluminum-window-2.jpg',
+      '/uploads/products/historical-window-1.jpg',
+      '/uploads/products/historical-window-2.jpg',
+      '/uploads/products/wooden-door-1.jpg',
+      '/uploads/products/wooden-door-2.jpg',
+    ];
+
+    for (const product of products) {
+      // Add 1-2 images per product
+      const numImages = Math.floor(Math.random() * 2) + 1;
+      const startIndex = (product.id % 5) * 2;
+      
+      for (let i = 0; i < numImages; i++) {
+        const imageUrl = imageUrls[startIndex + i];
+        if (imageUrl) {
+          const existing = await this.productImageRepository.findOne({
+            where: { productId: product.id, imageUrl }
+          });
+          
+          if (!existing) {
+            const productImage = this.productImageRepository.create({
+              productId: product.id,
+              imageUrl,
+              altText: `${product.name} - obrázok ${i + 1}`,
+              sortOrder: i + 1
+            });
+            await this.productImageRepository.save(productImage);
+          }
+        }
       }
     }
   }

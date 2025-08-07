@@ -22,7 +22,7 @@ export class PagesController {
   @ApiQuery({ name: 'siteId', required: false, description: 'Site ID filter' })
   findAll(
     @Query('language') language: Language = Language.SK,
-    @Query('siteId') siteId: string = 'just-eurookna'
+    @Query('siteId') siteId: number = 1
   ) {
     return this.pagesService.findPublished(language, siteId);
   }
@@ -33,7 +33,7 @@ export class PagesController {
   @ApiQuery({ name: 'siteId', required: false, description: 'Site ID filter' })
   findAllAdmin(
     @Query('language') language: Language = Language.SK,
-    @Query('siteId') siteId: string = 'just-eurookna'
+    @Query('siteId') siteId: number = 1
   ) {
     return this.pagesService.findAll(language, siteId);
   }
@@ -44,7 +44,7 @@ export class PagesController {
   findByType(
     @Param('type') type: PageType,
     @Query('language') language: Language = Language.SK,
-    @Query('siteId') siteId: string = 'just-eurookna'
+    @Query('siteId') siteId: number = 1
   ) {
     return this.pagesService.findByType(type, language, siteId);
   }
@@ -55,7 +55,7 @@ export class PagesController {
   findOne(
     @Param('id') id: string,
     @Query('language') language: Language = Language.SK,
-    @Query('siteId') siteId: string = 'just-eurookna'
+    @Query('siteId') siteId: number = 1
   ) {
     return this.pagesService.findOne(+id, language, siteId);
   }
@@ -66,7 +66,7 @@ export class PagesController {
   findBySlug(
     @Param('slug') slug: string,
     @Query('language') language: Language = Language.SK,
-    @Query('siteId') siteId: string = 'just-eurookna'
+    @Query('siteId') siteId: number = 1
   ) {
     return this.pagesService.findBySlug(slug, language, siteId);
   }

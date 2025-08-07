@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, OneToMany, JoinColumn } from 'typeorm';
 import { Category } from './category.entity';
 import { ProductImage } from './product-image.entity';
+import { Site } from './site.entity';
 
 export enum ProductMaterial {
   WOOD = 'wood',
@@ -52,8 +53,12 @@ export class Product {
   @Column({ nullable: true })
   mainImageUrl: string;
 
-  @Column({ default: 'just-eurookna' })
-  siteId: string;
+  @ManyToOne(() => Site, site => site.products)
+  @JoinColumn({ name: 'siteId' })
+  site: Site;
+
+  @Column()
+  siteId: number;
 
   @Column({
     type: 'varchar',

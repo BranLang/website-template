@@ -18,7 +18,7 @@ export class ProductsService {
     return this.productRepository.save(product);
   }
 
-  findAll(language: Language = Language.SK, siteId: string = 'just-eurookna') {
+  findAll(language: Language = Language.SK, siteId: number = 1) {
     return this.productRepository.find({
       where: { language, siteId },
       relations: ['category', 'images'],
@@ -26,7 +26,7 @@ export class ProductsService {
     });
   }
 
-  findActive(language: Language = Language.SK, siteId: string = 'just-eurookna') {
+  findActive(language: Language = Language.SK, siteId: number = 1) {
     return this.productRepository.find({
       where: { isActive: true, language, siteId },
       relations: ['category', 'images'],
@@ -34,7 +34,7 @@ export class ProductsService {
     });
   }
 
-  findFeatured(language: Language = Language.SK, siteId: string = 'just-eurookna') {
+  findFeatured(language: Language = Language.SK, siteId: number = 1) {
     return this.productRepository.find({
       where: { isFeatured: true, isActive: true, language, siteId },
       relations: ['category', 'images'],
@@ -42,21 +42,21 @@ export class ProductsService {
     });
   }
 
-  findOne(id: number, language: Language = Language.SK, siteId: string = 'just-eurookna') {
+  findOne(id: number, language: Language = Language.SK, siteId: number = 1) {
     return this.productRepository.findOne({
       where: { id, language, siteId },
       relations: ['category', 'images'],
     });
   }
 
-  findBySlug(slug: string, language: Language = Language.SK, siteId: string = 'just-eurookna') {
+  findBySlug(slug: string, language: Language = Language.SK, siteId: number = 1) {
     return this.productRepository.findOne({
       where: { slug, language, siteId },
       relations: ['category', 'images'],
     });
   }
 
-  findByCategory(categoryId: number, language: Language = Language.SK, siteId: string = 'just-eurookna') {
+  findByCategory(categoryId: number, language: Language = Language.SK, siteId: number = 1) {
     return this.productRepository.find({
       where: { categoryId, isActive: true, language, siteId },
       relations: ['category', 'images'],

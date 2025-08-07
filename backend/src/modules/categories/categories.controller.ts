@@ -22,7 +22,7 @@ export class CategoriesController {
   @ApiQuery({ name: 'siteId', required: false, description: 'Site ID filter' })
   findAll(
     @Query('language') language: Language = Language.SK,
-    @Query('siteId') siteId: string = 'just-eurookna'
+    @Query('siteId') siteId: number = 1
   ) {
     return this.categoriesService.findActive(language, siteId);
   }
@@ -33,7 +33,7 @@ export class CategoriesController {
   @ApiQuery({ name: 'siteId', required: false, description: 'Site ID filter' })
   findAllAdmin(
     @Query('language') language: Language = Language.SK,
-    @Query('siteId') siteId: string = 'just-eurookna'
+    @Query('siteId') siteId: number = 1
   ) {
     return this.categoriesService.findAll(language, siteId);
   }
@@ -44,7 +44,7 @@ export class CategoriesController {
   findByType(
     @Param('type') type: CategoryType,
     @Query('language') language: Language = Language.SK,
-    @Query('siteId') siteId: string = 'just-eurookna'
+    @Query('siteId') siteId: number = 1
   ) {
     return this.categoriesService.findByType(type, language, siteId);
   }
@@ -55,7 +55,7 @@ export class CategoriesController {
   findOne(
     @Param('id') id: string,
     @Query('language') language: Language = Language.SK,
-    @Query('siteId') siteId: string = 'just-eurookna'
+    @Query('siteId') siteId: number = 1
   ) {
     return this.categoriesService.findOne(+id, language, siteId);
   }
@@ -66,7 +66,7 @@ export class CategoriesController {
   findBySlug(
     @Param('slug') slug: string,
     @Query('language') language: Language = Language.SK,
-    @Query('siteId') siteId: string = 'just-eurookna'
+    @Query('siteId') siteId: number = 1
   ) {
     return this.categoriesService.findBySlug(slug, language, siteId);
   }

@@ -6,6 +6,7 @@ import { join } from 'path';
 
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
+import { SitesModule } from './modules/sites/sites.module';
 import { ProductsModule } from './modules/products/products.module';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { PagesModule } from './modules/pages/pages.module';
@@ -14,6 +15,7 @@ import { MediaModule } from './modules/media/media.module';
 import { SeederModule } from './modules/seeder/seeder.module';
 
 import { User } from './entities/user.entity';
+import { Site } from './entities/site.entity';
 import { Category } from './entities/category.entity';
 import { Product } from './entities/product.entity';
 import { ProductImage } from './entities/product-image.entity';
@@ -26,7 +28,7 @@ import { Order } from './entities/order.entity';
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: 'database/cms.db',
-      entities: [User, Category, Product, ProductImage, Page, Order],
+      entities: [User, Site, Category, Product, ProductImage, Page, Order],
       synchronize: true,
     }),
     ServeStaticModule.forRoot({
@@ -35,6 +37,7 @@ import { Order } from './entities/order.entity';
     }),
     AuthModule,
     UsersModule,
+    SitesModule,
     ProductsModule,
     CategoriesModule,
     PagesModule,
