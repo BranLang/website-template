@@ -130,6 +130,7 @@
     "TITLE": "Prihlásenie administrátora",
     "EMAIL": "Email",
     "PASSWORD": "Heslo",
-    "SUBMIT": "Prihlásiť sa"
+    "SUBMIT": "Prihlásiť sa",
+    "GOOGLE": "Prihlásiť sa cez Google"
   }
 }

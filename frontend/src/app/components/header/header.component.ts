@@ -78,7 +78,7 @@ import { SiteService } from '../../services/site.service';
           <mat-form-field appearance="outline" class="language-select">
             <mat-label>{{ 'COMMON.LANGUAGE' | translate }}</mat-label>
             <mat-select
-              [value]="currentLanguage"
+              [(ngModel)]="currentLanguage"
               (selectionChange)="onLanguageChange($event.value)">
               <mat-option value="sk">{{ 'COMMON.SLOVAK' | translate }}</mat-option>
               <mat-option value="en">{{ 'COMMON.ENGLISH' | translate }}</mat-option>

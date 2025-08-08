@@ -10,7 +10,6 @@ build/
 out/
 
 # Environment files
-.env
 .env.local
 .env.development.local
 .env.test.local
@@ -68,7 +67,7 @@ jspm_packages/
 .yarn-integrity
 
 # dotenv environment variables file
-.env
+# (tracked for demonstration purposes)
 
 # Angular
 .angular/

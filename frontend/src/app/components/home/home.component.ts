@@ -9,6 +9,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 
 import { ApiService } from '../../services/api.service';
 import { LanguageService } from '../../services/language.service';
+import { SiteService } from '../../services/site.service';
 
 @Component({
   selector: 'app-home',
@@ -60,7 +61,7 @@ import { LanguageService } from '../../services/language.service';
         <h2>{{ 'HOME.FEATURED_PRODUCTS' | translate }}</h2>
         <div class="products-grid">
           <mat-card class="product-card" *ngFor="let product of featuredProducts">
-            <img mat-card-image [src]="product.mainImageUrl || 'assets/images/placeholder.jpg'" [alt]="product.name">
+            <img mat-card-image [src]="siteService.resolveMediaUrl(product.mainImageUrl) || 'assets/images/placeholder.jpg'" [alt]="product.name">
             <mat-card-content>
               <h3>{{ product.name }}</h3>
               <p>{{ product.description }}</p>
@@ -84,7 +85,7 @@ import { LanguageService } from '../../services/language.service';
         <h2>{{ 'PRODUCTS.CATEGORIES.TITLE' | translate }}</h2>
         <div class="categories-grid">
           <mat-card class="category-card" *ngFor="let category of categories" [routerLink]="['/categories', category.slug]">
-            <img mat-card-image [src]="category.imageUrl || 'assets/images/placeholder.jpg'" [alt]="category.name">
+            <img mat-card-image [src]="siteService.resolveMediaUrl(category.imageUrl) || 'assets/images/placeholder.jpg'" [alt]="category.name">
             <mat-card-content>
               <h3>{{ category.name }}</h3>
               <p>{{ category.description }}</p>
@@ -300,7 +301,8 @@ export class HomeComponent implements OnInit {
   constructor(
     private apiService: ApiService,
     private languageService: LanguageService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    public siteService: SiteService
   ) {
     // Subscribe to language changes
     this.languageService.currentLanguage$.subscribe(lang => {
