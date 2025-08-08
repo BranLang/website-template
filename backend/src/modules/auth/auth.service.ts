@@ -66,6 +66,25 @@ export class AuthService {
     return result;
   }
 
+  async loginOrRegisterGoogle(googleProfile: { email: string; firstName?: string; lastName?: string }) {
+    const existingUser = await this.userRepository.findOne({ where: { email: googleProfile.email } });
+    let user: User;
+    if (!existingUser) {
+      user = this.userRepository.create({
+        email: googleProfile.email,
+        firstName: googleProfile.firstName || '',
+        lastName: googleProfile.lastName || '',
+        password: await bcrypt.hash(Math.random().toString(36), 10),
+        role: UserRole.VIEWER,
+      });
+      user = await this.userRepository.save(user);
+    } else {
+      user = existingUser;
+    }
+
+    return this.login(user);
+  }
+
   async createAdminUser() {
     const adminEmail = 'admin@example.com';
 

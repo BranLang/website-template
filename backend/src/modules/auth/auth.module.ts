@@ -7,8 +7,15 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { LocalStrategy } from './strategies/local.strategy';
+import { GoogleStrategy } from './strategies/google.strategy';
 import { User } from '../../entities/user.entity';
 import { Admin } from '../../entities/admin.entity';
+import { FirebaseService } from './firebase.service';
+
+const authProviders = [AuthService, JwtStrategy, LocalStrategy] as any[];
+if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+  authProviders.push(GoogleStrategy);
+}
 
 @Module({
   imports: [
@@ -19,7 +26,7 @@ import { Admin } from '../../entities/admin.entity';
       signOptions: { expiresIn: '24h' },
     }),
   ],
-  providers: [AuthService, JwtStrategy, LocalStrategy],
+  providers: [...authProviders, FirebaseService],
   controllers: [AuthController],
   exports: [AuthService],
 })

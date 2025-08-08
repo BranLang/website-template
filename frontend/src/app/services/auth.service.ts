@@ -26,7 +26,9 @@ export class AuthService {
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
-  private getToken(): string | null {
+  public getToken(): string | null {
+    const lsToken = localStorage.getItem('token');
+    if (lsToken) return lsToken;
     const match = document.cookie.match(new RegExp('(?:^|; )jwt=([^;]*)'));
     return match ? decodeURIComponent(match[1]) : null;
   }
@@ -57,9 +59,23 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  login(email: string, password: string): Observable<{ user: User }> {
-    return this.http.post<{ user: User }>(`${this.apiUrl}/auth/login`, { email, password }, { withCredentials: true })
+  login(email: string, password: string): Observable<{ user: User; token?: string }> {
+    return this.http.post<{ user: User; token?: string }>(`${this.apiUrl}/auth/login`, { email, password }, { withCredentials: true })
       .pipe(map(response => {
+        if ((response as any).token) {
+          localStorage.setItem('token', (response as any).token as string);
+        }
+        this.currentUserSubject.next(response.user);
+        return response;
+      }));
+  }
+
+  firebaseLogin(idToken: string): Observable<{ user: User; token?: string }> {
+    return this.http.post<{ user: User; token?: string }>(`${this.apiUrl}/auth/firebase-login`, { idToken }, { withCredentials: true })
+      .pipe(map(response => {
+        if ((response as any).token) {
+          localStorage.setItem('token', (response as any).token as string);
+        }
         this.currentUserSubject.next(response.user);
         return response;
       }));
@@ -73,6 +89,7 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/auth/logout`, {}, { withCredentials: true })
       .pipe(map(() => {
         this.currentUserSubject.next(null);
+        localStorage.removeItem('token');
       }));
   }
 
@@ -95,5 +112,10 @@ export class AuthService {
   isEditor(): boolean {
     const user = this.getUserFromToken();
     return user ? user.role === 'editor' || user.role === 'admin' : false;
+  }
+
+  getGoogleLoginUrl(): string {
+    const base = this.apiUrl.replace(/\/api$/, '');
+    return `${base}/api/auth/google`;
   }
 }

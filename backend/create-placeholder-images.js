@@ -7,7 +7,14 @@ const path = require('path');
 async function createPlaceholderImages() {
   console.log('Creating placeholder images...');
   
-  const uploadsDir = path.join(process.cwd(), 'uploads', 'products');
+  const uploadsRoot = path.join(process.cwd(), 'uploads');
+  const uploadsDir = path.join(uploadsRoot, 'products');
+  if (!fs.existsSync(uploadsRoot)) {
+    fs.mkdirSync(uploadsRoot, { recursive: true });
+  }
+  if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir, { recursive: true });
+  }
   
   // Create placeholder images for products
   const imageFiles = [
@@ -29,19 +36,13 @@ async function createPlaceholderImages() {
     'historical-door-2.jpg'
   ];
 
-  // Create a simple SVG placeholder for each image
-  const svgPlaceholder = `
-<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
-  <rect width="400" height="300" fill="#f0f0f0"/>
-  <rect x="50" y="50" width="300" height="200" fill="#e0e0e0" stroke="#ccc" stroke-width="2"/>
-  <text x="200" y="160" text-anchor="middle" font-family="Arial" font-size="16" fill="#666">Product Image</text>
-  <text x="200" y="180" text-anchor="middle" font-family="Arial" font-size="12" fill="#999">400x300</text>
-</svg>`;
+  // Minimal 1x1 pixel JPEG (base64)
+  const jpegBase64 = '/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxAQEA8QEA8QDw8PDw8PDw8PDw8PDw8PFREWFhURFRUYHSggGBolGxUVITEhJSkrLi4uFx8zODMtNygtLisBCgoKDg0OGxAQGy0lICUuLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIABQAFAAIBIgACEQEDEQH/xAAbAAEAAgMBAQAAAAAAAAAAAAAABQYBAwQCB//EADgQAAEDAgQDBQYHAAAAAAAAAAEAAhEDIQQSMUETIlFhcYGxBzKh0SNSgSMzQnLR4fAkQ3OC/8QAGQEBAAMBAQAAAAAAAAAAAAAAAAEDBQEC/8QAGxEBAAMBAQEAAAAAAAAAAAAAAAECERIxIUH/2gAMAwEAAhEDEQA/APbQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB//2Q=='
 
   for (const filename of imageFiles) {
     const filepath = path.join(uploadsDir, filename);
     if (!fs.existsSync(filepath)) {
-      fs.writeFileSync(filepath, svgPlaceholder);
+      fs.writeFileSync(filepath, Buffer.from(jpegBase64, 'base64'));
       console.log(`Created: ${filename}`);
     }
   }

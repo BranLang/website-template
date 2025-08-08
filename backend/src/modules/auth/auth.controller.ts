@@ -1,4 +1,5 @@
 import { Controller, Post, Body, UseGuards, Request, Get, Res } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { ApiTags, ApiOperation, ApiBody, ApiResponse } from '@nestjs/swagger';
 import { LocalAuthGuard } from './guards/local-auth.guard';
@@ -6,6 +7,7 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { Response } from 'express';
+import { FirebaseService } from './firebase.service';
 
 const loginBodyExample = {
   email: 'admin@example.com',
@@ -52,7 +54,7 @@ const profileResponseExample = {
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private firebase: FirebaseService) {}
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
@@ -76,11 +78,11 @@ export class AuthController {
     const { token, user } = await this.authService.login(req.user);
     res.cookie('jwt', token, {
       httpOnly: true,
-      secure: true,
-      sameSite: 'strict',
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       maxAge: 24 * 60 * 60 * 1000,
     });
-    return { user };
+    return { user, token };
   }
 
   @Post('register')
@@ -123,5 +125,59 @@ export class AuthController {
   logout(@Res({ passthrough: true }) res: Response) {
     res.clearCookie('jwt');
     return { message: 'Logged out' };
+  }
+
+  // Google OAuth
+  // Enable Google OAuth endpoints only when configured
+  @Get('google')
+  @ApiOperation({ summary: 'Google OAuth: redirect to Google' })
+  async googleAuth(@Res() res: Response) {
+    if (!process.env.GOOGLE_CLIENT_ID) {
+      return res.status(404).send('Google OAuth not configured');
+    }
+    return res.redirect('/api/auth/google/start');
+  }
+
+  @Get('google/start')
+  @UseGuards(AuthGuard('google'))
+  async googleAuthStart() {
+    return;
+  }
+
+  @Get('google/callback')
+  @ApiOperation({ summary: 'Google OAuth callback' })
+  @UseGuards(AuthGuard('google'))
+  async googleCallback(@Request() req, @Res() res: Response) {
+    const { token } = await this.authService.loginOrRegisterGoogle(req.user);
+    res.cookie('jwt', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+    const redirectUrl = process.env.FRONTEND_URL || 'http://localhost:4200/admin';
+    return res.redirect(redirectUrl);
+  }
+
+  @Post('firebase-login')
+  @ApiOperation({ summary: 'Login via Firebase ID token' })
+  @ApiBody({ schema: { properties: { idToken: { type: 'string' } } } })
+  @ApiResponse({ status: 200, description: 'Login successful' })
+  async firebaseLogin(@Body('idToken') idToken: string, @Res({ passthrough: true }) res: Response) {
+    const decoded: any = await this.firebase.verifyIdToken(idToken);
+    const { email = '', name = '' } = decoded;
+    const [firstName = '', lastName = ''] = (name || '').split(' ');
+    const { token, user } = await this.authService.loginOrRegisterGoogle({
+      email,
+      firstName,
+      lastName,
+    });
+    res.cookie('jwt', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+    return { user, token };
   }
 }

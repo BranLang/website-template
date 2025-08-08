@@ -8,6 +8,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { initializeApp } from 'firebase/app';
+import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -39,6 +42,10 @@ import { Router } from '@angular/router';
           <button mat-raised-button color="primary" class="full-width" type="submit" [disabled]="form.invalid">
             {{ 'LOGIN.SUBMIT' | translate }}
           </button>
+          <div class="or">— {{ 'LOGIN.OR' | translate }} —</div>
+          <button mat-stroked-button color="primary" class="full-width" type="button" (click)="loginWithGoogle()">
+            {{ 'LOGIN.GOOGLE' | translate }}
+          </button>
         </form>
       </mat-card>
     </div>
@@ -66,6 +73,7 @@ import { Router } from '@angular/router';
       text-align: center;
       margin-bottom: 1rem;
     }
+    .or { text-align:center; margin: 12px 0; color: #888; }
   `]
 })
 export class LoginComponent {
@@ -82,6 +90,27 @@ export class LoginComponent {
       this.auth.login(email!, password!).subscribe(() => {
         this.router.navigate(['/admin']);
       });
+    }
+  }
+
+  loginWithGoogle() {
+    // Prefer Firebase client SSO; falls back to server Google OAuth if not configured
+    try {
+      const app = initializeApp((environment as any).firebaseConfig);
+      const auth = getAuth(app);
+      const provider = new GoogleAuthProvider();
+      signInWithPopup(auth, provider).then(async (result) => {
+        const idToken = await result.user.getIdToken();
+        // Exchange for server JWT cookie
+        this.auth.firebaseLogin(idToken).subscribe(() => {
+          this.router.navigate(['/admin']);
+        });
+      }).catch(() => {
+        // fallback to server-side OAuth if Firebase not configured
+        window.location.href = this.auth.getGoogleLoginUrl();
+      });
+    } catch {
+      window.location.href = this.auth.getGoogleLoginUrl();
     }
   }
 }
