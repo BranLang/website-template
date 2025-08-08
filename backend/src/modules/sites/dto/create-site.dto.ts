@@ -25,6 +25,11 @@ export class CreateSiteDto {
   @IsString()
   faviconUrl?: string;
 
+  @ApiProperty({ description: 'Background image URL', required: false })
+  @IsOptional()
+  @IsString()
+  backgroundImageUrl?: string;
+
   @ApiProperty({ description: 'Domain', required: false })
   @IsOptional()
   @IsString()

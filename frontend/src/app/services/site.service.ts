@@ -16,6 +16,11 @@ export class SiteService {
       if (site?.theme) {
         this.applyTheme(site.theme);
       }
+      if (site?.backgroundImageUrl) {
+        this.applyBackground(site.backgroundImageUrl);
+      } else {
+        this.clearBackground();
+      }
     });
   }
 
@@ -37,5 +42,20 @@ export class SiteService {
     if (!path) return '';
     const base = environment.apiUrl.replace(/\/api$/, '');
     return path.startsWith('http') ? path : `${base}${path}`;
+  }
+
+  private applyBackground(imagePath: string) {
+    const url = this.resolveMediaUrl(imagePath);
+    document.body.style.backgroundImage = `url('${url}')`;
+    document.body.style.backgroundSize = 'cover';
+    document.body.style.backgroundRepeat = 'no-repeat';
+    document.body.style.backgroundAttachment = 'fixed';
+  }
+
+  private clearBackground() {
+    document.body.style.backgroundImage = '';
+    document.body.style.backgroundSize = '';
+    document.body.style.backgroundRepeat = '';
+    document.body.style.backgroundAttachment = '';
   }
 }
