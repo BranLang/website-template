@@ -20,7 +20,8 @@
     "NEXT": "Next",
     "PREVIOUS": "Previous",
     "VIEW_MORE": "View More",
-    "CLOSE": "Close"
+    "CLOSE": "Close",
+    "ADMIN": "Admin"
   },
   "NAVIGATION": {
     "WINDOWS": "Windows",

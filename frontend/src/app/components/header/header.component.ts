@@ -12,6 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 
 import { LanguageService } from '../../services/language.service';
 import { SiteService } from '../../services/site.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -71,6 +72,9 @@ import { SiteService } from '../../services/site.service';
           <a mat-button routerLink="/faq" routerLinkActive="active">
             {{ 'COMMON.FAQ' | translate }}
           </a>
+          <a mat-button routerLink="/admin" routerLinkActive="active" *ngIf="auth.isAdmin()">
+            {{ 'COMMON.ADMIN' | translate }}
+          </a>
         </nav>
 
         <!-- Language Switcher -->
@@ -119,6 +123,9 @@ import { SiteService } from '../../services/site.service';
       </a>
       <a mat-button routerLink="/faq" (click)="closeMobileMenu()">
         {{ 'COMMON.FAQ' | translate }}
+      </a>
+      <a mat-button routerLink="/admin" (click)="closeMobileMenu()" *ngIf="auth.isAdmin()">
+        {{ 'COMMON.ADMIN' | translate }}
       </a>
     </div>
   `,
@@ -269,7 +276,7 @@ export class HeaderComponent {
   isMobile: boolean = false;
   mobileMenuOpen: boolean = false;
 
-  constructor(private languageService: LanguageService, public siteService: SiteService) {
+  constructor(private languageService: LanguageService, public siteService: SiteService, public auth: AuthService) {
     this.currentLanguage = this.languageService.getCurrentLanguage();
     this.checkScreenSize();
     

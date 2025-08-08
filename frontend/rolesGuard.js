@@ -1,5 +1,10 @@
+function getCookie(name) {
+  const match = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
 function rolesGuard(requiredRole) {
-  const token = localStorage.getItem('token');
+  const token = getCookie('jwt');
   if (!token) {
     window.location.href = '/';
     return;
