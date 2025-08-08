@@ -116,79 +116,146 @@ export class ProductsController {
   })
   findAll(
     @Query('language') language: Language = Language.SK,
-    @Query('siteId') siteId: number = 1
+    @Query('siteId') siteId: string = '1'
   ) {
-    return this.productsService.findActive(language, siteId);
+    return this.productsService.findActive(language, parseInt(siteId));
   }
 
   @Get('admin')
   @UseGuards(JwtAuthGuard)
-  @ApiQuery({ name: 'language', enum: Language, required: false, description: 'Language filter' })
-  @ApiQuery({ name: 'siteId', required: false, description: 'Site ID filter' })
+  @ApiOperation({ 
+    summary: 'Get all products (admin)',
+    description: 'Retrieves all products for administrative purposes, filtered by language and site ID. Requires authentication.'
+  })
+  @ApiQuery({ name: 'language', enum: Language, required: false, description: 'Language filter (default: sk)' })
+  @ApiQuery({ name: 'siteId', required: false, description: 'Site ID filter (default: 1)' })
+  @ApiResponse({ status: 200, description: 'List of all products for admin retrieved successfully' })
+  @ApiResponse({ status: 401, description: 'Unauthorized - authentication required' })
   findAllAdmin(
     @Query('language') language: Language = Language.SK,
-    @Query('siteId') siteId: number = 1
+    @Query('siteId') siteId: string = '1'
   ) {
-    return this.productsService.findAll(language, siteId);
+    return this.productsService.findAll(language, parseInt(siteId));
   }
 
   @Get('featured')
-  @ApiQuery({ name: 'language', enum: Language, required: false, description: 'Language filter' })
-  @ApiQuery({ name: 'siteId', required: false, description: 'Site ID filter' })
+  @ApiOperation({ 
+    summary: 'Get featured products',
+    description: 'Retrieves all featured products, filtered by language and site ID'
+  })
+  @ApiQuery({ name: 'language', enum: Language, required: false, description: 'Language filter (default: sk)' })
+  @ApiQuery({ name: 'siteId', required: false, description: 'Site ID filter (default: 1)' })
+  @ApiResponse({ status: 200, description: 'List of featured products retrieved successfully' })
   findFeatured(
     @Query('language') language: Language = Language.SK,
-    @Query('siteId') siteId: number = 1
+    @Query('siteId') siteId: string = '1'
   ) {
-    return this.productsService.findFeatured(language, siteId);
+    return this.productsService.findFeatured(language, parseInt(siteId));
   }
 
   @Get('category/:id')
-  @ApiQuery({ name: 'language', enum: Language, required: false, description: 'Language filter' })
-  @ApiQuery({ name: 'siteId', required: false, description: 'Site ID filter' })
+  @ApiOperation({ 
+    summary: 'Get products by category ID',
+    description: 'Retrieves all active products for a given category ID, filtered by language and site ID'
+  })
+  @ApiParam({ name: 'id', description: 'Category ID' })
+  @ApiQuery({ name: 'language', enum: Language, required: false, description: 'Language filter (default: sk)' })
+  @ApiQuery({ name: 'siteId', required: false, description: 'Site ID filter (default: 1)' })
+  @ApiResponse({ status: 200, description: 'List of products in the category retrieved successfully' })
+  @ApiResponse({ status: 404, description: 'Category not found' })
   findByCategory(
     @Param('id') id: string,
     @Query('language') language: Language = Language.SK,
-    @Query('siteId') siteId: number = 1
+    @Query('siteId') siteId: string = '1'
   ) {
-    return this.productsService.findByCategory(+id, language, siteId);
+    return this.productsService.findByCategory(+id, language, parseInt(siteId));
   }
 
   @Get(':id')
-  @ApiQuery({ name: 'language', enum: Language, required: false, description: 'Language filter' })
-  @ApiQuery({ name: 'siteId', required: false, description: 'Site ID filter' })
+  @ApiOperation({ 
+    summary: 'Get a single product by ID',
+    description: 'Retrieves a single product by its ID, filtered by language and site ID'
+  })
+  @ApiParam({ name: 'id', description: 'Product ID' })
+  @ApiQuery({ name: 'language', enum: Language, required: false, description: 'Language filter (default: sk)' })
+  @ApiQuery({ name: 'siteId', required: false, description: 'Site ID filter (default: 1)' })
+  @ApiResponse({ status: 200, description: 'Product retrieved successfully' })
+  @ApiResponse({ status: 404, description: 'Product not found' })
   findOne(
     @Param('id') id: string,
     @Query('language') language: Language = Language.SK,
-    @Query('siteId') siteId: number = 1
+    @Query('siteId') siteId: string = '1'
   ) {
-    return this.productsService.findOne(+id, language, siteId);
+    return this.productsService.findOne(+id, language, parseInt(siteId));
   }
 
   @Get('slug/:slug')
-  @ApiQuery({ name: 'language', enum: Language, required: false, description: 'Language filter' })
-  @ApiQuery({ name: 'siteId', required: false, description: 'Site ID filter' })
+  @ApiOperation({ 
+    summary: 'Get a single product by slug',
+    description: 'Retrieves a single product by its slug, filtered by language and site ID'
+  })
+  @ApiParam({ name: 'slug', description: 'Product slug' })
+  @ApiQuery({ name: 'language', enum: Language, required: false, description: 'Language filter (default: sk)' })
+  @ApiQuery({ name: 'siteId', required: false, description: 'Site ID filter (default: 1)' })
+  @ApiResponse({ status: 200, description: 'Product retrieved successfully' })
+  @ApiResponse({ status: 404, description: 'Product not found' })
   findBySlug(
     @Param('slug') slug: string,
     @Query('language') language: Language = Language.SK,
-    @Query('siteId') siteId: number = 1
+    @Query('siteId') siteId: string = '1'
   ) {
-    return this.productsService.findBySlug(slug, language, siteId);
+    return this.productsService.findBySlug(slug, language, parseInt(siteId));
   }
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
+  @ApiOperation({ 
+    summary: 'Update a product',
+    description: 'Updates an existing product with the provided details. Requires authentication.'
+  })
+  @ApiParam({ name: 'id', description: 'Product ID' })
+  @ApiBody({ type: UpdateProductDto, description: 'Product update data' })
+  @ApiResponse({ status: 200, description: 'Product updated successfully' })
+  @ApiResponse({ status: 400, description: 'Bad request - invalid data' })
+  @ApiResponse({ status: 401, description: 'Unauthorized - authentication required' })
+  @ApiResponse({ status: 404, description: 'Product not found' })
   update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
     return this.productsService.update(+id, updateProductDto);
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
+  @ApiOperation({ 
+    summary: 'Delete a product',
+    description: 'Deletes a product by its ID. Requires authentication.'
+  })
+  @ApiParam({ name: 'id', description: 'Product ID' })
+  @ApiResponse({ status: 200, description: 'Product deleted successfully' })
+  @ApiResponse({ status: 401, description: 'Unauthorized - authentication required' })
+  @ApiResponse({ status: 404, description: 'Product not found' })
   remove(@Param('id') id: string) {
     return this.productsService.remove(+id);
   }
 
   @UseGuards(JwtAuthGuard)
   @Post(':id/images')
+  @ApiOperation({ 
+    summary: 'Add an image to a product',
+    description: 'Adds a new image to a product. Requires authentication.'
+  })
+  @ApiParam({ name: 'id', description: 'Product ID' })
+  @ApiBody({ 
+    schema: { 
+      type: 'object', 
+      properties: { 
+        imageUrl: { type: 'string' }, 
+        altText: { type: 'string' } 
+      } 
+    } 
+  })
+  @ApiResponse({ status: 201, description: 'Image added successfully' })
+  @ApiResponse({ status: 401, description: 'Unauthorized - authentication required' })
+  @ApiResponse({ status: 404, description: 'Product not found' })
   addImage(
     @Param('id') id: string,
     @Body() body: { imageUrl: string; altText?: string },
@@ -198,6 +265,14 @@ export class ProductsController {
 
   @UseGuards(JwtAuthGuard)
   @Delete('images/:imageId')
+  @ApiOperation({ 
+    summary: 'Remove an image from a product',
+    description: 'Removes an image from a product by its ID. Requires authentication.'
+  })
+  @ApiParam({ name: 'imageId', description: 'Image ID' })
+  @ApiResponse({ status: 200, description: 'Image removed successfully' })
+  @ApiResponse({ status: 401, description: 'Unauthorized - authentication required' })
+  @ApiResponse({ status: 404, description: 'Image not found' })
   removeImage(@Param('imageId') imageId: string) {
     return this.productsService.removeImage(+imageId);
   }

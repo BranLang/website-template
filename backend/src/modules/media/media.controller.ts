@@ -12,18 +12,42 @@ export class MediaController {
   @UseGuards(JwtAuthGuard)
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
+  @ApiOperation({ summary: 'Upload a file' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'File to upload',
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
+  @ApiResponse({ status: 201, description: 'File uploaded successfully' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
   async uploadFile(@UploadedFile() file: Express.Multer.File) {
     return this.mediaService.uploadFile(file);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get()
+  @ApiOperation({ summary: 'Get all uploaded files' })
+  @ApiResponse({ status: 200, description: 'List of all uploaded files' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
   async getAllFiles() {
     return this.mediaService.getAllFiles();
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete(':filename')
+  @ApiOperation({ summary: 'Delete a file' })
+  @ApiParam({ name: 'filename', description: 'Name of the file to delete' })
+  @ApiResponse({ status: 200, description: 'File deleted successfully' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 404, description: 'File not found' })
   async deleteFile(@Param('filename') filename: string) {
     return this.mediaService.deleteFile(filename);
   }
