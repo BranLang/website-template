@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 import { LanguageService } from '../../services/language.service';
 import { SiteService } from '../../services/site.service';
@@ -24,7 +25,8 @@ import { SiteService } from '../../services/site.service';
     MatIconModule,
     MatMenuModule,
     MatSelectModule,
-    FormsModule
+    FormsModule,
+    MatFormFieldModule
   ],
   template: `
     <mat-toolbar color="primary" class="header-toolbar">
@@ -73,13 +75,15 @@ import { SiteService } from '../../services/site.service';
 
         <!-- Language Switcher -->
         <div class="language-switcher">
-          <mat-select 
-            [value]="currentLanguage" 
-            (selectionChange)="onLanguageChange($event.value)"
-            class="language-select">
-            <mat-option value="sk">{{ 'COMMON.SLOVAK' | translate }}</mat-option>
-            <mat-option value="en">{{ 'COMMON.ENGLISH' | translate }}</mat-option>
-          </mat-select>
+          <mat-form-field appearance="outline" class="language-select">
+            <mat-label>{{ 'COMMON.LANGUAGE' | translate }}</mat-label>
+            <mat-select
+              [value]="currentLanguage"
+              (selectionChange)="onLanguageChange($event.value)">
+              <mat-option value="sk">{{ 'COMMON.SLOVAK' | translate }}</mat-option>
+              <mat-option value="en">{{ 'COMMON.ENGLISH' | translate }}</mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
 
         <!-- Mobile Menu Button -->
@@ -200,6 +204,10 @@ import { SiteService } from '../../services/site.service';
     }
 
     .language-select ::ng-deep .mat-mdc-select-arrow {
+      color: white;
+    }
+
+    .language-select ::ng-deep .mat-mdc-form-field-label {
       color: white;
     }
 
