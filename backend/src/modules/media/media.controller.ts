@@ -1,7 +1,7 @@
 import { Controller, Post, Get, Delete, Param, UseGuards, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { MediaService } from './media.service';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiConsumes, ApiBody, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @ApiTags('Media')
@@ -32,11 +32,9 @@ export class MediaController {
     return this.mediaService.uploadFile(file);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get()
   @ApiOperation({ summary: 'Get all uploaded files' })
   @ApiResponse({ status: 200, description: 'List of all uploaded files' })
-  @ApiResponse({ status: 401, description: 'Unauthorized' })
   async getAllFiles() {
     return this.mediaService.getAllFiles();
   }
