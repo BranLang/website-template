@@ -7,6 +7,7 @@ import { ProductImage } from './entities/product-image.entity';
 import { Page } from './entities/page.entity';
 import { Order } from './entities/order.entity';
 import { SiteImage } from './entities/site-image.entity';
+import { Admin } from './entities/admin.entity';
 
 export const AppDataSource = new DataSource({
   type: 'sqlite',
@@ -20,6 +21,7 @@ export const AppDataSource = new DataSource({
     Page,
     Order,
     SiteImage,
+    Admin,
   ],
   synchronize: true,
 });

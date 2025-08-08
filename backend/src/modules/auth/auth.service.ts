@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 
 import { User, UserRole } from '../../entities/user.entity';
-import { LoginDto } from './dto/login.dto';
+import { Admin } from '../../entities/admin.entity';
 import { RegisterDto } from './dto/register.dto';
 
 @Injectable()
@@ -13,6 +13,8 @@ export class AuthService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    @InjectRepository(Admin)
+    private adminRepository: Repository<Admin>,
     private jwtService: JwtService,
   ) {}
 
@@ -25,21 +27,19 @@ export class AuthService {
     return null;
   }
 
-  async login(loginDto: LoginDto) {
-    const user = await this.validateUser(loginDto.email, loginDto.password);
-    if (!user) {
-      throw new UnauthorizedException('Invalid credentials');
-    }
-
-    const payload = { email: user.email, sub: user.id, role: user.role };
+  async login(user: User) {
+    const admin = await this.adminRepository.findOne({ where: { email: user.email } });
+    const role = admin ? UserRole.ADMIN : UserRole.VIEWER;
+    const payload = { email: user.email, sub: user.id, role };
+    const token = this.jwtService.sign(payload);
     return {
-      access_token: this.jwtService.sign(payload),
+      token,
       user: {
         id: user.id,
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
-        role: user.role,
+        role,
       },
     };
   }
@@ -67,22 +67,27 @@ export class AuthService {
   }
 
   async createAdminUser() {
-    const adminExists = await this.userRepository.findOne({
-      where: { email: 'admin@example.com' },
-    });
+    const adminEmail = 'admin@example.com';
 
-    if (!adminExists) {
+    let user = await this.userRepository.findOne({ where: { email: adminEmail } });
+    if (!user) {
       const hashedPassword = await bcrypt.hash('admin123', 10);
-      const adminUser = this.userRepository.create({
-        email: 'admin@example.com',
+      user = this.userRepository.create({
+        email: adminEmail,
         firstName: 'Admin',
         lastName: 'User',
         password: hashedPassword,
-        role: UserRole.ADMIN,
+        role: UserRole.VIEWER,
       });
-
-      await this.userRepository.save(adminUser);
-      console.log('Admin user created: admin@example.com / admin123');
+      await this.userRepository.save(user);
     }
+
+    const adminExists = await this.adminRepository.findOne({ where: { email: adminEmail } });
+    if (!adminExists) {
+      const adminEntry = this.adminRepository.create({ email: adminEmail });
+      await this.adminRepository.save(adminEntry);
+    }
+
+    console.log('Admin user available: admin@example.com / admin123');
   }
 }
