@@ -6,25 +6,22 @@ import * as http from 'http';
 
 @Injectable()
 export class ImageDownloaderService {
-  private uploadsDir = path.join(process.cwd(), 'uploads', 'products');
-
-  constructor() {
-    this.ensureUploadsDirectory();
-  }
-
-  private ensureUploadsDirectory() {
-    if (!fs.existsSync(this.uploadsDir)) {
-      fs.mkdirSync(this.uploadsDir, { recursive: true });
+  private ensureUploadsDirectory(dir: string) {
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
     }
   }
 
-  async downloadImage(url: string, filename: string): Promise<string> {
+  async downloadImage(url: string, filename: string, subfolder = 'products'): Promise<string> {
+    const uploadsDir = path.join(process.cwd(), 'uploads', subfolder);
+    this.ensureUploadsDirectory(uploadsDir);
+
     return new Promise((resolve, reject) => {
-      const filepath = path.join(this.uploadsDir, filename);
-      
+      const filepath = path.join(uploadsDir, filename);
+
       // Check if file already exists
       if (fs.existsSync(filepath)) {
-        resolve(`/uploads/products/${filename}`);
+        resolve(`/uploads/${subfolder}/${filename}`);
         return;
       }
 
@@ -41,7 +38,7 @@ export class ImageDownloaderService {
 
         fileStream.on('finish', () => {
           fileStream.close();
-          resolve(`/uploads/products/${filename}`);
+          resolve(`/uploads/${subfolder}/${filename}`);
         });
 
         fileStream.on('error', (err) => {

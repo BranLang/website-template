@@ -54,14 +54,17 @@ echo 📋 Next steps:
 echo 1. Start the backend server:
 echo    cd backend ^&^& npm run start:dev
 echo.
-echo 2. Start the frontend server:
+echo 2. (Optional) Seed the database with demo data:
+echo    cd backend ^&^& node seed-database.js
+echo.
+echo 3. Start the frontend server:
 echo    cd frontend ^&^& npm start
 echo.
-echo 3. Access the application:
+echo 4. Access the application:
 echo    - Frontend: http://localhost:4200
 echo    - Backend API: http://localhost:3000
 echo.
-echo 4. Login with default admin account:
+echo 5. Login with default admin account:
 echo    - Email: admin@example.com
 echo    - Password: admin123
 echo.

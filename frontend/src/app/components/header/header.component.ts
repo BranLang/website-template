@@ -10,6 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 
 import { LanguageService } from '../../services/language.service';
+import { SiteService } from '../../services/site.service';
 
 @Component({
   selector: 'app-header',
@@ -29,10 +30,10 @@ import { LanguageService } from '../../services/language.service';
     <mat-toolbar color="primary" class="header-toolbar">
       <div class="toolbar-content">
         <!-- Logo/Brand -->
-        <div class="brand">
+        <div class="brand" *ngIf="siteService.site$ | async as site">
           <a routerLink="/" class="brand-link">
-            <mat-icon>home</mat-icon>
-            <span class="brand-text">JUST Eurookná</span>
+            <img *ngIf="site.logoUrl" [src]="siteService.resolveMediaUrl(site.logoUrl)" alt="{{site.name}}" class="brand-logo" />
+            <span class="brand-text">{{ site.name }}</span>
           </a>
         </div>
 
@@ -151,6 +152,11 @@ import { LanguageService } from '../../services/language.service';
       font-weight: bold;
     }
 
+    .brand-logo {
+      height: 40px;
+      margin-right: 8px;
+    }
+
     .brand-text {
       margin-left: 8px;
     }
@@ -255,7 +261,7 @@ export class HeaderComponent {
   isMobile: boolean = false;
   mobileMenuOpen: boolean = false;
 
-  constructor(private languageService: LanguageService) {
+  constructor(private languageService: LanguageService, public siteService: SiteService) {
     this.currentLanguage = this.languageService.getCurrentLanguage();
     this.checkScreenSize();
     

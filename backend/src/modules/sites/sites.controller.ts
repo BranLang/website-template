@@ -77,7 +77,8 @@ export class SitesController {
           isActive: true,
           categories: [],
           products: [],
-          pages: []
+          pages: [],
+          images: []
         }
       ]
     }

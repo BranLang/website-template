@@ -20,21 +20,21 @@ export class SitesService {
   findAll() {
     return this.siteRepository.find({
       where: { isActive: true },
-      relations: ['categories', 'products', 'pages'],
+      relations: ['categories', 'products', 'pages', 'images'],
     });
   }
 
   findOne(id: number) {
     return this.siteRepository.findOne({
       where: { id },
-      relations: ['categories', 'products', 'pages'],
+      relations: ['categories', 'products', 'pages', 'images'],
     });
   }
 
   findBySlug(slug: string) {
     return this.siteRepository.findOne({
       where: { slug, isActive: true },
-      relations: ['categories', 'products', 'pages'],
+      relations: ['categories', 'products', 'pages', 'images'],
     });
   }
 

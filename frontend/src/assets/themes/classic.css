@@ -1,0 +1,12 @@
+body {
+  background: #ffffff;
+  color: #333333;
+}
+
+.mat-toolbar {
+  background: #3f51b5 !important;
+}
+
+a {
+  color: #3f51b5;
+}
