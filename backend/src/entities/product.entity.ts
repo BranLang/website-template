@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateCol
 import { Category } from './category.entity';
 import { ProductImage } from './product-image.entity';
 import { Site } from './site.entity';
+import { ProductTranslation } from './product-translation.entity';
 
 export enum ProductMaterial {
   WOOD = 'wood',
@@ -75,6 +76,9 @@ export class Product {
 
   @OneToMany(() => ProductImage, image => image.product, { cascade: true })
   images: ProductImage[];
+
+  @OneToMany(() => ProductTranslation, t => t.product, { cascade: true })
+  translations: ProductTranslation[];
 
   @CreateDateColumn()
   createdAt: Date;

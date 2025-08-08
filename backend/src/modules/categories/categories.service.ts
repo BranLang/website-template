@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Category, CategoryType, Language } from '../../entities/category.entity';
+import { CategoryTranslation } from '../../entities/category-translation.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 
@@ -10,6 +11,8 @@ export class CategoriesService {
   constructor(
     @InjectRepository(Category)
     private categoryRepository: Repository<Category>,
+    @InjectRepository(CategoryTranslation)
+    private categoryTranslationRepository: Repository<CategoryTranslation>,
   ) {}
 
   create(createCategoryDto: CreateCategoryDto) {
@@ -17,41 +20,94 @@ export class CategoriesService {
     return this.categoryRepository.save(category);
   }
 
-  findAll(language: Language = Language.SK, siteId: number = 1) {
-    return this.categoryRepository.find({
-      where: { language, siteId },
-      relations: ['products'],
-      order: { sortOrder: 'ASC' },
+  async findAll(language: Language = Language.SK, siteId: number = 1) {
+    const cats = await this.categoryRepository.find({ where: { siteId }, relations: ['products', 'translations'], order: { sortOrder: 'ASC' } });
+    return cats.map(c => {
+      const tr = c.translations?.find(t => t.languageCode === language) || c.translations?.[0];
+      return {
+        id: c.id,
+        name: tr?.name || '',
+        slug: tr?.slug || '',
+        description: tr?.description || null,
+        type: c.type,
+        imageUrl: c.imageUrl,
+        sortOrder: c.sortOrder,
+        isActive: c.isActive,
+      };
     });
   }
 
-  findActive(language: Language = Language.SK, siteId: number = 1) {
-    return this.categoryRepository.find({
-      where: { isActive: true, language, siteId },
-      relations: ['products'],
-      order: { sortOrder: 'ASC' },
+  async findActive(language: Language = Language.SK, siteId: number = 1) {
+    const cats = await this.categoryRepository.find({ where: { isActive: true, siteId }, relations: ['products', 'translations'], order: { sortOrder: 'ASC' } });
+    return cats.map(c => {
+      const tr = c.translations?.find(t => t.languageCode === language) || c.translations?.[0];
+      return {
+        id: c.id,
+        name: tr?.name || '',
+        slug: tr?.slug || '',
+        description: tr?.description || null,
+        type: c.type,
+        imageUrl: c.imageUrl,
+        sortOrder: c.sortOrder,
+        isActive: c.isActive,
+      };
     });
   }
 
-  findOne(id: number, language: Language = Language.SK, siteId: number = 1) {
-    return this.categoryRepository.findOne({
-      where: { id, language, siteId },
-      relations: ['products'],
-    });
+  async findOne(id: number, language: Language = Language.SK, siteId: number = 1) {
+    const c = await this.categoryRepository.findOne({ where: { id, siteId }, relations: ['products', 'translations'] });
+    if (!c) return null;
+    const tr = c.translations?.find(t => t.languageCode === language) || c.translations?.[0];
+    return {
+      id: c.id,
+      name: tr?.name || '',
+      slug: tr?.slug || '',
+      description: tr?.description || null,
+      type: c.type,
+      imageUrl: c.imageUrl,
+      sortOrder: c.sortOrder,
+      isActive: c.isActive,
+      products: c.products,
+    };
   }
 
-  findBySlug(slug: string, language: Language = Language.SK, siteId: number = 1) {
-    return this.categoryRepository.findOne({
-      where: { slug, language, siteId },
-      relations: ['products'],
-    });
+  async findBySlug(slug: string, language: Language = Language.SK, siteId: number = 1) {
+    const c = await this.categoryRepository
+      .createQueryBuilder('category')
+      .leftJoinAndSelect('category.products', 'products')
+      .leftJoinAndSelect('category.translations', 'ct')
+      .where('category.siteId = :siteId', { siteId })
+      .andWhere('ct.slug = :slug', { slug })
+      .getOne();
+    if (!c) return null;
+    const tr = c.translations?.find(t => t.languageCode === language) || c.translations?.[0];
+    return {
+      id: c.id,
+      name: tr?.name || '',
+      slug: tr?.slug || '',
+      description: tr?.description || null,
+      type: c.type,
+      imageUrl: c.imageUrl,
+      sortOrder: c.sortOrder,
+      isActive: c.isActive,
+      products: c.products,
+    };
   }
 
-  findByType(type: CategoryType, language: Language = Language.SK, siteId: number = 1) {
-    return this.categoryRepository.find({
-      where: { type, isActive: true, language, siteId },
-      relations: ['products'],
-      order: { sortOrder: 'ASC' },
+  async findByType(type: CategoryType, language: Language = Language.SK, siteId: number = 1) {
+    const cats = await this.categoryRepository.find({ where: { type, isActive: true, siteId }, relations: ['products', 'translations'], order: { sortOrder: 'ASC' } });
+    return cats.map(c => {
+      const tr = c.translations?.find(t => t.languageCode === language) || c.translations?.[0];
+      return {
+        id: c.id,
+        name: tr?.name || '',
+        slug: tr?.slug || '',
+        description: tr?.description || null,
+        type: c.type,
+        imageUrl: c.imageUrl,
+        sortOrder: c.sortOrder,
+        isActive: c.isActive,
+      };
     });
   }
 
@@ -65,7 +121,7 @@ export class CategoriesService {
   }
 
   async remove(id: number) {
-    const category = await this.findOne(id);
+    const category = await this.categoryRepository.findOne({ where: { id } });
     if (!category) {
       throw new NotFoundException(`Category with ID ${id} not found`);
     }

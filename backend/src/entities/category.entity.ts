@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
 import { Product } from './product.entity';
 import { Site } from './site.entity';
+import { CategoryTranslation } from './category-translation.entity';
 
 export enum CategoryType {
   WINDOW = 'window',
@@ -58,6 +59,9 @@ export class Category {
 
   @OneToMany(() => Product, product => product.category)
   products: Product[];
+
+  @OneToMany(() => CategoryTranslation, t => t.category, { cascade: true })
+  translations: CategoryTranslation[];
 
   @CreateDateColumn()
   createdAt: Date;

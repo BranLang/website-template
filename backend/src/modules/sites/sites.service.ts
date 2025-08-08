@@ -45,4 +45,14 @@ export class SitesService {
   remove(id: number) {
     return this.siteRepository.update(id, { isActive: false });
   }
+
+  async updateThemeBySlug(slug: string, theme?: string, themes?: any) {
+    const site = await this.findBySlug(slug);
+    if (!site) return null;
+    const update: any = {};
+    if (theme) update.theme = theme;
+    if (themes) update.settings = { ...(site.settings || {}), themes };
+    await this.siteRepository.update(site.id, update);
+    return this.findBySlug(slug);
+  }
 }

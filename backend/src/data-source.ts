@@ -8,6 +8,10 @@ import { Page } from './entities/page.entity';
 import { Order } from './entities/order.entity';
 import { SiteImage } from './entities/site-image.entity';
 import { Admin } from './entities/admin.entity';
+import { ProductTranslation } from './entities/product-translation.entity';
+import { CategoryTranslation } from './entities/category-translation.entity';
+import { PageTranslation } from './entities/page-translation.entity';
+import { MediaFile } from './entities/media-file.entity';
 
 export const AppDataSource = new DataSource({
   type: 'sqlite',
@@ -22,6 +26,10 @@ export const AppDataSource = new DataSource({
     Order,
     SiteImage,
     Admin,
+    ProductTranslation,
+    CategoryTranslation,
+    PageTranslation,
+    MediaFile,
   ],
   synchronize: true,
 });

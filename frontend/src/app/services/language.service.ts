@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 export type Language = 'sk' | 'en';
 
@@ -10,7 +11,7 @@ export class LanguageService {
   private currentLanguageSubject = new BehaviorSubject<Language>('sk');
   public currentLanguage$ = this.currentLanguageSubject.asObservable();
 
-  constructor() {
+  constructor(private translateService: TranslateService) {
     // Load language from localStorage or default to Slovak
     const savedLanguage = localStorage.getItem('language') as Language;
     if (savedLanguage && (savedLanguage === 'sk' || savedLanguage === 'en')) {
@@ -27,6 +28,7 @@ export class LanguageService {
   setLanguage(language: Language): void {
     this.currentLanguageSubject.next(language);
     localStorage.setItem('language', language);
+    this.translateService.use(language);
   }
 
   toggleLanguage(): void {

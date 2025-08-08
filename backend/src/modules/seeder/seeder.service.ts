@@ -4,10 +4,11 @@ import { Repository } from 'typeorm';
 import { Site } from '../../entities/site.entity';
 import { Category, CategoryType, Language } from '../../entities/category.entity';
 import { Product, ProductMaterial, Language as ProductLanguage } from '../../entities/product.entity';
-import { Page, PageType, Language as PageLanguage } from '../../entities/page.entity';
+import { Page, PageType } from '../../entities/page.entity';
 import { ProductImage } from '../../entities/product-image.entity';
 import { SiteImage } from '../../entities/site-image.entity';
 import { ImageDownloaderService } from './image-downloader.service';
+import { createHash } from 'crypto';
 
 @Injectable()
 export class SeederService {
@@ -79,10 +80,30 @@ export class SeederService {
       metaDescription: 'Just Eurookná - kvalitné okná a dvere',
       metaKeywords: 'okná, dvere, drevené, hliníkové, výroba',
       isActive: true,
-      theme: 'classic',
+      theme: 'light',
       logoUrl,
       faviconUrl,
-      settings: { images }
+      settings: {
+        images,
+        themes: {
+          light: {
+            name: 'Light',
+            primary: '#0091a7',
+            background: '#ffffff',
+            surface: '#f7f9fb',
+            text: '#0f1720',
+            link: '#0091a7'
+          },
+          dark: {
+            name: 'Dark',
+            primary: '#0091a7',
+            background: '#0f1214',
+            surface: '#141a1f',
+            text: '#e6eef2',
+            link: '#2bd3e6'
+          }
+        }
+      }
     };
 
     let site = await this.siteRepository.findOne({
@@ -94,7 +115,16 @@ export class SeederService {
       site = await this.siteRepository.save(site);
       console.log('Site created successfully');
     } else {
-      console.log('Site already exists');
+      // Ensure themes exist on existing site
+      const needsThemes = !site.settings || !site.settings.themes;
+      if (needsThemes) {
+        site.settings = siteData.settings;
+        site.theme = siteData.theme;
+        await this.siteRepository.save(site);
+        console.log('Site themes initialized');
+      } else {
+        console.log('Site already exists');
+      }
     }
 
     const allImages = [logoUrl, faviconUrl, ...images];
@@ -463,7 +493,7 @@ export class SeederService {
         excerpt: 'Spoločnosť JUST SK je slovenská výrobná spoločnosť zameraná na výrobu drevených, drevohliníkových a hliníkových okien a dverí.',
         type: PageType.STATIC,
         sortOrder: 1,
-        language: PageLanguage.SK,
+        language: 'sk' as any,
         siteId: siteId,
         metaDescription: 'O spoločnosti JUST SK - výroba okien a dverí',
         metaKeywords: 'okná, dvere, výroba, drevené, hliníkové',
@@ -489,7 +519,7 @@ export class SeederService {
         excerpt: 'Odpovede na najčastejšie otázky o oknách a dverách',
         type: PageType.FAQ,
         sortOrder: 2,
-        language: PageLanguage.SK,
+        language: 'sk' as any,
         siteId: siteId,
         metaDescription: 'Často kladené otázky o oknách a dverách',
         metaKeywords: 'otázky, okná, dvere, záruka, montáž',
@@ -523,7 +553,7 @@ export class SeederService {
         excerpt: 'JUST SK is a Slovak manufacturing company focused on the production of wooden, wood-aluminum and aluminum windows and doors.',
         type: PageType.STATIC,
         sortOrder: 1,
-        language: PageLanguage.EN,
+        language: 'en' as any,
         siteId: siteId,
         metaDescription: 'About JUST SK company - window and door manufacturing',
         metaKeywords: 'windows, doors, manufacturing, wooden, aluminum',
@@ -549,7 +579,7 @@ export class SeederService {
         excerpt: 'Answers to the most frequently asked questions about windows and doors',
         type: PageType.FAQ,
         sortOrder: 2,
-        language: PageLanguage.EN,
+        language: 'en' as any,
         siteId: siteId,
         metaDescription: 'Frequently asked questions about windows and doors',
         metaKeywords: 'questions, windows, doors, warranty, installation',
@@ -558,7 +588,7 @@ export class SeederService {
 
     for (const pageData of pages) {
       const existing = await this.pageRepository.findOne({
-        where: { slug: pageData.slug, language: pageData.language, siteId: pageData.siteId }
+        where: { siteId: pageData.siteId },
       });
       
       if (!existing) {
@@ -572,10 +602,28 @@ export class SeederService {
     console.log('Downloading images from Just Eurookná website...');
     
     try {
-      const downloadedImages = await this.imageDownloaderService.downloadJustEurooknaImages();
-      console.log(`Downloaded ${downloadedImages.length} images`);
-      
-      await this.seedProductImages(downloadedImages);
+      const scraped = await this.imageDownloaderService.scrapeJustEurooknaImageUrls();
+      const seen = new Set<string>();
+      const siteSaved: string[] = [];
+      for (const url of scraped.site.slice(0, 20)) {
+        if (seen.has(url)) continue;
+        seen.add(url);
+        try {
+          const saved = await this.imageDownloaderService.downloadImage(url, url.split('/').pop() || 'site.jpg', 'sites/just-eurookna');
+          if (!siteSaved.includes(saved)) siteSaved.push(saved);
+        } catch {}
+      }
+      const productSaved: string[] = [];
+      for (const url of scraped.products.slice(0, 60)) {
+        if (seen.has(url)) continue;
+        seen.add(url);
+        try {
+          const saved = await this.imageDownloaderService.downloadImage(url, url.split('/').pop() || 'product.jpg', 'products');
+          if (!productSaved.includes(saved)) productSaved.push(saved);
+        } catch {}
+      }
+      console.log(`Downloaded site images: ${siteSaved.length}, product images: ${productSaved.length}`);
+      await this.seedProductImages(productSaved);
     } catch (error) {
       console.error('Error downloading images:', error);
       // Fallback to placeholder images
@@ -613,13 +661,22 @@ export class SeederService {
           });
           
           if (!existing) {
+            const hash = createHash('sha256')
+              .update(`${product.id}-${imageUrl}-${i}`)
+              .digest('hex')
+              .slice(0, 32);
             const productImage = this.productImageRepository.create({
               productId: product.id,
               imageUrl,
               altText: `${product.name} - obrázok ${i + 1}`,
-              sortOrder: i + 1
+              sortOrder: i + 1,
+              hash,
             });
             await this.productImageRepository.save(productImage);
+            if (i === 0) {
+              product.mainImageUrl = imageUrl;
+              await this.productRepository.save(product);
+            }
           }
         }
       }

@@ -5,9 +5,12 @@ import { extname } from 'path';
 
 import { MediaService } from './media.service';
 import { MediaController } from './media.controller';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { MediaFile } from '../../entities/media-file.entity';
 
 @Module({
   imports: [
+    TypeOrmModule.forFeature([MediaFile]),
     MulterModule.register({
       storage: diskStorage({
         destination: './uploads',

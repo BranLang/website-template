@@ -1,0 +1,12 @@
+:root {
+  --color-primary: #0091a7;
+  --color-bg: #ffffff;
+  --color-surface: #f7f9fb;
+  --color-text: #0f1720;
+  --color-link: #0091a7;
+}
+
+body { background: var(--color-bg); color: var(--color-text); }
+.mat-toolbar { background: var(--color-primary) !important; }
+a { color: var(--color-link); }
+

@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { Site } from './site.entity';
+import { PageTranslation } from './page-translation.entity';
 
 export enum PageType {
   STATIC = 'static',
@@ -7,27 +8,12 @@ export enum PageType {
   FAQ = 'faq',
 }
 
-export enum Language {
-  SK = 'sk',
-  EN = 'en',
-}
-
 @Entity('pages')
 export class Page {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  title: string;
-
-  @Column()
-  slug: string;
-
-  @Column({ type: 'text' })
-  content: string;
-
-  @Column({ type: 'text', nullable: true })
-  excerpt: string;
+  // Textual fields moved to PageTranslation
 
   @Column({
     type: 'varchar',
@@ -45,11 +31,7 @@ export class Page {
   @Column({ default: 0 })
   sortOrder: number;
 
-  @Column({ type: 'text', nullable: true })
-  metaDescription: string;
-
-  @Column({ type: 'text', nullable: true })
-  metaKeywords: string;
+  // Meta moved to PageTranslation
 
   @ManyToOne(() => Site, site => site.pages)
   @JoinColumn({ name: 'siteId' })
@@ -58,16 +40,14 @@ export class Page {
   @Column()
   siteId: number;
 
-  @Column({
-    type: 'varchar',
-    enum: Language,
-    default: Language.SK,
-  })
-  language: Language;
+  // language removed; translations handle language
 
   @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToMany(() => PageTranslation, t => t.page, { cascade: true })
+  translations: PageTranslation[];
 }

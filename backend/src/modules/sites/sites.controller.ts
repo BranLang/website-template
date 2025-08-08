@@ -115,6 +115,14 @@ export class SitesController {
     return this.sitesService.findBySlug(slug);
   }
 
+  @Patch('slug/:slug/theme')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Update site theme by slug' })
+  @ApiBody({ schema: { example: { theme: 'light' } } })
+  updateThemeBySlug(@Param('slug') slug: string, @Body() body: any) {
+    return this.sitesService.updateThemeBySlug(slug, body?.theme, body?.themes);
+  }
+
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
   @ApiOperation({ 

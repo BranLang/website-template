@@ -13,13 +13,16 @@ export class SiteService {
   loadSite(): void {
     this.api.getSiteBySlug(environment.defaultSiteSlug).subscribe(site => {
       this.siteSubject.next(site);
-      if (site?.theme) {
-        this.applyTheme(site.theme);
-      }
+      const preferredTheme = localStorage.getItem('theme');
+      const themeToApply = preferredTheme || site?.theme || 'light';
+      if (themeToApply) this.applyTheme(themeToApply);
       if (site?.backgroundImageUrl) {
         this.applyBackground(site.backgroundImageUrl);
       } else {
         this.clearBackground();
+      }
+      if (site?.faviconUrl) {
+        this.applyFavicon(site.faviconUrl);
       }
     });
   }
@@ -36,6 +39,20 @@ export class SiteService {
       link.href = href;
       document.head.appendChild(link);
     }
+  }
+
+  setTheme(theme: string) {
+    // persist preference
+    localStorage.setItem('theme', theme);
+    this.applyTheme(theme);
+    // update site BehaviorSubject with new theme if site already loaded
+    const current = this.siteSubject.value || {};
+    this.siteSubject.next({ ...current, theme });
+  }
+
+  getThemes(): { light?: any; dark?: any } {
+    const site = this.siteSubject.value;
+    return site?.settings?.themes || {};
   }
 
   resolveMediaUrl(path: string): string {
@@ -57,5 +74,17 @@ export class SiteService {
     document.body.style.backgroundSize = '';
     document.body.style.backgroundRepeat = '';
     document.body.style.backgroundAttachment = '';
+  }
+
+  private applyFavicon(path: string) {
+    const href = this.resolveMediaUrl(path);
+    let link = document.querySelector("link[rel='icon']") as HTMLLinkElement | null;
+    if (!link) {
+      link = document.createElement('link');
+      link.rel = 'icon';
+      document.head.appendChild(link);
+    }
+    link.type = 'image/png';
+    link.href = href;
   }
 }

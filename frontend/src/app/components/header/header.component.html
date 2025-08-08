@@ -1,0 +1,63 @@
+<mat-toolbar color="primary" class="header-toolbar mat-elevation-z4">
+  <div class="toolbar-content">
+    <!-- Logo/Brand -->
+    <div class="brand" *ngIf="siteService.site$ | async as site">
+      <a routerLink="/" class="brand-link">
+        <img *ngIf="site.logoUrl" [src]="siteService.resolveMediaUrl(site.logoUrl)" alt="{{site.name}}" class="brand-logo" />
+        <span class="brand-text">{{ site.name }}</span>
+      </a>
+    </div>
+
+    <!-- Navigation Menu (center) -->
+    <nav class="nav-menu" *ngIf="!isMobile">
+      <a mat-button routerLink="/" routerLinkActive="active">{{ 'COMMON.HOME' | translate }}</a>
+      <a mat-button routerLink="/about" routerLinkActive="active">{{ 'COMMON.ABOUT' | translate }}</a>
+      <button mat-button [matMenuTriggerFor]="productsMenu" class="nav-dropdown">
+        {{ 'COMMON.PRODUCTS' | translate }}
+        <mat-icon>expand_more</mat-icon>
+      </button>
+      <mat-menu #productsMenu="matMenu">
+        <a mat-menu-item routerLink="/categories/window">{{ 'NAVIGATION.WINDOWS' | translate }}</a>
+        <a mat-menu-item routerLink="/categories/door">{{ 'NAVIGATION.DOORS' | translate }}</a>
+        <a mat-menu-item routerLink="/categories/accessory">{{ 'NAVIGATION.ACCESSORIES' | translate }}</a>
+      </mat-menu>
+      <a mat-button routerLink="/contact" routerLinkActive="active">{{ 'COMMON.CONTACT' | translate }}</a>
+      <a mat-button routerLink="/faq" routerLinkActive="active">{{ 'COMMON.FAQ' | translate }}</a>
+      <a mat-button routerLink="/admin" routerLinkActive="active" *ngIf="auth.isAdmin()">{{ 'COMMON.ADMIN' | translate }}</a>
+    </nav>
+
+    <!-- Right-side controls: Theme + Language -->
+    <div class="right-controls">
+      <!-- Theme picker (Material style: System/Light/Dark) -->
+      
+
+      <!-- Language as menu item -->
+      <button mat-button [matMenuTriggerFor]="langMenu" class="lang-button">
+        <mat-icon>language</mat-icon>
+        <span class="lang-text">{{ currentLanguage.toUpperCase() }}</span>
+        <mat-icon>expand_more</mat-icon>
+      </button>
+      <mat-menu #langMenu="matMenu">
+        <button mat-menu-item (click)="onLanguageChange('sk')">SK - {{ 'COMMON.SLOVAK' | translate }}</button>
+        <button mat-menu-item (click)="onLanguageChange('en')">EN - {{ 'COMMON.ENGLISH' | translate }}</button>
+      </mat-menu>
+
+      <!-- Mobile Menu Button / Hamburger -->
+      <button mat-icon-button class="mobile-menu-button" (click)="toggleMobileMenu()">
+        <mat-icon>{{ mobileMenuOpen ? 'close' : 'menu' }}</mat-icon>
+      </button>
+    </div>
+  </div>
+</mat-toolbar>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" *ngIf="isMobile && mobileMenuOpen">
+  <a mat-button routerLink="/" (click)="closeMobileMenu()">{{ 'COMMON.HOME' | translate }}</a>
+  <a mat-button routerLink="/about" (click)="closeMobileMenu()">{{ 'COMMON.ABOUT' | translate }}</a>
+  <a mat-button routerLink="/categories/window" (click)="closeMobileMenu()">{{ 'NAVIGATION.WINDOWS' | translate }}</a>
+  <a mat-button routerLink="/categories/door" (click)="closeMobileMenu()">{{ 'NAVIGATION.DOORS' | translate }}</a>
+  <a mat-button routerLink="/categories/accessory" (click)="closeMobileMenu()">{{ 'NAVIGATION.ACCESSORIES' | translate }}</a>
+  <a mat-button routerLink="/contact" (click)="closeMobileMenu()">{{ 'COMMON.CONTACT' | translate }}</a>
+  <a mat-button routerLink="/faq" (click)="closeMobileMenu()">{{ 'COMMON.FAQ' | translate }}</a>
+  <a mat-button routerLink="/admin" (click)="closeMobileMenu()" *ngIf="auth.isAdmin()">{{ 'COMMON.ADMIN' | translate }}</a>
+</div>

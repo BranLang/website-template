@@ -1,7 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Page, PageType, Language } from '../../entities/page.entity';
+import { Page, PageType } from '../../entities/page.entity';
+import { PageTranslation } from '../../entities/page-translation.entity';
 import { CreatePageDto } from './dto/create-page.dto';
 import { UpdatePageDto } from './dto/update-page.dto';
 
@@ -10,6 +11,8 @@ export class PagesService {
   constructor(
     @InjectRepository(Page)
     private pageRepository: Repository<Page>,
+    @InjectRepository(PageTranslation)
+    private pageTranslationRepository: Repository<PageTranslation>,
   ) {}
 
   create(createPageDto: CreatePageDto) {
@@ -17,37 +20,34 @@ export class PagesService {
     return this.pageRepository.save(page);
   }
 
-  findAll(language: Language = Language.SK, siteId: number = 1) {
-    return this.pageRepository.find({
-      where: { language, siteId },
-      order: { sortOrder: 'ASC' },
-    });
+  async findAll(language: string = 'sk', siteId: number = 1) {
+    const pages = await this.pageRepository.find({ where: { siteId }, relations: ['translations'], order: { sortOrder: 'ASC' } });
+    return pages.map(p => this.mapPage(p, language));
   }
 
-  findPublished(language: Language = Language.SK, siteId: number = 1) {
-    return this.pageRepository.find({
-      where: { isPublished: true, language, siteId },
-      order: { sortOrder: 'ASC' },
-    });
+  async findPublished(language: string = 'sk', siteId: number = 1) {
+    const pages = await this.pageRepository.find({ where: { isPublished: true, siteId }, relations: ['translations'], order: { sortOrder: 'ASC' } });
+    return pages.map(p => this.mapPage(p, language));
   }
 
-  findOne(id: number, language: Language = Language.SK, siteId: number = 1) {
-    return this.pageRepository.findOne({
-      where: { id, language, siteId },
-    });
+  async findOne(id: number, language: string = 'sk', siteId: number = 1) {
+    const p = await this.pageRepository.findOne({ where: { id, siteId }, relations: ['translations'] });
+    return p ? this.mapPage(p, language) : null;
   }
 
-  findBySlug(slug: string, language: Language = Language.SK, siteId: number = 1) {
-    return this.pageRepository.findOne({
-      where: { slug, isPublished: true, language, siteId },
-    });
+  async findBySlug(slug: string, language: string = 'sk', siteId: number = 1) {
+    const p = await this.pageRepository
+      .createQueryBuilder('page')
+      .leftJoinAndSelect('page.translations', 'pt')
+      .where('page.siteId = :siteId', { siteId })
+      .andWhere('pt.slug = :slug', { slug })
+      .getOne();
+    return p ? this.mapPage(p, language) : null;
   }
 
-  findByType(type: PageType, language: Language = Language.SK, siteId: number = 1) {
-    return this.pageRepository.find({
-      where: { type, isPublished: true, language, siteId },
-      order: { sortOrder: 'ASC' },
-    });
+  async findByType(type: PageType, language: string = 'sk', siteId: number = 1) {
+    const pages = await this.pageRepository.find({ where: { type, isPublished: true, siteId }, relations: ['translations'], order: { sortOrder: 'ASC' } });
+    return pages.map(p => this.mapPage(p, language));
   }
 
   async update(id: number, updatePageDto: UpdatePageDto) {
@@ -55,15 +55,33 @@ export class PagesService {
     if (!page) {
       throw new NotFoundException(`Page with ID ${id} not found`);
     }
-    Object.assign(page, updatePageDto);
-    return this.pageRepository.save(page);
+    const existing = await this.pageRepository.findOne({ where: { id }, relations: ['translations'] });
+    Object.assign(existing!, updatePageDto);
+    return this.pageRepository.save(existing!);
   }
 
   async remove(id: number) {
-    const page = await this.findOne(id);
+    const page = await this.pageRepository.findOne({ where: { id } });
     if (!page) {
       throw new NotFoundException(`Page with ID ${id} not found`);
     }
     return this.pageRepository.remove(page);
+  }
+
+  private mapPage(p: any, language: string) {
+    const tr = p.translations?.find((t: any) => t.languageCode === language) || p.translations?.[0];
+    return {
+      id: p.id,
+      title: tr?.title || '',
+      slug: tr?.slug || '',
+      content: tr?.content || '',
+      excerpt: tr?.excerpt || null,
+      type: p.type,
+      featuredImageUrl: p.featuredImageUrl,
+      isPublished: p.isPublished,
+      sortOrder: p.sortOrder,
+      metaDescription: tr?.metaDescription || null,
+      metaKeywords: tr?.metaKeywords || null,
+    };
   }
 }

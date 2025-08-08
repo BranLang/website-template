@@ -4,7 +4,7 @@ import { PagesService } from './pages.service';
 import { CreatePageDto } from './dto/create-page.dto';
 import { UpdatePageDto } from './dto/update-page.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { PageType, Language } from '../../entities/page.entity';
+import { PageType } from '../../entities/page.entity';
 
 const pageExample = {
   id: 1,
@@ -19,7 +19,7 @@ const pageExample = {
   metaDescription: 'About us page',
   metaKeywords: 'about,company',
   siteId: 1,
-  language: Language.SK,
+  language: 'sk',
   createdAt: '2024-01-01T00:00:00.000Z',
   updatedAt: '2024-01-01T00:00:00.000Z',
 };
@@ -65,7 +65,7 @@ export class PagesController {
 
   @Get()
   @ApiOperation({ summary: 'Get all published pages' })
-  @ApiQuery({ name: 'language', enum: Language, required: false, description: 'Language filter' })
+  @ApiQuery({ name: 'language', required: false, description: 'Language filter' })
   @ApiQuery({ name: 'siteId', required: false, description: 'Site ID filter' })
   @ApiResponse({
     status: 200,
@@ -73,7 +73,7 @@ export class PagesController {
     schema: { example: [pageExample] },
   })
   findAll(
-    @Query('language') language: Language = Language.SK,
+    @Query('language') language: string = 'sk',
     @Query('siteId') siteId: string = '1'
   ) {
     return this.pagesService.findPublished(language, parseInt(siteId));
@@ -82,7 +82,7 @@ export class PagesController {
   @Get('admin')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Get all pages (admin)' })
-  @ApiQuery({ name: 'language', enum: Language, required: false, description: 'Language filter' })
+  @ApiQuery({ name: 'language', required: false, description: 'Language filter' })
   @ApiQuery({ name: 'siteId', required: false, description: 'Site ID filter' })
   @ApiResponse({
     status: 200,
@@ -91,7 +91,7 @@ export class PagesController {
   })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   findAllAdmin(
-    @Query('language') language: Language = Language.SK,
+    @Query('language') language: string = 'sk',
     @Query('siteId') siteId: string = '1'
   ) {
     return this.pagesService.findAll(language, parseInt(siteId));
@@ -100,7 +100,7 @@ export class PagesController {
   @Get('type/:type')
   @ApiOperation({ summary: 'Get pages by type' })
   @ApiParam({ name: 'type', enum: PageType, description: 'Page type' })
-  @ApiQuery({ name: 'language', enum: Language, required: false, description: 'Language filter' })
+  @ApiQuery({ name: 'language', required: false, description: 'Language filter' })
   @ApiQuery({ name: 'siteId', required: false, description: 'Site ID filter' })
   @ApiResponse({
     status: 200,
@@ -109,7 +109,7 @@ export class PagesController {
   })
   findByType(
     @Param('type') type: PageType,
-    @Query('language') language: Language = Language.SK,
+    @Query('language') language: string = 'sk',
     @Query('siteId') siteId: string = '1'
   ) {
     return this.pagesService.findByType(type, language, parseInt(siteId));
@@ -118,7 +118,7 @@ export class PagesController {
   @Get(':id')
   @ApiOperation({ summary: 'Get a single page by ID' })
   @ApiParam({ name: 'id', description: 'Page ID' })
-  @ApiQuery({ name: 'language', enum: Language, required: false, description: 'Language filter' })
+  @ApiQuery({ name: 'language', required: false, description: 'Language filter' })
   @ApiQuery({ name: 'siteId', required: false, description: 'Site ID filter' })
   @ApiResponse({
     status: 200,
@@ -128,7 +128,7 @@ export class PagesController {
   @ApiResponse({ status: 404, description: 'Page not found' })
   findOne(
     @Param('id') id: string,
-    @Query('language') language: Language = Language.SK,
+    @Query('language') language: string = 'sk',
     @Query('siteId') siteId: string = '1'
   ) {
     return this.pagesService.findOne(+id, language, parseInt(siteId));
@@ -137,7 +137,7 @@ export class PagesController {
   @Get('slug/:slug')
   @ApiOperation({ summary: 'Get a single page by slug' })
   @ApiParam({ name: 'slug', description: 'Page slug' })
-  @ApiQuery({ name: 'language', enum: Language, required: false, description: 'Language filter' })
+  @ApiQuery({ name: 'language', required: false, description: 'Language filter' })
   @ApiQuery({ name: 'siteId', required: false, description: 'Site ID filter' })
   @ApiResponse({
     status: 200,
@@ -147,7 +147,7 @@ export class PagesController {
   @ApiResponse({ status: 404, description: 'Page not found' })
   findBySlug(
     @Param('slug') slug: string,
-    @Query('language') language: Language = Language.SK,
+    @Query('language') language: string = 'sk',
     @Query('siteId') siteId: string = '1'
   ) {
     return this.pagesService.findBySlug(slug, language, parseInt(siteId));
