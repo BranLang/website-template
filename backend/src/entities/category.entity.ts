@@ -7,6 +7,7 @@ export enum CategoryType {
   WINDOW = 'window',
   DOOR = 'door',
   ACCESSORY = 'accessory',
+  REALIZATION = 'realization',
 }
 
 export enum Language {
@@ -18,15 +19,6 @@ export enum Language {
 export class Category {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column()
-  name: string;
-
-  @Column()
-  slug: string;
-
-  @Column({ type: 'text', nullable: true })
-  description: string;
 
   @Column({
     type: 'varchar',
@@ -49,13 +41,6 @@ export class Category {
 
   @Column()
   siteId: number;
-
-  @Column({
-    type: 'varchar',
-    enum: Language,
-    default: Language.SK,
-  })
-  language: Language;
 
   @OneToMany(() => Product, product => product.category)
   products: Product[];

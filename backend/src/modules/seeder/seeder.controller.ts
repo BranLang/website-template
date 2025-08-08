@@ -5,7 +5,6 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @ApiTags('Seeder')
 @Controller('seeder')
-@UseGuards(JwtAuthGuard)
 export class SeederController {
   constructor(private readonly seederService: SeederService) {}
 

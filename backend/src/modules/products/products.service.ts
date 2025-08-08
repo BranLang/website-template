@@ -30,7 +30,7 @@ export class ProductsService {
       relations: ['category', 'images', 'translations', 'category.translations'],
       order: { sortOrder: 'ASC' },
     });
-    return products.map(p => this.mapProductWithTranslation(p, language));
+    return this.mapAndDedupe(products, language);
   }
 
   async findActive(language: Language = Language.SK, siteId: number = 1) {
@@ -39,7 +39,7 @@ export class ProductsService {
       relations: ['category', 'images', 'translations', 'category.translations'],
       order: { sortOrder: 'ASC' },
     });
-    return products.map(p => this.mapProductWithTranslation(p, language));
+    return this.mapAndDedupe(products, language);
   }
 
   async findFeatured(language: Language = Language.SK, siteId: number = 1) {
@@ -48,7 +48,7 @@ export class ProductsService {
       relations: ['category', 'images', 'translations', 'category.translations'],
       order: { sortOrder: 'ASC' },
     });
-    return products.map(p => this.mapProductWithTranslation(p, language));
+    return this.mapAndDedupe(products, language);
   }
 
   async findOne(id: number, language: Language = Language.SK, siteId: number = 1) {
@@ -78,7 +78,7 @@ export class ProductsService {
       relations: ['category', 'images', 'translations', 'category.translations'],
       order: { sortOrder: 'ASC' },
     });
-    return products.map(p => this.mapProductWithTranslation(p, language));
+    return this.mapAndDedupe(products, language);
   }
 
   async update(id: number, updateProductDto: UpdateProductDto) {
@@ -142,5 +142,16 @@ export class ProductsService {
       } : null,
       images: product.images || [],
     };
+  }
+
+  private mapAndDedupe(products: any[], language: Language) {
+    const mapped = products.map(p => this.mapProductWithTranslation(p, language));
+    const seen = new Set<string>();
+    return mapped.filter(p => {
+      const key = (p.slug && String(p.slug).trim()) || String(p.id);
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
   }
 }

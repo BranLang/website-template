@@ -21,18 +21,6 @@ export class Product {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  name: string;
-
-  @Column()
-  slug: string;
-
-  @Column({ type: 'text' })
-  description: string;
-
-  @Column({ type: 'text', nullable: true })
-  specifications: string;
-
   @Column({
     type: 'varchar',
     enum: ProductMaterial,
@@ -60,13 +48,6 @@ export class Product {
 
   @Column()
   siteId: number;
-
-  @Column({
-    type: 'varchar',
-    enum: Language,
-    default: Language.SK,
-  })
-  language: Language;
 
   @ManyToOne(() => Category, category => category.products)
   category: Category;

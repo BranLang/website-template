@@ -199,4 +199,14 @@ export class ApiService {
   getSiteBySlug(slug: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/sites/slug/${slug}`);
   }
+
+  // i18n endpoints
+  getI18n(language: Language = 'sk', namespaces: string[] = [], siteId?: number): Observable<Record<string, any>> {
+    const paramsObj: any = { language };
+    if (namespaces.length) paramsObj.namespaces = namespaces.join(',');
+    if (siteId) paramsObj.siteId = siteId;
+    let params = new HttpParams();
+    for (const [k, v] of Object.entries(paramsObj)) params = params.set(k, String(v));
+    return this.http.get<Record<string, any>>(`${this.apiUrl}/i18n`, { params });
+  }
 }

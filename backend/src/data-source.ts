@@ -12,6 +12,7 @@ import { ProductTranslation } from './entities/product-translation.entity';
 import { CategoryTranslation } from './entities/category-translation.entity';
 import { PageTranslation } from './entities/page-translation.entity';
 import { MediaFile } from './entities/media-file.entity';
+import { I18nString } from './entities/i18n-string.entity';
 
 export const AppDataSource = new DataSource({
   type: 'sqlite',
@@ -30,6 +31,7 @@ export const AppDataSource = new DataSource({
     CategoryTranslation,
     PageTranslation,
     MediaFile,
+    I18nString,
   ],
   synchronize: true,
 });

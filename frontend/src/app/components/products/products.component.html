@@ -1,0 +1,27 @@
+<section class="products-page">
+  <div class="container">
+    <h1>{{ pageTitle }}</h1>
+    <p class="page-subtitle" *ngIf="pageSubtitle">{{ pageSubtitle }}</p>
+
+    <div class="products-grid">
+      <mat-card class="product-card mat-elevation-z3" *ngFor="let product of products">
+        <div class="product-media">
+          <img [src]="siteService.resolveMediaUrl(product.mainImageUrl) || 'assets/images/placeholder.jpg'" [alt]="product.name" />
+        </div>
+        <mat-card-content>
+          <h3 class="product-title">{{ product.name }}</h3>
+          <p class="product-desc">{{ product.description }}</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-stroked-button color="primary" [routerLink]="['/products', product.slug]">
+            {{ 'PRODUCTS.VIEW_DETAILS' | translate }}
+          </button>
+          <span class="spacer"></span>
+          <div class="product-price" *ngIf="product.price">{{ product.price | currency:'EUR':'symbol':'1.2-2' }}</div>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</section>
+
+

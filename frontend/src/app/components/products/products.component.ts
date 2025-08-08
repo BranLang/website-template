@@ -1,38 +1,60 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
+import { RouterModule } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { ApiService } from '../../services/api.service';
+import { LanguageService } from '../../services/language.service';
+import { SiteService } from '../../services/site.service';
 
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [CommonModule, TranslateModule, MatCardModule],
-  template: `
-    <div class="products-container">
-      <div class="container">
-        <h1>{{ 'COMMON.PRODUCTS' | translate }}</h1>
-        <p>Products page coming soon...</p>
-      </div>
-    </div>
-  `,
-  styles: [`
-    .products-container {
-      padding: 80px 0;
-      min-height: calc(100vh - 64px);
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-
-    h1 {
-      font-size: 2.5rem;
-      color: #333;
-      margin-bottom: 1rem;
-      text-align: center;
-    }
-  `]
+  imports: [CommonModule, RouterModule, TranslateModule, MatCardModule, MatButtonModule, MatIconModule],
+  templateUrl: './products.component.html',
+  styleUrls: ['./products.component.scss']
 })
-export class ProductsComponent {}
+export class ProductsComponent implements OnInit {
+  products: any[] = [];
+  pageTitle = '';
+  pageSubtitle = '';
+
+  constructor(
+    private api: ApiService,
+    private language: LanguageService,
+    private translate: TranslateService,
+    public siteService: SiteService,
+  ) {}
+
+  ngOnInit(): void {
+    this.language.currentLanguage$.subscribe(() => this.load());
+    this.load();
+  }
+
+  private load(): void {
+    const lang = this.language.getCurrentLanguage();
+    this.api.getPageBySlug('products', lang).subscribe(
+      page => {
+        this.pageTitle = page?.title || this.translate.instant('COMMON.PRODUCTS');
+        this.pageSubtitle = page?.excerpt || '';
+      },
+      () => {
+        this.pageTitle = this.translate.instant('COMMON.PRODUCTS');
+        this.pageSubtitle = '';
+      }
+    );
+
+    this.api.getProducts(lang).subscribe(list => {
+      // De-duplicate client-side by slug -> imageUrl -> id
+      const seen = new Set<string>();
+      this.products = list.filter(p => {
+        const key = (p.slug && String(p.slug).trim()) || p.mainImageUrl || String(p.id);
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+    });
+  }
+}
