@@ -39,6 +39,9 @@ import { Router } from '@angular/router';
           <button mat-raised-button color="primary" class="full-width" type="submit" [disabled]="form.invalid">
             {{ 'LOGIN.SUBMIT' | translate }}
           </button>
+          <button mat-stroked-button color="accent" class="full-width" type="button" (click)="onGoogleLogin()">
+            {{ 'LOGIN.GOOGLE' | translate }}
+          </button>
         </form>
       </mat-card>
     </div>
@@ -83,5 +86,13 @@ export class LoginComponent {
         this.router.navigate(['/admin']);
       });
     }
+  }
+
+  onGoogleLogin() {
+    this.auth.loginWithGoogle().subscribe(user => {
+      if (user) {
+        this.router.navigate(['/admin']);
+      }
+    });
   }
 }

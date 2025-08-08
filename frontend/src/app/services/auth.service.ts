@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
+import { initializeApp } from 'firebase/app';
+import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
 export interface User {
   id: number;
@@ -24,6 +26,8 @@ export class AuthService {
   private currentUserSubject: BehaviorSubject<User | null>;
   public currentUser: Observable<User | null>;
   private apiUrl = environment.apiUrl;
+  private firebaseApp = initializeApp(environment.firebaseConfig);
+  private firebaseAuth = getAuth(this.firebaseApp);
 
   constructor(private http: HttpClient) {
     this.currentUserSubject = new BehaviorSubject<User | null>(
@@ -77,5 +81,28 @@ export class AuthService {
 
   isEditor(): boolean {
     return this.hasRole('editor') || this.hasRole('admin');
+  }
+
+  loginWithGoogle(): Observable<User | null> {
+    const provider = new GoogleAuthProvider();
+    return from(signInWithPopup(this.firebaseAuth, provider)).pipe(
+      map(result => {
+        const email = result.user.email || '';
+        if (email === 'branislavlang@gmail.com') {
+          const user: User = {
+            id: 0,
+            email,
+            firstName: result.user.displayName || '',
+            lastName: '',
+            role: 'admin'
+          };
+          localStorage.setItem('currentUser', JSON.stringify(user));
+          localStorage.setItem('token', 'google');
+          this.currentUserSubject.next(user);
+          return user;
+        }
+        return null;
+      })
+    );
   }
 }

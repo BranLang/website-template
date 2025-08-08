@@ -130,6 +130,7 @@
     "TITLE": "Admin Login",
     "EMAIL": "Email",
     "PASSWORD": "Password",
-    "SUBMIT": "Login"
+    "SUBMIT": "Login",
+    "GOOGLE": "Login with Google"
   }
 }
