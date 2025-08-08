@@ -25,6 +25,9 @@ export class Site {
   faviconUrl: string;
 
   @Column({ nullable: true })
+  backgroundImageUrl: string;
+
+  @Column({ nullable: true })
   domain: string;
 
   @Column({ type: 'text', nullable: true })
