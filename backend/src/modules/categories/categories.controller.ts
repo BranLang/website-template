@@ -6,6 +6,22 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CategoryType, Language } from '../../entities/category.entity';
 
+const categoryExample = {
+  id: 1,
+  name: 'Windows',
+  slug: 'windows',
+  description: 'All window products',
+  type: CategoryType.WINDOW,
+  imageUrl: 'https://example.com/window.jpg',
+  sortOrder: 1,
+  isActive: true,
+  siteId: 1,
+  language: Language.SK,
+  createdAt: '2024-01-01T00:00:00.000Z',
+  updatedAt: '2024-01-01T00:00:00.000Z',
+  products: [],
+};
+
 @ApiTags('Categories')
 @Controller('categories')
 export class CategoriesController {
@@ -13,6 +29,32 @@ export class CategoriesController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
+  @ApiOperation({ summary: 'Create a category' })
+  @ApiBody({
+    type: CreateCategoryDto,
+    description: 'Category creation data',
+    examples: {
+      default: {
+        summary: 'Category example',
+        value: {
+          name: 'Windows',
+          slug: 'windows',
+          description: 'All window products',
+          type: CategoryType.WINDOW,
+          imageUrl: 'https://example.com/window.jpg',
+          sortOrder: 1,
+          isActive: true,
+        },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Category created successfully',
+    schema: { example: categoryExample },
+  })
+  @ApiResponse({ status: 400, description: 'Bad request' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
   create(@Body() createCategoryDto: CreateCategoryDto) {
     return this.categoriesService.create(createCategoryDto);
   }
@@ -20,6 +62,12 @@ export class CategoriesController {
   @Get()
   @ApiQuery({ name: 'language', enum: Language, required: false, description: 'Language filter' })
   @ApiQuery({ name: 'siteId', required: false, description: 'Site ID filter' })
+  @ApiOperation({ summary: 'Get all active categories' })
+  @ApiResponse({
+    status: 200,
+    description: 'List of active categories',
+    schema: { example: [categoryExample] },
+  })
   findAll(
     @Query('language') language: Language = Language.SK,
     @Query('siteId') siteId: string = '1'
@@ -32,7 +80,11 @@ export class CategoriesController {
   @ApiOperation({ summary: 'Get all categories (admin)' })
   @ApiQuery({ name: 'language', enum: Language, required: false, description: 'Language filter' })
   @ApiQuery({ name: 'siteId', required: false, description: 'Site ID filter' })
-  @ApiResponse({ status: 200, description: 'List of all categories for admin' })
+  @ApiResponse({
+    status: 200,
+    description: 'List of all categories for admin',
+    schema: { example: [categoryExample] },
+  })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   findAllAdmin(
     @Query('language') language: Language = Language.SK,
@@ -46,7 +98,11 @@ export class CategoriesController {
   @ApiParam({ name: 'type', enum: CategoryType, description: 'Category type' })
   @ApiQuery({ name: 'language', enum: Language, required: false, description: 'Language filter' })
   @ApiQuery({ name: 'siteId', required: false, description: 'Site ID filter' })
-  @ApiResponse({ status: 200, description: 'List of categories of a specific type' })
+  @ApiResponse({
+    status: 200,
+    description: 'List of categories of a specific type',
+    schema: { example: [categoryExample] },
+  })
   findByType(
     @Param('type') type: CategoryType,
     @Query('language') language: Language = Language.SK,
@@ -60,7 +116,11 @@ export class CategoriesController {
   @ApiParam({ name: 'id', description: 'Category ID' })
   @ApiQuery({ name: 'language', enum: Language, required: false, description: 'Language filter' })
   @ApiQuery({ name: 'siteId', required: false, description: 'Site ID filter' })
-  @ApiResponse({ status: 200, description: 'Category details' })
+  @ApiResponse({
+    status: 200,
+    description: 'Category details',
+    schema: { example: categoryExample },
+  })
   @ApiResponse({ status: 404, description: 'Category not found' })
   findOne(
     @Param('id') id: string,
@@ -75,7 +135,11 @@ export class CategoriesController {
   @ApiParam({ name: 'slug', description: 'Category slug' })
   @ApiQuery({ name: 'language', enum: Language, required: false, description: 'Language filter' })
   @ApiQuery({ name: 'siteId', required: false, description: 'Site ID filter' })
-  @ApiResponse({ status: 200, description: 'Category details' })
+  @ApiResponse({
+    status: 200,
+    description: 'Category details',
+    schema: { example: categoryExample },
+  })
   @ApiResponse({ status: 404, description: 'Category not found' })
   findBySlug(
     @Param('slug') slug: string,
@@ -89,8 +153,24 @@ export class CategoriesController {
   @Patch(':id')
   @ApiOperation({ summary: 'Update a category' })
   @ApiParam({ name: 'id', description: 'Category ID' })
-  @ApiBody({ type: UpdateCategoryDto, description: 'Category update data' })
-  @ApiResponse({ status: 200, description: 'Category updated successfully' })
+  @ApiBody({
+    type: UpdateCategoryDto,
+    description: 'Category update data',
+    examples: {
+      default: {
+        summary: 'Update category example',
+        value: {
+          name: 'Updated Windows',
+          isActive: false,
+        },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Category updated successfully',
+    schema: { example: categoryExample },
+  })
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 404, description: 'Category not found' })
@@ -102,7 +182,11 @@ export class CategoriesController {
   @Delete(':id')
   @ApiOperation({ summary: 'Delete a category' })
   @ApiParam({ name: 'id', description: 'Category ID' })
-  @ApiResponse({ status: 200, description: 'Category deleted successfully' })
+  @ApiResponse({
+    status: 200,
+    description: 'Category deleted successfully',
+    schema: { example: categoryExample },
+  })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 404, description: 'Category not found' })
   remove(@Param('id') id: string) {

@@ -1,5 +1,5 @@
 import { Controller, Post, UseGuards } from '@nestjs/common';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { SeederService } from './seeder.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
@@ -11,6 +11,12 @@ export class SeederController {
 
   @Post('seed')
   @ApiOperation({ summary: 'Seed database with initial data' })
+  @ApiResponse({
+    status: 200,
+    description: 'Database seeded successfully',
+    schema: { example: { message: 'Database seeded successfully!' } },
+  })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
   async seed() {
     await this.seederService.seed();
     return { message: 'Database seeded successfully!' };

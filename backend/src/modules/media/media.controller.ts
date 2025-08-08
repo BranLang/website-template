@@ -4,6 +4,20 @@ import { MediaService } from './media.service';
 import { ApiTags, ApiOperation, ApiConsumes, ApiBody, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
+const uploadResponseExample = {
+  filename: 'image.jpg',
+  originalname: 'image.jpg',
+  mimetype: 'image/jpeg',
+  size: 1024,
+  url: '/uploads/image.jpg',
+};
+
+const filesListExample = [
+  { filename: 'image.jpg', url: '/uploads/image.jpg' },
+];
+
+const deleteResponseExample = { success: true, message: 'File deleted successfully' };
+
 @ApiTags('Media')
 @Controller('media')
 export class MediaController {
@@ -26,7 +40,11 @@ export class MediaController {
       },
     },
   })
-  @ApiResponse({ status: 201, description: 'File uploaded successfully' })
+  @ApiResponse({
+    status: 201,
+    description: 'File uploaded successfully',
+    schema: { example: uploadResponseExample },
+  })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   async uploadFile(@UploadedFile() file: Express.Multer.File) {
     return this.mediaService.uploadFile(file);
@@ -34,7 +52,11 @@ export class MediaController {
 
   @Get()
   @ApiOperation({ summary: 'Get all uploaded files' })
-  @ApiResponse({ status: 200, description: 'List of all uploaded files' })
+  @ApiResponse({
+    status: 200,
+    description: 'List of all uploaded files',
+    schema: { example: filesListExample },
+  })
   async getAllFiles() {
     return this.mediaService.getAllFiles();
   }
@@ -43,7 +65,11 @@ export class MediaController {
   @Delete(':filename')
   @ApiOperation({ summary: 'Delete a file' })
   @ApiParam({ name: 'filename', description: 'Name of the file to delete' })
-  @ApiResponse({ status: 200, description: 'File deleted successfully' })
+  @ApiResponse({
+    status: 200,
+    description: 'File deleted successfully',
+    schema: { example: deleteResponseExample },
+  })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 404, description: 'File not found' })
   async deleteFile(@Param('filename') filename: string) {
