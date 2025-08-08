@@ -21,6 +21,7 @@ import { Product } from './entities/product.entity';
 import { ProductImage } from './entities/product-image.entity';
 import { Page } from './entities/page.entity';
 import { Order } from './entities/order.entity';
+import { SiteImage } from './entities/site-image.entity';
 
 @Module({
   imports: [
@@ -28,7 +29,7 @@ import { Order } from './entities/order.entity';
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: 'database/cms.db',
-      entities: [User, Site, Category, Product, ProductImage, Page, Order],
+      entities: [User, Site, Category, Product, ProductImage, Page, Order, SiteImage],
       synchronize: true,
     }),
     ServeStaticModule.forRoot({

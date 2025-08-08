@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateCol
 import { Category } from './category.entity';
 import { Product } from './product.entity';
 import { Page } from './page.entity';
+import { SiteImage } from './site-image.entity';
 
 @Entity('sites')
 export class Site {
@@ -44,6 +45,9 @@ export class Site {
   @Column({ default: true })
   isActive: boolean;
 
+  @Column({ default: 'classic' })
+  theme: string;
+
   @Column({ type: 'json', nullable: true })
   settings: any; // For site-specific settings like theme, features, etc.
 
@@ -55,6 +59,9 @@ export class Site {
 
   @OneToMany(() => Page, page => page.site)
   pages: Page[];
+
+  @OneToMany(() => SiteImage, image => image.site)
+  images: SiteImage[];
 
   @CreateDateColumn()
   createdAt: Date;

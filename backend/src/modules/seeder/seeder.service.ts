@@ -6,6 +6,7 @@ import { Category, CategoryType, Language } from '../../entities/category.entity
 import { Product, ProductMaterial, Language as ProductLanguage } from '../../entities/product.entity';
 import { Page, PageType, Language as PageLanguage } from '../../entities/page.entity';
 import { ProductImage } from '../../entities/product-image.entity';
+import { SiteImage } from '../../entities/site-image.entity';
 import { ImageDownloaderService } from './image-downloader.service';
 
 @Injectable()
@@ -21,6 +22,8 @@ export class SeederService {
     private pageRepository: Repository<Page>,
     @InjectRepository(ProductImage)
     private productImageRepository: Repository<ProductImage>,
+    @InjectRepository(SiteImage)
+    private siteImageRepository: Repository<SiteImage>,
     private imageDownloaderService: ImageDownloaderService,
   ) {}
 
@@ -35,6 +38,36 @@ export class SeederService {
   }
 
   private async seedSite(): Promise<Site> {
+    const siteFolder = 'sites/just-eurookna';
+    const logoUrl = await this.imageDownloaderService.downloadImage(
+      'https://www.just-eurookna.sk/wp-content/themes/just/img/logo-just.png',
+      'logo-just.png',
+      siteFolder
+    );
+    const faviconUrl = await this.imageDownloaderService.downloadImage(
+      'https://www.just-eurookna.sk/wp-content/themes/just/favicon.png',
+      'favicon.png',
+      siteFolder
+    );
+    const imageSources = [
+      'homepage_1-2.jpg',
+      'homepage_2-2.jpg',
+      'homepage_3-2.jpg',
+      'homepage_4-2.jpg',
+      'homepage_5-2.jpg',
+      'homepage_7-2.jpg',
+      'homepage_8-2.jpg',
+      'homeblock-drevene-okna.jpg',
+      'homeblock-drevo-hlinik.jpg',
+      'homeblock-hlinikove-systemy.jpg'
+    ];
+    const images: string[] = [];
+    for (const img of imageSources) {
+      const url = `https://www.just-eurookna.sk/wp-content/themes/just/img/${img}`;
+      const saved = await this.imageDownloaderService.downloadImage(url, img, siteFolder);
+      images.push(saved);
+    }
+
     const siteData = {
       slug: 'just-eurookna',
       name: 'Just Eurookná',
@@ -46,6 +79,10 @@ export class SeederService {
       metaDescription: 'Just Eurookná - kvalitné okná a dvere',
       metaKeywords: 'okná, dvere, drevené, hliníkové, výroba',
       isActive: true,
+      theme: 'classic',
+      logoUrl,
+      faviconUrl,
+      settings: { images }
     };
 
     let site = await this.siteRepository.findOne({
@@ -58,6 +95,14 @@ export class SeederService {
       console.log('Site created successfully');
     } else {
       console.log('Site already exists');
+    }
+
+    const allImages = [logoUrl, faviconUrl, ...images];
+    for (const imageUrl of allImages) {
+      const exists = await this.siteImageRepository.findOne({ where: { imageUrl, siteId: site.id } });
+      if (!exists) {
+        await this.siteImageRepository.save({ imageUrl, siteId: site.id });
+      }
     }
 
     return site;

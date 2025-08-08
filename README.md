@@ -11,6 +11,7 @@ A modern, full-stack Content Management System built with Angular, NestJS, and S
 - **Contact Form** for customer inquiries
 - **Static Pages** (About, FAQ, etc.)
 - **Responsive Design** for all devices
+- **Theme support** – choose between `classic` and `modern` styles per site
 
 ### 🔧 Admin Panel
 - **Dashboard** with overview statistics
@@ -21,6 +22,7 @@ A modern, full-stack Content Management System built with Angular, NestJS, and S
 - **User Management** - Manage admin users and roles
 - **Media Library** - Upload and manage images
 - **Rich Text Editor** - WYSIWYG content editing
+- **Site Settings** - select visual theme for each site
 
 ### 🔐 Authentication & Security
 - **JWT Authentication** with role-based access control
@@ -45,6 +47,7 @@ A modern, full-stack Content Management System built with Angular, NestJS, and S
 - **HTTP Client**: Angular HttpClient with interceptors
 - **Rich Text Editor**: ngx-quill
 - **Notifications**: ngx-toastr
+- **Dynamic theming** loaded from API
 
 ## Project Structure
 
@@ -102,6 +105,13 @@ website-template/
 
    The backend will be available at `http://localhost:3000`
 
+4. **Seed the database with demo content and images**:
+   ```bash
+   node seed-database.js
+   ```
+
+   This downloads images from [just-eurookna.sk](https://www.just-eurookna.sk) and populates the SQLite database.
+
 ### Frontend Setup
 
 1. **Navigate to frontend directory**:
@@ -120,6 +130,8 @@ website-template/
    ```
 
    The frontend will be available at `http://localhost:4200`
+
+   The site data and theme are loaded using `defaultSiteSlug` from the environment configuration.
 
 ### Default Admin Account
 
@@ -171,6 +183,14 @@ When you first start the backend, a default admin account is automatically creat
 - `GET /api/media` - Get all files (admin)
 - `DELETE /api/media/:filename` - Delete file (admin)
 
+### Sites
+- `GET /api/sites/slug/:slug` - Get site by slug (includes theme and images)
+
+### Image Storage
+- Images are downloaded during seeding and stored on disk under `/uploads/sites/<siteId>/`
+- Metadata is saved in the `site_images` table so each image is tagged to its site
+- For production deployments consider using a cloud object store (e.g. Google Drive) and saving the public URLs instead of raw files
+
 ## Database Schema
 
 ### Users
@@ -187,6 +207,9 @@ When you first start the backend, a default admin account is automatically creat
 
 ### Pages
 - id, title, slug, content, excerpt, type, featuredImageUrl, isPublished, sortOrder, metaDescription, metaKeywords, createdAt, updatedAt
+
+### SiteImages
+- id, imageUrl, altText, siteId, createdAt
 
 ### Orders
 - id, customerName, customerEmail, customerPhone, message, type, status, adminNotes, productDetails, estimatedPrice, createdAt, updatedAt

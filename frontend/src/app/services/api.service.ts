@@ -194,4 +194,9 @@ export class ApiService {
   seedDatabase(): Observable<any> {
     return this.http.post(`${this.apiUrl}/seeder/seed`, {});
   }
+
+  // Sites endpoints
+  getSiteBySlug(slug: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/sites/slug/${slug}`);
+  }
 }

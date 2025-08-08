@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { HeaderComponent } from '../../components/header/header.component';
+import { SiteService } from '../../services/site.service';
 
 @Component({
   selector: 'app-public-layout',
@@ -20,6 +21,12 @@ import { HeaderComponent } from '../../components/header/header.component';
     }
   `]
 })
-export class PublicLayoutComponent {}
+export class PublicLayoutComponent implements OnInit {
+  constructor(private siteService: SiteService) {}
+
+  ngOnInit(): void {
+    this.siteService.loadSite();
+  }
+}
 
 

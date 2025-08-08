@@ -8,9 +8,10 @@ import { Category } from '../../entities/category.entity';
 import { Product } from '../../entities/product.entity';
 import { Page } from '../../entities/page.entity';
 import { ProductImage } from '../../entities/product-image.entity';
+import { SiteImage } from '../../entities/site-image.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Site, Category, Product, Page, ProductImage])],
+  imports: [TypeOrmModule.forFeature([Site, Category, Product, Page, ProductImage, SiteImage])],
   providers: [SeederService, ImageDownloaderService],
   controllers: [SeederController],
 })

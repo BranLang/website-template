@@ -55,6 +55,11 @@ export class CreateSiteDto {
   @IsString()
   contactAddress?: string;
 
+  @ApiProperty({ description: 'Site theme', required: false, default: 'classic' })
+  @IsOptional()
+  @IsString()
+  theme?: string;
+
   @ApiProperty({ description: 'Site settings', required: false })
   @IsOptional()
   @IsObject()
