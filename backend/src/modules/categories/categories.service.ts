@@ -33,6 +33,7 @@ export class CategoriesService {
         imageUrl: c.imageUrl,
         sortOrder: c.sortOrder,
         isActive: c.isActive,
+        parentId: c.parentId,
       };
     });
   }
@@ -50,6 +51,7 @@ export class CategoriesService {
         imageUrl: c.imageUrl,
         sortOrder: c.sortOrder,
         isActive: c.isActive,
+        parentId: c.parentId,
       };
     });
   }
@@ -67,6 +69,7 @@ export class CategoriesService {
       imageUrl: c.imageUrl,
       sortOrder: c.sortOrder,
       isActive: c.isActive,
+      parentId: c.parentId,
       products: c.products,
     };
   }
@@ -90,6 +93,7 @@ export class CategoriesService {
       imageUrl: c.imageUrl,
       sortOrder: c.sortOrder,
       isActive: c.isActive,
+      parentId: c.parentId,
       products: c.products,
     };
   }
@@ -107,6 +111,7 @@ export class CategoriesService {
         imageUrl: c.imageUrl,
         sortOrder: c.sortOrder,
         isActive: c.isActive,
+        parentId: c.parentId,
       };
     });
   }
