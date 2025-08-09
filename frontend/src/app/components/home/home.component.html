@@ -24,67 +24,48 @@
 <!-- About Section -->
 <section class="about-section">
   <div class="container">
-    <div class="about-content">
-      <h2>{{ 'HOME.ABOUT_US_SHORT' | translate }}</h2>
-      <div class="features-grid">
-        <mat-card class="feature-item mat-elevation-z2" *ngFor="let feature of aboutFeatures">
-          <span class="feature-item-content">  
-            <mat-icon class="feature-item-icon" color="primary">check_circle</mat-icon>
+    <mat-card class="about-card">
+      <mat-card-content>
+        <h2>{{ 'HOME.ABOUT_US_SHORT' | translate }}</h2>
+        <div class="features-grid">
+          <div class="feature-item" *ngFor="let feature of aboutFeatures">
+            <mat-icon color="primary">check_circle</mat-icon>
             <span>{{ feature | translate }}</span>
-          </span>
-       
-        </mat-card>
-      </div>
-    </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
   </div>
 </section>
 
 <!-- Featured Products Section intentionally removed: Home shows categories only -->
 
-<!-- Main grouped Categories: Windows / Doors / Realizations (each shows its subcategories) -->
+<!-- Main grouped Categories -->
 <section class="categories-section" *ngIf="categories.length > 0">
   <div class="container narrow">
     <h2>{{ ('PRODUCTS.CATEGORIES.TITLE' | translate) || 'Produkty' }}</h2>
 
     <div class="cards-grid">
-    <mat-card class="group-card mat-elevation-z6">
-      <div class="group-title">{{ 'CATEGORIES.GROUP.WINDOWS' | translate }}</div>
-      <img class="group-hero" [src]="addV(groupImages.window || siteService.resolveMediaUrl(groupedCategories.window[0]?.imageUrl))" alt="Okná" />
-      <div class="group-list">
-        <ng-container *ngFor="let category of groupedCategories.window">
-          <a class="group-link" [routerLink]="['/categories', category.slug]">
-            <mat-icon>chevron_right</mat-icon>
-            <span>{{ category.name }}</span>
-          </a>
-        </ng-container>
-      </div>
-    </mat-card>
+      <mat-card class="group-card" routerLink="/categories/windows">
+        <img mat-card-image [src]="addV(groupImages.window || siteService.resolveMediaUrl(groupedCategories.window[0]?.imageUrl))" alt="Okná">
+        <mat-card-header>
+          <mat-card-title>{{ 'NAVIGATION.WINDOWS' | translate }}</mat-card-title>
+        </mat-card-header>
+      </mat-card>
+      
+      <mat-card class="group-card" routerLink="/categories/doors">
+        <img mat-card-image [src]="addV(groupImages.door || siteService.resolveMediaUrl(groupedCategories.door[0]?.imageUrl))" alt="Vchodové dvere">
+        <mat-card-header>
+          <mat-card-title>{{ 'NAVIGATION.DOORS' | translate }}</mat-card-title>
+        </mat-card-header>
+      </mat-card>
 
-    <mat-card class="group-card mat-elevation-z6">
-      <div class="group-title">{{ 'CATEGORIES.GROUP.DOORS' | translate }}</div>
-      <img class="group-hero" [src]="addV(groupImages.door || siteService.resolveMediaUrl(groupedCategories.door[0]?.imageUrl))" alt="Vchodové dvere" />
-      <div class="group-list">
-        <ng-container *ngFor="let category of groupedCategories.door">
-          <a class="group-link" [routerLink]="['/categories', category.slug]">
-            <mat-icon>chevron_right</mat-icon>
-            <span>{{ category.name }}</span>
-          </a>
-        </ng-container>
-      </div>
-    </mat-card>
-
-    <mat-card class="group-card mat-elevation-z6" *ngIf="groupedCategories.realization.length">
-      <div class="group-title">{{ 'CATEGORIES.GROUP.REALIZATIONS' | translate }}</div>
-      <img class="group-hero" [src]="addV(groupImages.realization || siteService.resolveMediaUrl(groupedCategories.realization[0]?.imageUrl))" alt="Realizácie" />
-      <div class="group-list">
-        <ng-container *ngFor="let category of groupedCategories.realization">
-          <a class="group-link" [routerLink]="['/categories', category.slug]">
-            <mat-icon>chevron_right</mat-icon>
-            <span>{{ category.name }}</span>
-          </a>
-        </ng-container>
-      </div>
-    </mat-card>
+      <mat-card class="group-card" *ngIf="groupedCategories.realization.length" routerLink="/realizations">
+        <img mat-card-image [src]="addV(groupImages.realization || siteService.resolveMediaUrl(groupedCategories.realization[0]?.imageUrl))" alt="Realizácie">
+        <mat-card-header>
+          <mat-card-title>{{ 'NAVIGATION.REALIZATIONS' | translate }}</mat-card-title>
+        </mat-card-header>
+      </mat-card>
     </div>
   </div>
 </section>

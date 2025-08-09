@@ -27,6 +27,7 @@
     "WINDOWS": "Windows",
     "DOORS": "Doors",
     "ACCESSORIES": "Accessories",
+    "PRODUCTS": "Products",
     "REALIZATIONS": "Realizations",
     "PRICE_REQUEST": "Price Request",
     "ARTICLES": "Articles"
@@ -47,6 +48,7 @@
   },
   "PRODUCTS": {
     "CATEGORIES": {
+      "TITLE": "Categories",
       "WOODEN_WINDOWS": "Wooden Windows",
       "WOOD_ALUMINUM_WINDOWS": "Wood-Aluminum Windows",
       "ALUMINUM_WINDOWS": "Aluminum Windows",
@@ -124,6 +126,18 @@
     "COMPANY_INFO": "JUST SK, s.r.o. is a Slovak manufacturing company focused on the production of wooden, wood-aluminum and aluminum windows and doors.",
     "FOLLOW_US": "Follow Us",
     "ALL_RIGHTS_RESERVED": "All rights reserved",
+    "COOKIE_NOTICE": "This website uses cookies...",
+    "CONTACT_INFO": {
+      "COMPANY": "JUST SK, s.r.o.",
+      "ADDRESS_LINE_1": "Viničná 609",
+      "ADDRESS_LINE_2": "951 71 Sľažany",
+      "COUNTRY": "Slovakia",
+      "ICO_LABEL": "IČO",
+      "ICO_VALUE": "36736449",
+      "DIC_LABEL": "DIČ",
+      "DIC_VALUE": "SK2022323160",
+      "DIRECTOR": "Pavol Just, konateľ: 0905 431 240"
+    },
     "PRIVACY_POLICY": "Privacy Policy",
     "TERMS_OF_SERVICE": "Terms of Service"
   },

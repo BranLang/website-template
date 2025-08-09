@@ -3,16 +3,18 @@ import { RouterOutlet } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { HeaderComponent } from '../../components/header/header.component';
 import { SiteService } from '../../services/site.service';
+import { FooterComponent } from '../../components/footer/footer.component';
 
 @Component({
   selector: 'app-public-layout',
   standalone: true,
-  imports: [RouterOutlet, TranslateModule, HeaderComponent],
+  imports: [RouterOutlet, TranslateModule, HeaderComponent, FooterComponent],
   template: `
     <app-header></app-header>
     <main class="main-content">
       <router-outlet></router-outlet>
     </main>
+    <app-footer></app-footer>
   `,
   styles: [`
     .main-content {

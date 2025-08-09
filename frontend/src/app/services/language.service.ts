@@ -12,14 +12,9 @@ export class LanguageService {
   private currentLanguageSubject = new BehaviorSubject<Language>('sk');
   public currentLanguage$ = this.currentLanguageSubject.asObservable();
 
-  constructor(private translateService: TranslateService, private api: ApiService) {
-    // Load language from localStorage or default to Slovak
+  constructor(private translateService: TranslateService) {
     const savedLanguage = localStorage.getItem('language') as Language;
-    if (savedLanguage && (savedLanguage === 'sk' || savedLanguage === 'en')) {
-      this.setLanguage(savedLanguage);
-    } else {
-      this.setLanguage('sk');
-    }
+    this.setLanguage(savedLanguage || 'sk');
   }
 
   getCurrentLanguage(): Language {
@@ -29,18 +24,11 @@ export class LanguageService {
   setLanguage(language: Language): void {
     this.currentLanguageSubject.next(language);
     localStorage.setItem('language', language);
-    // Load DB translations and merge, then switch language
-    this.api.getI18n(language).subscribe(dbTranslations => {
-      if (dbTranslations) {
-        this.translateService.setTranslation(language, dbTranslations, true);
-      }
-      this.translateService.use(language);
-    }, () => this.translateService.use(language));
+    this.translateService.use(language);
   }
 
   toggleLanguage(): void {
-    const current = this.getCurrentLanguage();
-    const newLanguage: Language = current === 'sk' ? 'en' : 'sk';
+    const newLanguage: Language = this.getCurrentLanguage() === 'sk' ? 'en' : 'sk';
     this.setLanguage(newLanguage);
   }
 }

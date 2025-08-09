@@ -1,0 +1,27 @@
+:root {
+  --color-primary: #0d47a1; /* Material Blue 900 */
+  --color-bg: #121212;      /* Dark background */
+  --color-surface: #1e1e1e; /* Card / toolbar surface */
+  --color-text: #e0e0e0;    /* High-contrast text */
+  --color-link: #448aff;    /* Accent link (Blue A200) */
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.mat-toolbar {
+  background: var(--color-surface) !important;
+  color: var(--color-text) !important;
+}
+
+a {
+  color: var(--color-link);
+}
+
+/* Optional utility classes */
+.btn-primary, .mat-flat-button.mat-primary, .mat-raised-button.mat-primary {
+  background: var(--color-primary) !important;
+  color: #fff !important;
+}

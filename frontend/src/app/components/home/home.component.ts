@@ -147,8 +147,8 @@ export class HomeComponent implements OnInit {
     const win = this.groupedCategories.window || [];
     const door = this.groupedCategories.door || [];
     const rea = this.groupedCategories.realization || [];
-    const windowHero = this.resolveGroupHero(['drevene-okna','drevohlinikove-okna','hlinikove-okna'], win);
-    let doorHero = this.resolveGroupHero(['drevene-dvere','historicke-dvere','hlinikove-dvere'], door);
+    const windowHero = this.resolveGroupHero(['windows', 'drevene-okna'], win);
+    let doorHero = this.resolveGroupHero(['doors', 'drevene-dvere'], door);
     let realizationHero = this.resolveGroupHero(['realizacie'], rea);
     const isHashed = (p: string) => /\/[a-f0-9]{32}\.[a-z]+$/i.test(p || '');
     if (!isHashed(doorHero) && this.siteImages.length) {

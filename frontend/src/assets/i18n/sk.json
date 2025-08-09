@@ -27,6 +27,7 @@
     "WINDOWS": "Okná",
     "DOORS": "Dvere",
     "ACCESSORIES": "Doplnky",
+    "PRODUCTS": "Produkty",
     "REALIZATIONS": "Realizácie",
     "PRICE_REQUEST": "Cenový dopyt",
     "ARTICLES": "Články"
@@ -47,6 +48,7 @@
   },
   "PRODUCTS": {
     "CATEGORIES": {
+      "TITLE": "Kategórie",
       "WOODEN_WINDOWS": "Drevené okná",
       "WOOD_ALUMINUM_WINDOWS": "Drevohliníkové okná",
       "ALUMINUM_WINDOWS": "Hliníkové okná",
@@ -124,6 +126,18 @@
     "COMPANY_INFO": "JUST SK, s.r.o. je slovenská výrobná spoločnosť zameraná na výrobu drevených, drevohliníkových a hliníkových okien a dverí.",
     "FOLLOW_US": "Sledujte nás",
     "ALL_RIGHTS_RESERVED": "Všetky práva vyhradené",
+    "COOKIE_NOTICE": "Tento web používa k poskytnutiu služieb...",
+    "CONTACT_INFO": {
+      "COMPANY": "JUST SK, s.r.o.",
+      "ADDRESS_LINE_1": "Viničná 609",
+      "ADDRESS_LINE_2": "951 71 Sľažany",
+      "COUNTRY": "Slovensko",
+      "ICO_LABEL": "IČO",
+      "ICO_VALUE": "36736449",
+      "DIC_LABEL": "DIČ",
+      "DIC_VALUE": "SK2022323160",
+      "DIRECTOR": "Pavol Just, konateľ: 0905 431 240"
+    },
     "PRIVACY_POLICY": "Ochrana súkromia",
     "TERMS_OF_SERVICE": "Podmienky používania"
   },

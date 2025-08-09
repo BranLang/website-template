@@ -1,0 +1,56 @@
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-cards" [ngClass]="{'mobile-layout': (cols$ | async) === 1}">
+      
+      <mat-card class="footer-card">
+        <mat-card-header>
+          <mat-card-title>{{ 'NAVIGATION.PRODUCTS' | translate }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ul class="product-links">
+            <li><a routerLink="/products/wooden-windows">{{ 'PRODUCTS.CATEGORIES.WOODEN_WINDOWS' | translate }}</a></li>
+            <li><a routerLink="/products/wood-aluminum-windows">{{ 'PRODUCTS.CATEGORIES.WOOD_ALUMINUM_WINDOWS' | translate }}</a></li>
+            <li><a routerLink="/products/aluminum-windows">{{ 'PRODUCTS.CATEGORIES.ALUMINUM_WINDOWS' | translate }}</a></li>
+            <li><a routerLink="/products/historical-windows">{{ 'PRODUCTS.CATEGORIES.HISTORICAL_WINDOWS' | translate }}</a></li>
+            <li><a routerLink="/products/wooden-doors">{{ 'PRODUCTS.CATEGORIES.WOODEN_DOORS' | translate }}</a></li>
+            <li><a routerLink="/products/historical-doors">{{ 'PRODUCTS.CATEGORIES.HISTORICAL_DOORS' | translate }}</a></li>
+            <li><a routerLink="/products/aluminum-doors">{{ 'PRODUCTS.CATEGORIES.ALUMINUM_DOORS' | translate }}</a></li>
+            <li><a routerLink="/products/sliding-doors">{{ 'PRODUCTS.CATEGORIES.SLIDING_DOORS' | translate }}</a></li>
+          </ul>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="footer-card contact-card">
+        <mat-card-header>
+          <mat-card-title>{{ 'CONTACT.TITLE' | translate }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <address class="contact-info">
+            <strong>{{ 'FOOTER.CONTACT_INFO.COMPANY' | translate }}</strong><br>
+            {{ 'FOOTER.CONTACT_INFO.ADDRESS_LINE_1' | translate }}<br>
+            {{ 'FOOTER.CONTACT_INFO.ADDRESS_LINE_2' | translate }}<br>
+            {{ 'FOOTER.CONTACT_INFO.COUNTRY' | translate }}<br><br>
+            {{ 'FOOTER.CONTACT_INFO.ICO_LABEL' | translate }}: {{ 'FOOTER.CONTACT_INFO.ICO_VALUE' | translate }}<br>
+            {{ 'FOOTER.CONTACT_INFO.DIC_LABEL' | translate }}: {{ 'FOOTER.CONTACT_INFO.DIC_VALUE' | translate }}<br><br>
+            {{ 'FOOTER.CONTACT_INFO.DIRECTOR' | translate }}
+          </address>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="footer-card about-card">
+        <mat-card-header>
+          <mat-card-title>{{ 'ABOUT.TITLE' | translate }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p class="about-text">{{ 'ABOUT.DESCRIPTION' | translate }}</p>
+        </mat-card-content>
+      </mat-card>
+
+    </div>
+
+    <div class="footer-bottom">
+      <p>© {{ currentYear }} {{ 'FOOTER.CONTACT_INFO.COMPANY' | translate }} | <a href="mailto:branislavlang@gmail.com">Webdizajn: branislavlang@gmail.com</a> | TLC</p>
+      <p>{{ 'FOOTER.COOKIE_NOTICE' | translate }}</p>
+    </div>
+  </div>
+</footer>

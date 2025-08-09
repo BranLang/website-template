@@ -16,6 +16,7 @@ class MockLanguageService {
 class MockSiteService {
   site$ = of({});
   resolveMediaUrl() { return ''; }
+  setTheme() {}
 }
 
 class MockAuthService {
