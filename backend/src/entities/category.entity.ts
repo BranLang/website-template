@@ -35,6 +35,16 @@ export class Category {
   @Column({ default: true })
   isActive: boolean;
 
+  @ManyToOne(() => Category, category => category.children, { nullable: true })
+  @JoinColumn({ name: 'parentId' })
+  parent?: Category;
+
+  @OneToMany(() => Category, category => category.parent)
+  children: Category[];
+
+  @Column({ nullable: true })
+  parentId?: number;
+
   @ManyToOne(() => Site, site => site.categories)
   @JoinColumn({ name: 'siteId' })
   site: Site;
