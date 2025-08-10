@@ -6,6 +6,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { HomeHeroComponent } from './hero/home-hero.component';
+import { HomeAboutComponent } from './about/home-about.component';
+import { HomeCategoriesComponent } from './categories/home-categories.component';
 import { Observable, Subscription, timer } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
@@ -25,7 +28,10 @@ import { CarouselService, CarouselSlide } from '../../services/carousel.service'
     MatButtonModule,
     MatCardModule,
     MatIconModule,
-    MatGridListModule
+    MatGridListModule,
+    HomeHeroComponent,
+    HomeAboutComponent,
+    HomeCategoriesComponent
   ],
   providers: [HomeService],
   templateUrl: './home.component.html',

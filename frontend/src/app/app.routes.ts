@@ -54,12 +54,36 @@ export const routes: Routes = [
         loadComponent: () => import('./components/admin/products/products.component').then(m => m.ProductsComponent)
       },
       {
+        path: 'products/create',
+        loadComponent: () => import('./components/admin/products/product-form/product-form.component').then(m => m.ProductFormComponent)
+      },
+      {
+        path: 'products/edit/:id',
+        loadComponent: () => import('./components/admin/products/product-form/product-form.component').then(m => m.ProductFormComponent)
+      },
+      {
         path: 'categories',
         loadComponent: () => import('./components/admin/categories/categories.component').then(m => m.CategoriesComponent)
       },
       {
+        path: 'categories/create',
+        loadComponent: () => import('./components/admin/categories/category-form/category-form.component').then(m => m.CategoryFormComponent)
+      },
+      {
+        path: 'categories/edit/:id',
+        loadComponent: () => import('./components/admin/categories/category-form/category-form.component').then(m => m.CategoryFormComponent)
+      },
+      {
         path: 'pages',
         loadComponent: () => import('./components/admin/pages/pages.component').then(m => m.PagesComponent)
+      },
+      {
+        path: 'pages/create',
+        loadComponent: () => import('./components/admin/pages/page-form/page-form.component').then(m => m.PageFormComponent)
+      },
+      {
+        path: 'pages/edit/:id',
+        loadComponent: () => import('./components/admin/pages/page-form/page-form.component').then(m => m.PageFormComponent)
       },
       {
         path: 'orders',
