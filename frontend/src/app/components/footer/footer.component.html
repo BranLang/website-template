@@ -1,56 +1,127 @@
 <footer class="site-footer">
   <div class="container">
-    <div class="footer-cards" [ngClass]="{'mobile-layout': (cols$ | async) === 1}">
-      
-      <mat-card class="footer-card">
-        <mat-card-header>
-          <mat-card-title>{{ 'NAVIGATION.PRODUCTS' | translate }}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <ul class="product-links">
-            <li><a routerLink="/products/wooden-windows">{{ 'PRODUCTS.CATEGORIES.WOODEN_WINDOWS' | translate }}</a></li>
-            <li><a routerLink="/products/wood-aluminum-windows">{{ 'PRODUCTS.CATEGORIES.WOOD_ALUMINUM_WINDOWS' | translate }}</a></li>
-            <li><a routerLink="/products/aluminum-windows">{{ 'PRODUCTS.CATEGORIES.ALUMINUM_WINDOWS' | translate }}</a></li>
-            <li><a routerLink="/products/historical-windows">{{ 'PRODUCTS.CATEGORIES.HISTORICAL_WINDOWS' | translate }}</a></li>
-            <li><a routerLink="/products/wooden-doors">{{ 'PRODUCTS.CATEGORIES.WOODEN_DOORS' | translate }}</a></li>
-            <li><a routerLink="/products/historical-doors">{{ 'PRODUCTS.CATEGORIES.HISTORICAL_DOORS' | translate }}</a></li>
-            <li><a routerLink="/products/aluminum-doors">{{ 'PRODUCTS.CATEGORIES.ALUMINUM_DOORS' | translate }}</a></li>
-            <li><a routerLink="/products/sliding-doors">{{ 'PRODUCTS.CATEGORIES.SLIDING_DOORS' | translate }}</a></li>
-          </ul>
-        </mat-card-content>
-      </mat-card>
+    <div class="footer-content">
+      <!-- Windows Products -->
+      <div class="footer-section">
+        <h4 class="footer-title">
+          <mat-icon>window</mat-icon>
+          {{ 'NAVIGATION.WINDOWS' | translate }}
+        </h4>
+        <nav class="footer-nav">
+          <a routerLink="/products/wooden-windows">
+            <mat-icon>chevron_right</mat-icon>
+            {{ 'PRODUCTS.CATEGORIES.WOODEN_WINDOWS' | translate }}
+          </a>
+          <a routerLink="/products/wood-aluminum-windows">
+            <mat-icon>chevron_right</mat-icon>
+            {{ 'PRODUCTS.CATEGORIES.WOOD_ALUMINUM_WINDOWS' | translate }}
+          </a>
+          <a routerLink="/products/aluminum-windows">
+            <mat-icon>chevron_right</mat-icon>
+            {{ 'PRODUCTS.CATEGORIES.ALUMINUM_WINDOWS' | translate }}
+          </a>
+          <a routerLink="/products/historical-windows">
+            <mat-icon>chevron_right</mat-icon>
+            {{ 'PRODUCTS.CATEGORIES.HISTORICAL_WINDOWS' | translate }}
+          </a>
+        </nav>
+      </div>
 
-      <mat-card class="footer-card contact-card">
-        <mat-card-header>
-          <mat-card-title>{{ 'CONTACT.TITLE' | translate }}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <address class="contact-info">
-            <strong>{{ 'FOOTER.CONTACT_INFO.COMPANY' | translate }}</strong><br>
-            {{ 'FOOTER.CONTACT_INFO.ADDRESS_LINE_1' | translate }}<br>
-            {{ 'FOOTER.CONTACT_INFO.ADDRESS_LINE_2' | translate }}<br>
-            {{ 'FOOTER.CONTACT_INFO.COUNTRY' | translate }}<br><br>
-            {{ 'FOOTER.CONTACT_INFO.ICO_LABEL' | translate }}: {{ 'FOOTER.CONTACT_INFO.ICO_VALUE' | translate }}<br>
-            {{ 'FOOTER.CONTACT_INFO.DIC_LABEL' | translate }}: {{ 'FOOTER.CONTACT_INFO.DIC_VALUE' | translate }}<br><br>
-            {{ 'FOOTER.CONTACT_INFO.DIRECTOR' | translate }}
-          </address>
-        </mat-card-content>
-      </mat-card>
+      <!-- Door Products -->
+      <div class="footer-section">
+        <h4 class="footer-title">
+          <mat-icon>door_front</mat-icon>
+          {{ 'NAVIGATION.DOORS' | translate }}
+        </h4>
+        <nav class="footer-nav">
+          <a routerLink="/products/wooden-doors">
+            <mat-icon>chevron_right</mat-icon>
+            {{ 'PRODUCTS.CATEGORIES.WOODEN_DOORS' | translate }}
+          </a>
+          <a routerLink="/products/historical-doors">
+            <mat-icon>chevron_right</mat-icon>
+            {{ 'PRODUCTS.CATEGORIES.HISTORICAL_DOORS' | translate }}
+          </a>
+          <a routerLink="/products/aluminum-doors">
+            <mat-icon>chevron_right</mat-icon>
+            {{ 'PRODUCTS.CATEGORIES.ALUMINUM_DOORS' | translate }}
+          </a>
+          <a routerLink="/products/sliding-doors">
+            <mat-icon>chevron_right</mat-icon>
+            {{ 'PRODUCTS.CATEGORIES.SLIDING_DOORS' | translate }}
+          </a>
+        </nav>
+      </div>
 
-      <mat-card class="footer-card about-card">
-        <mat-card-header>
-          <mat-card-title>{{ 'ABOUT.TITLE' | translate }}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
+      <!-- Company Info -->
+      <div class="footer-section">
+        <h4 class="footer-title">
+          <mat-icon>business</mat-icon>
+          {{ 'ABOUT.TITLE' | translate }}
+        </h4>
+        <div class="company-info">
           <p class="about-text">{{ 'ABOUT.DESCRIPTION' | translate }}</p>
-        </mat-card-content>
-      </mat-card>
+          
+          <div class="quality-badges">
+            <div class="badge">
+              <mat-icon>verified</mat-icon>
+              <span>30+ rokov skúseností</span>
+            </div>
+            <div class="badge">
+              <mat-icon>eco</mat-icon>
+              <span>Ekologické materiály</span>
+            </div>
+            <div class="badge">
+              <mat-icon>security</mat-icon>
+              <span>Slovenská kvalita</span>
+            </div>
+          </div>
+        </div>
+      </div>
 
+      <!-- Contact Info -->
+      <div class="footer-section">
+        <h4 class="footer-title">
+          <mat-icon>contact_phone</mat-icon>
+          {{ 'CONTACT.TITLE' | translate }}
+        </h4>
+        <div class="contact-info">
+          <div class="contact-item">
+            <mat-icon>business</mat-icon>
+            <div>
+              <strong>JUST SK, s.r.o.</strong>
+              <p>Viničná 609<br>951 71 Sľažany<br>Slovakia</p>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <mat-icon>phone</mat-icon>
+            <div>
+              <strong>Pavol Just, konateľ</strong>
+              <p><a href="tel:+421905431240">0905 431 240</a></p>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <mat-icon>assignment</mat-icon>
+            <div>
+              <p>IČO: 36736449<br>DIČ: SK2022323160</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="footer-bottom">
-      <p>© {{ currentYear }} {{ 'FOOTER.CONTACT_INFO.COMPANY' | translate }} | <a href="mailto:branislavlang@gmail.com">Webdizajn: branislavlang@gmail.com</a> | TLC</p>
-      <p>{{ 'FOOTER.COOKIE_NOTICE' | translate }}</p>
+      <div class="footer-bottom-content">
+        <p class="copyright">© {{ currentYear }} JUST SK, s.r.o. | Všetky práva vyhradené</p>
+        <div class="footer-links">
+          <a href="mailto:branislavlang@gmail.com">Webdizajn: branislavlang@gmail.com</a>
+          <span class="separator">|</span>
+          <span>TLC</span>
+        </div>
+        <p class="cookie-notice">{{ 'FOOTER.COOKIE_NOTICE' | translate }}</p>
+      </div>
     </div>
   </div>
 </footer>

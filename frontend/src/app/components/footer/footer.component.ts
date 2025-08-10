@@ -2,8 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { MatGridListModule } from '@angular/material/grid-list';
-import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
@@ -15,8 +14,7 @@ import { Observable } from 'rxjs';
     CommonModule,
     RouterModule,
     TranslateModule,
-    MatGridListModule,
-    MatCardModule
+    MatIconModule
   ],
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.scss']

@@ -12,6 +12,7 @@ import { createHash } from 'crypto';
 import { CategoryTranslation } from '../../entities/category-translation.entity';
 import { ProductTranslation } from '../../entities/product-translation.entity';
 import { I18nString } from '../../entities/i18n-string.entity';
+import { CarouselSlide } from '../../entities/carousel-slide.entity';
 
 @Injectable()
 export class SeederService {
@@ -34,6 +35,8 @@ export class SeederService {
     private siteImageRepository: Repository<SiteImage>,
     @InjectRepository(I18nString)
     private i18nRepo: Repository<I18nString>,
+    @InjectRepository(CarouselSlide)
+    private carouselSlideRepository: Repository<CarouselSlide>,
     private imageDownloaderService: ImageDownloaderService,
   ) {}
 
@@ -44,6 +47,7 @@ export class SeederService {
     await this.seedProducts(site.id);
     await this.seedPages(site.id);
     await this.seedI18n(site.id);
+    await this.seedCarousel(site.id);
     await this.downloadAndSeedImages();
     console.log('Database seeded successfully!');
   }
@@ -504,7 +508,9 @@ export class SeederService {
         try {
           const saved = await this.imageDownloaderService.downloadImage(url, url.split('/').pop() || 'site.jpg', 'sites/just-eurookna');
           if (!siteSaved.includes(saved)) siteSaved.push(saved);
-        } catch {}
+        } catch (error) {
+          console.error(`Error downloading site image: ${url}`, error);
+        }
       }
       const productSaved: string[] = [];
       for (const url of scraped.products.slice(0, 60)) {
@@ -513,7 +519,9 @@ export class SeederService {
         try {
           const saved = await this.imageDownloaderService.downloadImage(url, url.split('/').pop() || 'product.jpg', 'products');
           if (!productSaved.includes(saved)) productSaved.push(saved);
-        } catch {}
+        } catch (error) {
+          console.error(`Error downloading product image: ${url}`, error);
+        }
       }
       console.log(`Downloaded site images: ${siteSaved.length}, product images: ${productSaved.length}`);
       await this.seedProductImages(productSaved);
@@ -599,5 +607,93 @@ export class SeederService {
         }
       }
     }
+  }
+
+  private async seedCarousel(siteId: number) {
+    console.log('Seeding carousel slides...');
+    
+    // Clear existing carousel slides
+    await this.carouselSlideRepository.clear();
+    
+    // Define carousel slides with actual images from Just Eurookna website
+    const carouselSlides = [
+      {
+        imageUrl: '/uploads/sites/just-eurookna/homepage_1-2.jpg',
+        imageAlt: 'Dokonalá svetelná pohoda hliníkových okien s prepojením so záhradou',
+        titleTranslationId: 'HOME.HERO_SLIDES.ALUMINUM_WINDOWS.TITLE',
+        subtitleTranslationId: 'HOME.HERO_SLIDES.ALUMINUM_WINDOWS.SUBTITLE',
+        category: 'windows',
+        productType: 'aluminum',
+        sortOrder: 1,
+        siteId: siteId
+      },
+      {
+        imageUrl: '/uploads/sites/just-eurookna/homepage_2-2.jpg',
+        imageAlt: 'Energeticky úsporný domov s funkčnými oknami',
+        titleTranslationId: 'HOME.HERO_SLIDES.ENERGY_EFFICIENT.TITLE',
+        subtitleTranslationId: 'HOME.HERO_SLIDES.ENERGY_EFFICIENT.SUBTITLE',
+        category: 'windows',
+        productType: 'energy-saving',
+        sortOrder: 2,
+        siteId: siteId
+      },
+      {
+        imageUrl: '/uploads/sites/just-eurookna/homepage_3-2.jpg',
+        imageAlt: 'Veľkorysý výhľad spája interiér s exteriérom',
+        titleTranslationId: 'HOME.HERO_SLIDES.PANORAMIC_VIEW.TITLE',
+        subtitleTranslationId: 'HOME.HERO_SLIDES.PANORAMIC_VIEW.SUBTITLE',
+        category: 'windows',
+        productType: 'panoramic',
+        sortOrder: 3,
+        siteId: siteId
+      },
+      {
+        imageUrl: '/uploads/sites/just-eurookna/homepage_4-2.jpg',
+        imageAlt: 'Okná Vášho domova – kvalita, estetika, funkčný dizajn',
+        titleTranslationId: 'HOME.HERO_SLIDES.QUALITY_DESIGN.TITLE',
+        subtitleTranslationId: 'HOME.HERO_SLIDES.QUALITY_DESIGN.SUBTITLE',
+        category: 'windows',
+        productType: 'premium',
+        sortOrder: 4,
+        siteId: siteId
+      },
+      {
+        imageUrl: '/uploads/sites/just-eurookna/homepage_5-2.jpg',
+        imageAlt: 'Nezameniteľný, dokonalý domov s vôňou dreva',
+        titleTranslationId: 'HOME.HERO_SLIDES.WOODEN_TRADITION.TITLE',
+        subtitleTranslationId: 'HOME.HERO_SLIDES.WOODEN_TRADITION.SUBTITLE',
+        category: 'windows',
+        productType: 'wooden',
+        sortOrder: 5,
+        siteId: siteId
+      },
+      {
+        imageUrl: '/uploads/sites/just-eurookna/homepage_7-2.jpg',
+        imageAlt: 'Komfortné a bezpečné bývanie s osobitým akcentom',
+        titleTranslationId: 'HOME.HERO_SLIDES.SECURITY_COMFORT.TITLE',
+        subtitleTranslationId: 'HOME.HERO_SLIDES.SECURITY_COMFORT.SUBTITLE',
+        category: 'doors',
+        productType: 'security',
+        sortOrder: 6,
+        siteId: siteId
+      },
+      {
+        imageUrl: '/uploads/sites/just-eurookna/homepage_8-2.jpg',
+        imageAlt: 'Dialóg moderných materiálov v modernej stavbe',
+        titleTranslationId: 'HOME.HERO_SLIDES.MODERN_MATERIALS.TITLE',
+        subtitleTranslationId: 'HOME.HERO_SLIDES.MODERN_MATERIALS.SUBTITLE',
+        category: 'doors',
+        productType: 'modern',
+        sortOrder: 7,
+        siteId: siteId
+      }
+    ];
+
+    for (const slideData of carouselSlides) {
+      const carouselSlide = this.carouselSlideRepository.create(slideData);
+      await this.carouselSlideRepository.save(carouselSlide);
+    }
+
+    console.log(`Seeded ${carouselSlides.length} carousel slides`);
   }
 }

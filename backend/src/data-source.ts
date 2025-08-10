@@ -13,6 +13,7 @@ import { CategoryTranslation } from './entities/category-translation.entity';
 import { PageTranslation } from './entities/page-translation.entity';
 import { MediaFile } from './entities/media-file.entity';
 import { I18nString } from './entities/i18n-string.entity';
+import { CarouselSlide } from './entities/carousel-slide.entity';
 
 export const AppDataSource = new DataSource({
   type: 'sqlite',
@@ -32,6 +33,7 @@ export const AppDataSource = new DataSource({
     PageTranslation,
     MediaFile,
     I18nString,
+    CarouselSlide,
   ],
   synchronize: true,
 });

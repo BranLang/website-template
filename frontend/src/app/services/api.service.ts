@@ -190,6 +190,11 @@ export class ApiService {
     return this.http.delete(`${this.apiUrl}/users/${id}`);
   }
 
+  // Contact form endpoint
+  sendContactForm(formData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/contact`, formData);
+  }
+
   // Seeder endpoint
   seedDatabase(): Observable<any> {
     return this.http.post(`${this.apiUrl}/seeder/seed`, {});

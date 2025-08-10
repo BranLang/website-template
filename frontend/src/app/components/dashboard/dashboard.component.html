@@ -1,0 +1,13 @@
+<div class="dashboard-container">
+  <div class="container">
+    <h1>{{ 'DASHBOARD.TITLE' | translate }}</h1>
+    <div class="dashboard-cards">
+      <mat-card *ngFor="let link of navLinks" [routerLink]="link.path" class="dashboard-card">
+        <mat-card-header>
+          <mat-icon mat-card-avatar>{{ link.icon }}</mat-icon>
+          <mat-card-title>{{ link.label | translate }}</mat-card-title>
+        </mat-card-header>
+      </mat-card>
+    </div>
+  </div>
+</div>

@@ -23,8 +23,9 @@ export const mockProducts = [
 ];
 
 export const mockCategories = [
-  { id: 1, slug: 'windows', type: 'product', name: { sk: 'Okna', en: 'Windows' } },
-  { id: 2, slug: 'doors', type: 'product', name: { sk: 'Dvere', en: 'Doors' } }
+  { id: 1, slug: 'windows', type: 'window', name: { sk: 'Okná', en: 'Windows' } },
+  { id: 2, slug: 'doors', type: 'door', name: { sk: 'Dvere', en: 'Doors' } },
+  { id: 3, slug: 'realizations', type: 'realization', name: { sk: 'Realizácie', en: 'Realizations' } }
 ];
 
 export const mockPages = [
@@ -40,9 +41,9 @@ export const mockSite = {
 };
 
 export const mockMediaFiles = [
-  { filename: 'windows-hero.jpg', url: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=60' },
-  { filename: 'doors-hero.jpg', url: 'https://images.unsplash.com/photo-1505691723518-36aefcb36c89?auto=format&fit=crop&w=800&q=60' },
-  { filename: 'realization-hero.jpg', url: 'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=800&q=60' }
+  { filename: 'windows-hero.jpg', url: 'https://www.just-eurookna.sk/wp-content/uploads/2018/04/okna-uvod.jpg' },
+  { filename: 'doors-hero.jpg', url: 'https://www.just-eurookna.sk/wp-content/uploads/2018/04/vchodove-dvere.jpg' },
+  { filename: 'realization-hero.jpg', url: 'https://www.just-eurookna.sk/wp-content/uploads/2018/04/realizacie.jpg' }
 ];
 
 export const mockTranslations: Record<string, any> = {
@@ -58,6 +59,7 @@ mockProducts.forEach(p => {
 mockCategories.forEach(c => {
   if (c.slug === 'windows') (c as any).imageUrl = mockMediaFiles[0].url;
   if (c.slug === 'doors') (c as any).imageUrl = mockMediaFiles[1].url;
+  if (c.slug === 'realizations') (c as any).imageUrl = mockMediaFiles[2].url;
 });
 
 // categoryImages mapping for site settings

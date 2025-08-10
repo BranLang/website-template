@@ -40,8 +40,8 @@ bootstrapApplication(AppComponent, {
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useClass: CustomTranslateLoader,
-        deps: [ApiService]
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
       }
     }).providers!
   ]

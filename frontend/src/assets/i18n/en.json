@@ -20,6 +20,7 @@
     "NEXT": "Next",
     "PREVIOUS": "Previous",
     "VIEW_MORE": "View More",
+    "MORE": "more",
     "CLOSE": "Close",
     "ADMIN": "Admin"
   },
@@ -35,6 +36,36 @@
   "HOME": {
     "HERO_TITLE": "Windows and Doors for a Lifetime",
     "HERO_SUBTITLE": "Quality windows and doors for your home",
+    "HERO_SLIDES": {
+      "ALUMINUM_WINDOWS": {
+        "TITLE": "Perfect Light Comfort with Aluminum Windows",
+        "SUBTITLE": "Modern design connecting your home with the garden"
+      },
+      "ENERGY_EFFICIENT": {
+        "TITLE": "Energy-Efficient Home with Functional Windows",
+        "SUBTITLE": "Quality and energy savings in one solution"
+      },
+      "PANORAMIC_VIEW": {
+        "TITLE": "Generous Views Connecting Interior with Exterior",
+        "SUBTITLE": "Open your home to nature"
+      },
+      "QUALITY_DESIGN": {
+        "TITLE": "Windows for Your Home - Quality, Aesthetics, Functional Design",
+        "SUBTITLE": "Slovak quality for your home"
+      },
+      "WOODEN_TRADITION": {
+        "TITLE": "Unmistakable, Perfect Home with the Scent of Wood",
+        "SUBTITLE": "Traditional craftsmanship in modern design"
+      },
+      "SECURITY_COMFORT": {
+        "TITLE": "Comfortable and Safe Living with a Special Accent",
+        "SUBTITLE": "Security and comfort come first"
+      },
+      "MODERN_MATERIALS": {
+        "TITLE": "Dialogue of Modern Materials in Modern Construction",
+        "SUBTITLE": "Innovation meets tradition"
+      }
+    },
     "FEATURED_PRODUCTS": "Featured Products",
     "ABOUT_US_SHORT": "For almost 30 years we have been manufacturing windows and doors...",
     "ABOUT_FEATURES": [
@@ -44,7 +75,8 @@
       "and meet high aesthetic and energy requirements"
     ],
     "VIEW_ALL_PRODUCTS": "View All Products",
-    "CONTACT_US": "Contact Us"
+    "CONTACT_US": "Contact Us",
+    "CATEGORIES_SUBTITLE": "Discover our comprehensive range of premium windows and doors"
   },
   "PRODUCTS": {
     "CATEGORIES": {
@@ -99,7 +131,13 @@
     "NAME": "Name",
     "MESSAGE": "Message",
     "SUBJECT": "Subject",
-    "REQUIRED_FIELD": "This field is required"
+    "REQUIRED_FIELD": "This field is required",
+    "FORM": {
+      "NAME": "Name",
+      "EMAIL": "Email",
+      "MESSAGE": "Message",
+      "SEND": "Send"
+    }
   },
   "FAQ": {
     "TITLE": "Frequently Asked Questions",

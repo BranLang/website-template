@@ -20,6 +20,7 @@
     "NEXT": "Ďalej",
     "PREVIOUS": "Predchádzajúce",
     "VIEW_MORE": "Zobraziť viac",
+    "MORE": "ďalších",
     "CLOSE": "Zavrieť",
     "ADMIN": "Administrácia"
   },
@@ -35,6 +36,36 @@
   "HOME": {
     "HERO_TITLE": "Okná a dvere na celý život",
     "HERO_SUBTITLE": "Kvalitné okná a dvere pre váš domov",
+    "HERO_SLIDES": {
+      "ALUMINUM_WINDOWS": {
+        "TITLE": "Dokonalá svetelná pohoda hliníkových okien s prepojením so záhradou",
+        "SUBTITLE": "Moderný dizajn a funkčnosť pre váš domov"
+      },
+      "ENERGY_EFFICIENT": {
+        "TITLE": "Energeticky úsporný domov s funkčnými oknami",
+        "SUBTITLE": "Kvalita a úspora energie v jednom"
+      },
+      "PANORAMIC_VIEW": {
+        "TITLE": "Veľkorysý výhľad spája interiér s exteriérom",
+        "SUBTITLE": "Otvorte svoj domov prírode"
+      },
+      "QUALITY_DESIGN": {
+        "TITLE": "Okná Vášho domova – kvalita, estetika, funkčný dizajn",
+        "SUBTITLE": "Slovenská kvalita pre váš domov"
+      },
+      "WOODEN_TRADITION": {
+        "TITLE": "Nezameniteľný, dokonalý domov s vôňou dreva",
+        "SUBTITLE": "Tradičné remeslo v modernom pojetí"
+      },
+      "SECURITY_COMFORT": {
+        "TITLE": "Komfortné a bezpečné bývanie s osobitým akcentom",
+        "SUBTITLE": "Bezpečnosť a komfort na prvom mieste"
+      },
+      "MODERN_MATERIALS": {
+        "TITLE": "Dialóg moderných materiálov v modernej stavbe",
+        "SUBTITLE": "Inovácia stretáva tradíciu"
+      }
+    },
     "FEATURED_PRODUCTS": "Odporúčané produkty",
     "ABOUT_US_SHORT": "Už takmer 30 rokov vyrábame okná a dvere...",
     "ABOUT_FEATURES": [
@@ -44,7 +75,8 @@
       "a plnia vysoké estetické a energetické nároky"
     ],
     "VIEW_ALL_PRODUCTS": "Zobraziť všetky produkty",
-    "CONTACT_US": "Kontaktujte nás"
+    "CONTACT_US": "Kontaktujte nás",
+    "CATEGORIES_SUBTITLE": "Objavte našu kompletnú ponuku prémiových okien a dverí"
   },
   "PRODUCTS": {
     "CATEGORIES": {
@@ -99,7 +131,13 @@
     "NAME": "Meno",
     "MESSAGE": "Správa",
     "SUBJECT": "Predmet",
-    "REQUIRED_FIELD": "Toto pole je povinné"
+    "REQUIRED_FIELD": "Toto pole je povinné",
+    "FORM": {
+      "NAME": "Meno",
+      "EMAIL": "Email",
+      "MESSAGE": "Správa",
+      "SEND": "Odoslať"
+    }
   },
   "FAQ": {
     "TITLE": "Často kladené otázky",

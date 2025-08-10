@@ -1,15 +1,17 @@
 <!-- Hero Section -->
 <section class="hero-section mat-elevation-z2">
-  <div class="hero-carousel" *ngIf="carouselImages.length > 0">
+  <!-- High-quality hero carousel with matching content -->
+  <div class="hero-carousel">
     <div class="carousel-track" [style.transform]="'translateX(-' + currentSlideIndex * 100 + '%)'">
-      <div class="carousel-slide" *ngFor="let img of carouselImages">
-        <img [src]="siteService.resolveMediaUrl(img)" alt="hero" />
-      </div>
+                    <div class="carousel-slide" *ngFor="let slide of heroSlides; trackBy: trackBySlideId">
+                <img [src]="slide.imageUrl" [alt]="slide.imageAlt" />
+              </div>
     </div>
   </div>
+  
   <div class="hero-content">
-    <h1 class="hero-title">{{ pageTitle || ('HOME.HERO_TITLE' | translate) }}</h1>
-    <p class="hero-subtitle">{{ pageSubtitle || ('HOME.HERO_SUBTITLE' | translate) }}</p>
+    <h1 class="hero-title">{{ currentHeroSlide.titleTranslationId | translate }}</h1>
+    <p class="hero-subtitle">{{ currentHeroSlide.subtitleTranslationId | translate }}</p>
     <div class="hero-buttons">
       <button mat-raised-button color="primary" routerLink="/products">
         {{ 'HOME.VIEW_ALL_PRODUCTS' | translate }}
@@ -21,51 +23,88 @@
   </div>
 </section>
 
-<!-- About Section -->
-<section class="about-section">
-  <div class="container">
-    <mat-card class="about-card">
-      <mat-card-content>
-        <h2>{{ 'HOME.ABOUT_US_SHORT' | translate }}</h2>
-        <div class="features-grid">
-          <div class="feature-item" *ngFor="let feature of aboutFeatures">
-            <mat-icon color="primary">check_circle</mat-icon>
-            <span>{{ feature | translate }}</span>
+  <!-- About Section -->
+  <section class="about-section">
+    <div class="container">
+      <mat-card class="about-card">
+        <mat-card-content>
+          <h2>{{ 'HOME.ABOUT_US_SHORT' | translate }}</h2>
+          <div class="features-grid">
+            <div class="feature-item" *ngFor="let feature of aboutFeatures">
+              <mat-icon color="primary">check_circle</mat-icon>
+              <span>{{ feature | translate }}</span>
+            </div>
           </div>
-        </div>
-      </mat-card-content>
-    </mat-card>
-  </div>
-</section>
-
-<!-- Featured Products Section intentionally removed: Home shows categories only -->
-
-<!-- Main grouped Categories -->
-<section class="categories-section" *ngIf="categories.length > 0">
-  <div class="container narrow">
-    <h2>{{ ('PRODUCTS.CATEGORIES.TITLE' | translate) || 'Produkty' }}</h2>
-
-    <div class="cards-grid">
-      <mat-card class="group-card" routerLink="/categories/windows">
-        <img mat-card-image [src]="addV(groupImages.window || siteService.resolveMediaUrl(groupedCategories.window[0]?.imageUrl))" alt="Okná">
-        <mat-card-header>
-          <mat-card-title>{{ 'NAVIGATION.WINDOWS' | translate }}</mat-card-title>
-        </mat-card-header>
-      </mat-card>
-      
-      <mat-card class="group-card" routerLink="/categories/doors">
-        <img mat-card-image [src]="addV(groupImages.door || siteService.resolveMediaUrl(groupedCategories.door[0]?.imageUrl))" alt="Vchodové dvere">
-        <mat-card-header>
-          <mat-card-title>{{ 'NAVIGATION.DOORS' | translate }}</mat-card-title>
-        </mat-card-header>
-      </mat-card>
-
-      <mat-card class="group-card" *ngIf="groupedCategories.realization.length" routerLink="/realizations">
-        <img mat-card-image [src]="addV(groupImages.realization || siteService.resolveMediaUrl(groupedCategories.realization[0]?.imageUrl))" alt="Realizácie">
-        <mat-card-header>
-          <mat-card-title>{{ 'NAVIGATION.REALIZATIONS' | translate }}</mat-card-title>
-        </mat-card-header>
+        </mat-card-content>
       </mat-card>
     </div>
-  </div>
-</section>
+  </section>
+
+  <!-- Categories Section -->
+  <section class="categories-section">
+    <div class="container">
+      <div class="section-header">
+        <h2>{{ 'PRODUCTS.CATEGORIES.TITLE' | translate }}</h2>
+        <p class="section-subtitle">{{ 'HOME.CATEGORIES_SUBTITLE' | translate }}</p>
+      </div>
+
+      <div class="categories-grid">
+        <mat-card class="category-card" routerLink="/categories/windows">
+          <div class="card-image-container">
+            <img mat-card-image src="https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=500&h=350&fit=crop&q=85" alt="Windows">
+            <div class="image-overlay">
+              <mat-icon>window</mat-icon>
+            </div>
+          </div>
+          <mat-card-content>
+            <h3 class="card-title">{{ 'NAVIGATION.WINDOWS' | translate }}</h3>
+            <div class="category-items">
+              <div class="item-chip" *ngFor="let key of subCategoriesMap.window.slice(0, 3)">
+                {{ key | translate }}
+              </div>
+              <div class="more-items" *ngIf="subCategoriesMap.window.length > 3">
+                +{{ subCategoriesMap.window.length - 3 }} {{ 'COMMON.MORE' | translate }}
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        
+        <mat-card class="category-card" routerLink="/categories/doors">
+          <div class="card-image-container">
+            <img mat-card-image src="https://images.unsplash.com/photo-1570025924143-7a8b14c2bb0e?w=500&h=350&fit=crop&q=85" alt="Doors">
+            <div class="image-overlay">
+              <mat-icon>door_front</mat-icon>
+            </div>
+          </div>
+          <mat-card-content>
+            <h3 class="card-title">{{ 'NAVIGATION.DOORS' | translate }}</h3>
+            <div class="category-items">
+              <div class="item-chip" *ngFor="let key of subCategoriesMap.door.slice(0, 3)">
+                {{ key | translate }}
+              </div>
+              <div class="more-items" *ngIf="subCategoriesMap.door.length > 3">
+                +{{ subCategoriesMap.door.length - 3 }} {{ 'COMMON.MORE' | translate }}
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        
+        <mat-card class="category-card" routerLink="/realizations">
+          <div class="card-image-container">
+            <img mat-card-image src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=500&h=350&fit=crop&q=85" alt="Realizations">
+            <div class="image-overlay">
+              <mat-icon>photo_library</mat-icon>
+            </div>
+          </div>
+          <mat-card-content>
+            <h3 class="card-title">{{ 'NAVIGATION.REALIZATIONS' | translate }}</h3>
+            <div class="category-items">
+              <div class="item-chip" *ngFor="let key of subCategoriesMap.realization.slice(0, 4)">
+                {{ key | translate }}
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </section>

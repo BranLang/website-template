@@ -1,133 +1,302 @@
-:host {
-  display: block;
-}
-
+// Modern, balanced footer design
 .site-footer {
-  background: #0a0e13;
-  color: rgba(255, 255, 255, 0.7);
-  padding: 4rem 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+  color: #ffffff;
+  padding: 4rem 0 0;
+  margin-top: auto;
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6, #06b6d4);
+  }
 }
 
 .container {
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 2rem;
 }
 
-.footer-cards {
+// Main footer content grid
+.footer-content {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
-  justify-items: center;
-  align-items: start;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3rem;
+  margin-bottom: 3rem;
+}
 
-  &.mobile-layout {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
+.footer-section {
+  display: flex;
+  flex-direction: column;
+  min-height: 280px; // Ensure consistent height
+}
+
+// Section titles with icons
+.footer-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #fbbf24;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-bottom: 2px solid rgba(251, 191, 36, 0.2);
+  padding-bottom: 0.75rem;
+  
+  mat-icon {
+    font-size: 1.3rem;
+    width: 1.3rem;
+    height: 1.3rem;
+    color: #fbbf24;
   }
 }
 
-.footer-card {
-  background: rgba(255, 255, 255, 0.02);
-  // border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  width: 100%;
-  max-width: 350px;
-  min-height: 300px;
+// Navigation styling
+.footer-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
   
-  ::ng-deep {
-    .mat-mdc-card-header {
-      padding-bottom: 1rem;
+  a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #e5e7eb;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    padding: 0.5rem 0;
+    border-radius: 4px;
+    
+    &:hover {
+      color: #fbbf24;
+      background: rgba(251, 191, 36, 0.1);
+      padding-left: 0.5rem;
+      transform: translateX(4px);
+    }
+    
+    mat-icon {
+      font-size: 1rem;
+      width: 1rem;
+      height: 1rem;
+      opacity: 0.7;
+      transition: opacity 0.3s ease;
+    }
+    
+    &:hover mat-icon {
+      opacity: 1;
+    }
+  }
+}
+
+// Company info section
+.company-info {
+  flex: 1;
+  
+  .about-text {
+    color: #d1d5db;
+    line-height: 1.6;
+    margin: 0 0 1.5rem 0;
+    font-size: 0.95rem;
+  }
+}
+
+.quality-badges {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  
+  .badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    transition: background 0.3s ease;
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+    
+    mat-icon {
+      font-size: 1.1rem;
+      width: 1.1rem;
+      height: 1.1rem;
+      color: #10b981;
+    }
+    
+    span {
+      font-size: 0.85rem;
+      color: #e5e7eb;
+      font-weight: 500;
+    }
+  }
+}
+
+// Contact info section
+.contact-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.contact-item {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  
+  mat-icon {
+    font-size: 1.2rem;
+    width: 1.2rem;
+    height: 1.2rem;
+    color: #3b82f6;
+    margin-top: 0.1rem;
+    flex-shrink: 0;
+  }
+  
+  div {
+    flex: 1;
+    
+    strong {
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 0.95rem;
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+    
+    p {
+      color: #d1d5db;
+      margin: 0;
+      line-height: 1.5;
+      font-size: 0.9rem;
       
-      .mat-mdc-card-title {
-        font-size: 1.1rem;
+      a {
+        color: #fbbf24;
+        text-decoration: none;
         font-weight: 500;
-        letter-spacing: 0.5px;
-        text-transform: uppercase;
-        color: rgba(255, 255, 255, 0.9);
-        margin: 0;
+        
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+
+// Footer bottom section
+.footer-bottom {
+  background: rgba(0, 0, 0, 0.3);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1.5rem 0;
+}
+
+.footer-bottom-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: center;
+  
+  .copyright {
+    color: #d1d5db;
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+  
+  .footer-links {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.85rem;
+    
+    a {
+      color: #fbbf24;
+      text-decoration: none;
+      
+      &:hover {
+        text-decoration: underline;
       }
     }
     
-    .mat-mdc-card-content {
-      padding-top: 0;
-      font-size: 0.95rem;
-      line-height: 1.6;
+    .separator {
+      color: #9ca3af;
     }
-  }
-}
-
-.contact-card {
-  justify-self: center;
-  
-  .contact-info {
-    // text-align: center;
-    font-style: normal;
-    line-height: 1.8;
-  }
-}
-
-.about-card {
-  .about-text {
-    text-align: justify;
-    line-height: 1.7;
-    max-width: 100%;
-    overflow-wrap: break-word;
-  }
-}
-
-.product-links {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  
-  li {
-    margin-bottom: 0.75rem;
-  }
-  
-  a {
-    color: rgba(255, 255, 255, 0.6);
-    text-decoration: none;
-    transition: color 0.3s ease;
-    font-size: 0.9rem;
     
-    &:hover {
-      color: #fff;
+    span:not(.separator) {
+      color: #d1d5db;
     }
+  }
+  
+  .cookie-notice {
+    color: #9ca3af;
+    font-size: 0.8rem;
+    margin: 0;
   }
 }
 
-.footer-bottom {
-  text-align: center;
-  margin-top: 3rem;
-  padding-top: 2rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.5);
-
-  a {
-    color: rgba(255, 255, 255, 0.6);
-    text-decoration: none;
-    
-    &:hover {
-      color: #fff;
-    }
+// Responsive design
+@media (max-width: 1024px) {
+  .footer-content {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
+  }
+  
+  .footer-section {
+    min-height: auto;
   }
 }
 
-// Mobile responsiveness
 @media (max-width: 768px) {
-  .footer-cards {
+  .site-footer {
+    padding: 3rem 0 0;
+  }
+  
+  .footer-content {
     grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .container {
+    padding: 0 1.5rem;
+  }
+  
+  .footer-bottom-content {
+    gap: 1rem;
+    
+    .footer-links {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  }
+  
+  .quality-badges {
+    .badge {
+      span {
+        font-size: 0.8rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 1rem;
+  }
+  
+  .footer-content {
     gap: 1.5rem;
   }
   
-  .footer-card {
-    max-width: 100%;
-    min-height: auto;
-  }
-  
-  .contact-info {
-    text-align: left !important;
+  .footer-title {
+    font-size: 1rem;
   }
 }

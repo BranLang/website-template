@@ -1,38 +1,23 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, TranslateModule, MatCardModule],
-  template: `
-    <div class="dashboard-container">
-      <div class="container">
-        <h1>Dashboard</h1>
-        <p>Admin dashboard coming soon...</p>
-      </div>
-    </div>
-  `,
-  styles: [`
-    .dashboard-container {
-      padding: 80px 0;
-      min-height: calc(100vh - 64px);
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-
-    h1 {
-      font-size: 2.5rem;
-      color: #333;
-      margin-bottom: 1rem;
-      text-align: center;
-    }
-  `]
+  imports: [CommonModule, RouterModule, TranslateModule, MatCardModule, MatIconModule],
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent {}
+export class DashboardComponent {
+  navLinks = [
+    { path: '/admin/products', label: 'Products', icon: 'store' },
+    { path: '/admin/categories', label: 'Categories', icon: 'view_list' },
+    { path: '/admin/pages', label: 'Pages', icon: 'description' },
+    { path: '/admin/orders', label: 'Orders', icon: 'shopping_cart' },
+    { path: '/admin/users', label: 'Users', icon: 'people' }
+  ];
+}

@@ -14,6 +14,7 @@ import { OrdersModule } from './modules/orders/orders.module';
 import { MediaModule } from './modules/media/media.module';
 import { SeederModule } from './modules/seeder/seeder.module';
 import { I18nModule } from './modules/i18n/i18n.module';
+import { CarouselModule } from './modules/carousel/carousel.module';
 
 import { AppDataSource } from './data-source';
 
@@ -35,6 +36,7 @@ import { AppDataSource } from './data-source';
     MediaModule,
     SeederModule,
     I18nModule,
+    CarouselModule,
   ],
 })
 export class AppModule {}

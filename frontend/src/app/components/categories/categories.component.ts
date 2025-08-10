@@ -1,38 +1,31 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { Observable } from 'rxjs';
+import { SiteService } from '../../services/site.service';
+import { CategoriesService, CategoryPageData } from './categories.service';
 
 @Component({
   selector: 'app-categories',
   standalone: true,
-  imports: [CommonModule, TranslateModule, MatCardModule],
-  template: `
-    <div class="categories-container">
-      <div class="container">
-        <h1>Categories</h1>
-        <p>Categories page coming soon...</p>
-      </div>
-    </div>
-  `,
-  styles: [`
-    .categories-container {
-      padding: 80px 0;
-      min-height: calc(100vh - 64px);
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-
-    h1 {
-      font-size: 2.5rem;
-      color: #333;
-      margin-bottom: 1rem;
-      text-align: center;
-    }
-  `]
+  imports: [CommonModule, RouterModule, TranslateModule, MatCardModule, MatButtonModule, MatIconModule],
+  providers: [CategoriesService],
+  templateUrl: './categories.component.html',
+  styleUrls: ['./categories.component.scss']
 })
-export class CategoriesComponent {}
+export class CategoriesComponent implements OnInit {
+  categoryPageData$!: Observable<CategoryPageData | null>;
+
+  constructor(
+    private categoriesService: CategoriesService,
+    public siteService: SiteService
+  ) {}
+
+  ngOnInit(): void {
+    this.categoryPageData$ = this.categoriesService.categoryPageData$;
+  }
+}

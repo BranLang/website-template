@@ -1,10 +1,12 @@
-<ng-container *ngIf="productsPageData$ | async as data">
-  <section class="products-page">
+<ng-container *ngIf="categoryPageData$ | async as data">
+  <div class="category-page">
     <div class="container">
-      <h1>{{ data.pageTitle }}</h1>
-      <p class="page-subtitle" *ngIf="data.pageSubtitle">{{ data.pageSubtitle }}</p>
+      <div class="category-header" *ngIf="data.category">
+        <h1>{{ data.category.name }}</h1>
+        <p class="category-description" *ngIf="data.category.description">{{ data.category.description }}</p>
+      </div>
 
-      <div class="products-grid">
+      <div class="products-grid" *ngIf="data.products.length > 0; else noProducts">
         <mat-card class="product-card mat-elevation-z3" *ngFor="let product of data.products">
           <div class="product-media">
             <img [src]="siteService.resolveMediaUrl(product.mainImageUrl) || 'assets/images/placeholder.jpg'" [alt]="product.name" />
@@ -22,8 +24,12 @@
           </mat-card-actions>
         </mat-card>
       </div>
+
+      <ng-template #noProducts>
+        <div class="no-products">
+          <p>{{ 'CATEGORIES.NO_PRODUCTS' | translate }}</p>
+        </div>
+      </ng-template>
     </div>
-  </section>
+  </div>
 </ng-container>
-
-

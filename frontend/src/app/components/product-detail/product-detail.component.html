@@ -1,0 +1,33 @@
+<ng-container *ngIf="product$ | async as product">
+  <div class="product-detail-container">
+    <div class="container">
+      <div class="product-header">
+        <h1 class="product-title">{{ product.name }}</h1>
+        <p class="product-subtitle" *ngIf="product.description">{{ product.description }}</p>
+      </div>
+
+      <div class="product-content">
+        <div class="product-gallery">
+          <img class="main-image" [src]="siteService.resolveMediaUrl(product.mainImageUrl)" [alt]="product.name">
+          <div class="thumbnail-images" *ngIf="product.images && product.images.length > 0">
+            <img *ngFor="let image of product.images" [src]="siteService.resolveMediaUrl(image.url)" [alt]="product.name">
+          </div>
+        </div>
+
+        <div class="product-info">
+          <mat-card>
+            <mat-card-content>
+              <div class="product-price" *ngIf="product.price">
+                {{ product.price | currency:'EUR':'symbol':'1.2-2' }}
+              </div>
+              <div class="product-description" [innerHTML]="product.longDescription"></div>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-raised-button color="primary">{{ 'PRODUCTS.ADD_TO_CART' | translate }}</button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

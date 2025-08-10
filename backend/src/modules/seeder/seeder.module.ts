@@ -12,9 +12,10 @@ import { SiteImage } from '../../entities/site-image.entity';
 import { CategoryTranslation } from '../../entities/category-translation.entity';
 import { ProductTranslation } from '../../entities/product-translation.entity';
 import { I18nString } from '../../entities/i18n-string.entity';
+import { CarouselSlide } from '../../entities/carousel-slide.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Site, Category, Product, Page, ProductImage, SiteImage, CategoryTranslation, ProductTranslation, I18nString])],
+  imports: [TypeOrmModule.forFeature([Site, Category, Product, Page, ProductImage, SiteImage, CategoryTranslation, ProductTranslation, I18nString, CarouselSlide])],
   providers: [SeederService, ImageDownloaderService],
   controllers: [SeederController],
 })
